@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+    <div class="exercise-list__quiznator">
+      <div class="quiznator-dashboard"></div>
+
+    </div>
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Ensimmäisen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+
+    Tuntee käsitteet digitalisaatio, tietokannanhallintajärjestelmä ja tietokanta. Ymmärtää tietokantojen roolin digitalisaatiossa. Tuntee ongelmia, joita tietokannanhallintajärjestelmät pyrkivät ratkaisemaan. Ymmärtää että tietoa voidaan käsitellä ja esittää erilaisilla abstraktiotasoilla ja tuntee termeinä käsitteellisen abstraktiotason, rakenteellisen abstraktiotason sekä fyysisen abstraktiotason. Osaa luoda luokkakaavion annetun ohjelman lähdekoodista ja osaa luoda annetussa luokkakaaviossa kuvatut luokat. Osaa käsitellä tietoa ohjelmallisesti. Tuntee käsiteanalyysin askeleet. Osaa luoda ongelma-alueen kuvauksesta luokkakaavion.    
+  </p>
+  
+
+  </div>
+</div>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kurssin alkukysely
+  </div>
+
+  <div class="hint__body">
+    
+
+  <p>
+    Kurssiin kuuluu alkukysely. Käy vastaamassa kyselyyn alla olevassa osoitteessa.
+  </p>
+
+  <div id="osoite1" style="display:none">
+    <a href="https://goo.gl/forms/h6NAy3JCGVImjlTG3" target="_blank" norel>https://goo.gl/forms/h6NAy3JCGVImjlTG3</a>
+  </div>
+
+  <div id="osoite2" style="display:none">
+    <a href="https://goo.gl/forms/V96ZCf5SFa2At1dt2" target="_blank" norel>https://goo.gl/forms/V96ZCf5SFa2At1dt2</a>
+  </div>
+  
+  <div class="quiznator-plugin" data-quiz-id="5a5b5d0ea67e62000427b3eb"></div>
+
+  
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Johdanto
+
+</h1>
+
+<p>
+  Olemme tietoisesti ja tiedostamattomasti kytköksissä lukemattomiin järjestelmiin. Kodin sähkön- ja vedenkulutusta seurataan elektronisesti, lehti- ja palvelutilaukset tehdään digitaalisiin järjestelmiin, säätiedot tulevat automaattisesti mobiililaitteeseen, suurin osa perinteisestä kirjeillä tehdystä kommunikaatiosta tapahtuu sähköpostitse tai pikaviestinten kautta, kaupat seuraavat varastosaldojen kehitystä automaattisesti ostosten perusteella, sairaaloilla on sähköiset potilasrekisterit, yritykset tarjoavat räätälöityjä palveluita digitaalisen käyttäytymisen perusteella, ja niin edelleen. Toisaalta, vain muutamia vuosikymmeniä sitten, internet oli vain harvojen hupi, digitaaliset palvelut olivat harvinaisia, ja lähes kenelläkään ei esimerkiksi ollut henkilökohtaista kännykkää. Pankkikortit, joita kännyköillä tai muilla laitteilla tapahtuvat maksut ovat hiljalleen korvaamassa, ovat nekin olleet käytössä vain muutamia vuosikymmeniä.  
+</p>
+
+<p>
+  Lähes jokainen edellämainituista palveluista perustuu tavalla tai toisella tiedon keräämiseen. Sähkön- ja vedenkulutuksesta jää historia, jota käytetään laskutuksessa sekä kulutuksen ennustamisessa. Lehti- ja palvelitilaukset tallennetaan järjestelmiin, joiden kautta voidaan suositella vastaavia sopivia tuotteita. Sähköpostit ja pikaviestinviestit säilyvät tyypillisesti ainakin lähettäjällä ja vastaanottajalla, jonka lisäksi esimerkiksi pikaviestinpalveluita tarjoava operaattori voi tallentaa viestit omalle palvelimelleen mahdollista tulevaa käyttöä varten. Kauppojen varastosaldojen kehityksen perusteella voidaan optimoida sisäänostoa ja tätä kautta pienentää hävikkiä sekä toisaalta vähentää tavaroiden varastointiin menevää tilaa. Potilasrekisterit sisältävät mm. hoito- ja rokotehistorian, jolloin lääkärin on helpompi toimia yllättävissä tilanteissa.
+</p>
+
+<p>
+  Uusia palveluita kehitetään myös jatkuvasti. Alla olevalla videolla on kuvattuna yhdysvaltalaisen ruokajätin Tescon toimintaa Etelä-Koreassa. Tesco muutti ruokatoimijoiden pelikenttää luomalla digitaalisia ostosmahdollisuuksia mm. kaupunkien metroasemille. Tuotteiden tilaaminen ja maksaminen tapahtuu kännykällä, ja tuotteet toimitetaan tilaajan kotiin. 
+</p>
+
+<p>
+  &nbsp;
+</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/fGaVFRzTTP4?rel=0" frameborder="0" allowfullscreen></iframe>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Tässä palveluiden siirtymisessä ja kehittymisessä sähköiseen muotoon on kyse <strong>digitalisaatiosta</strong>.  Digitalisaatio on tietoteknisten menetelmien ja sähköisessä muodossa olevan tiedon hyödyntämistä ja kehittämistä yksilöiden, yhteisöjen, yritysten ja yhteiskunnan toiminnan edesauttamiseksi. Tämä sisältää mm. tiedon perusteella tapahtuvaa liiketoimintamallien ja asiakaspalvelukokemusten kehittämistä, työn automatisointia ja virtaviivaistamista sekä uusien innovaatioiden luomista ja yrityksen toiminnan parantamista. Digitalisaation ytimessä on kyky hallinnoida ja käsitellä suuria tietomääriä.
+</p>
+
+<p>
+  Vaikka moni palvelu kerää tietoa palveluiden käyttäjistä ja siirtää palveluitaan sähköiseen muotoon, ei käyttäjien tietojen kerääminen ole itseisarvo. Arvoa voi tuottaa käyttäjille sekä yritykselle myös muilla tavoilla. Alla olevalla videolla on esimerkki eräästä IKEAn tuotteesta: IKEA on digitoinut (eli siirtänyt sähköiseen muotoon) tuotteiden tietoja sekä tehnyt tuotteistaan kolmiulotteisia malleja, jolloin niiden tuonti osaksi sovelluksia on suoraviivaista. Alla kuvattu tuote tarjoaa käyttäjille mahdollisuuden tarkastella miltä IKEAn tuote näyttäisi kotona.
+</p>
+
+
+<p>
+  &nbsp;
+</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/vDNzTasuYEw?rel=0" frameborder="0" allowfullscreen></iframe>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Tällä kurssilla keskitytään suurien tietomäärien tallentamiseen keskittyneisiin palveluihin, joilla on paljon yhtäaikaisia käyttäjiä. Keskiössä ovat erityisesti relaatiotietokannat. Puhekielessä termillä <strong>tietokanta</strong> tarkoitetaan yleisesti ottaen tiedon tallentamiseen tarkoitettua paikkaa, josta tietoa voi myös hakea. Esimerkiksi kirkonkirjat voidaan nähdä eräänlaisena sukujen historiaa dokumentoivana tietokantana, jonka kautta sukututkija pääsee käsiksi sukunsa historiaan. Vaikka tietokannat ovat digitalisaation myötä siirtymässä paperisesta muodosta sähköiseen muotoon, on niiden tavoite pysynyt pitkälti samana: <em>haluamme säilöä tietoa ja haluamme päästä tähän tietoon käsiksi</em>.
+</p>
+
+<p>
+  Tietokannat ovat kaikkialla oleva (<em>ubiikki</em>) ilmiö. Tämä kurssimateriaali sijaitsee tietokannassa, kurssitehtäviin liittyvät pisteet kirjataan tietokantaan ja kurssin suoritusmerkintä kirjataan tietokantaan. Kännykässäsi on todennäköisesti kymmeniä erilaisia tietokantoja; yhteystiedot, kalenteri, herätyskello, aikavyöhykkeet, karttapalvelut, suosikkiverkkosivut, ym, joiden lisäksi moni kännykkäsovellus hyödyntää yhtä tai useampaa tietokantaa. Tietokannat voivat olla paikallisia, eli ne voivat sijaita samalla koneella tietokantaa käyttävän ohjelmiston kanssa, esimerkiksi kännykässä, tai ne voivat sijaita erillisellä palvelimella, johon otetaan tarvittaessa yhteyttä. Loppukäyttäjän näkökulmasta tietokannan konkreettisella sijainnilla ei ole juurikaan merkitystä, sillä haetun tiedon näkee tyypillisesti käytössä olevan sovelluksen käyttöliittymän kautta.
+</p>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Tutustu tietokantaan!
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Tässä kohtaa on hyvä hetki käydä tutustumassa muutamaan tietokantapalveluun. Osoitteessa <a href="http://hiski.genealogia.fi/hiski/" target="_blank" norel>http://hiski.genealogia.fi/hiski/</a> on Suomen Sukututkimusseuran ylläpitämä Historiakirjojen hakupalvelu. Käy sivulle, valitse kieli, etsi "Kaikista", ja valitse "Kastetut".
+  </p>
+  
+  <p>
+    Minkälaisia tuloksia löydät omalla etunimelläsi? Entä, minkälaisia tuloksia löydät nimillä Matti ja Maija? Palvelu pyrkii muunmuassa sisällyttämään läheiset nimien muunnokset hakutuloksiin, sillä nimet muuttuvat ajan myötä.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tiedon tallentamiseen ja hakemiseen liittyviä haasteita
+
+</h2>
+
+<p>
+  Tiedon tallentamisessa sekä tiedon hakemisessa on muutamia ydinkysymyksiä ja ongelmakohtia. Nämä ovat seuraavia. 
+</p>
+
+<ul>
+  <li>
+    <strong>Tietoturva</strong>. Keillä on pääsy tietoon? Onko käyttäjillä erilaisia oikeuksia ja onko tiedon kirjoittaminen rajattu vain tietyille käyttäjäryhmille? Minne tieto tallennetaan fyysisesti -- onko sijainti Suomessa vai jossain muualla? Miten yhteys tietokantaan suojataan? ...
+  </li>
+  <li>
+    <strong>Suorituskyky</strong>. Miten tiedon hakeminen toteutetaan tehokkaasti? Entä jos käyttäjiä on samanaikaisesti satoja tai tuhansia? 
+  </li>
+  <li>
+    <strong>Eheys</strong>. Miten säilyttää tiedon eheys, eli miten varmistaa, että tallennettu tietoa noudattaa (joitakin) annettuja sääntöjä? Miten varmistetaan, että tietyllä arvoalueella olevat arvot (esim. syntymävuosi) tallennetaan ja luetaan numerona? Miten kytköksissä olevaa tietoa tulee käsitellä -- jos henkilön äiti poistetaan tietokannasta, tuleeko myös henkilö poistaa? Miten varmistaa, että käyttäjä ei saa koskaan "vaillinaista" tietoa (esim. tiedon hakeminen kesken tiedon poistamisen)?
+  </li>
+  <li>
+    <strong>Pysyvyys</strong>. Miten tiedon tallentaminen toteutetaan siten, että järjestelmän toimintavirheet (esim. sähkökatkos) eivät johda tiedon katoamiseen?
+  </li>
+</ul>
+
+<p>
+  Nykyaikaiset tietokannanhallintajärjestelmät tarjoavat ratkaisuja edellisiin ongelmiin.
+</p>
+
+
+<h2 class="material-heading">
+    Tietokannanhallintajärjestelmä
+
+</h2>
+
+<p>
+  <strong>Tietokannahallintajärjestelmä</strong> on sovellus, jonka kautta käyttäjä voi luoda ja ylläpitää tietokantoja. Tietokannanhallintajärjestelmän vastuulla on tietokantaan kohdistuvien haku-, muokkaus- ja lisäystoimintojen lisäksi käyttöoikeuksien valvominen. Tietokannanhallintajärjestelmän vastuulla on myös tiedon eheyteen liittyvien sääntöjen noudattamisen valvonta. Tietokannassa voi olla esimerkiksi sääntö "Opiskelijan syntymävuoden tulee sisältää neljä numeroa", jolloin uusien opiskelijoiden lisääminen ilman oikein määriteltyä syntymävuotta ei onnistu. Vastaavia sääntöjä voidaan lisätä muunmuassa varausjärjestelmiin, esimerkiksi lentokoneiden paikkavarausjärjestelmissä halutaan varmistaa, että jokaisella istuimella on korkeintaan yksi varaus. Tietokannanhallintajärjestelmän vastuulla on myös varmistaa, ettei tietoa tuhoudu, vaikka tietokantaa käyttävä järjestelmä hajoaisi -- erilaiset varmuuskopiotoiminnallisuudet ovat tyypillisiä.
+</p>
+
+<p>
+  Edellisten lisäksi tietokannanhallintajärjestelmät tarjoavat välineitä tiedon hakemiseen liittyvien toimintojen tehokkuuden tarkastelemiseen. Vaikka esimerkiksi opintojen seurantaan liittyvä järjestelmä sisältäisi tiedot kaikista Helsingin yliopiston opiskelijoista (n. 35000) sekä kaikista kurssisuorituksista (rutkasti), tulisi tietokantaan tehtävien kyselyjen toimia nopeasti. Edellä mainittu tietomäärä on esimerkiksi Amazon-verkkokaupan mittakaavassa hyvin pieni.
+</p>
+
+<p>
+  Yksittäinen sovellus voi myös käyttää useampaa tietokantaa, jotka sijaitsevat eri tietokannanhallintajärjestelmissä. Tyypillinen esimerkki tällaisesta sovelluksesta on analytiikkapalvelu, joka yhdistää eri palveluiden tallentamaa tietoa yhteenvetoraporttien luomiseksi. Yksittäisessä tietokannanhallintajärjestelmässä voi toisaalta sijaita useampia erilaisiin sovelluksiin ja käyttötarkoituksiin liittyviä tietokantoja, joita jokaista käyttää eri käyttäjät tai eri yritys.
+</p>
+
+
+<h2 class="material-heading">
+    Tietokanta
+
+</h2>
+
+<p>
+  <strong>Tietokanta</strong> on kokoelma tiettyyn aihepiiriin liittyviä säilytettäviä tietoja. Tietokannan luominen liittyy jonkinlaisen organisaation, yrityksen tai muun yhteisön tarpeeseen säilöä ja hakea tietoa. Esimerkiksi, yliopisto haluaa pitää kirjaa opiskelijoistaan ja heidän opintomenestystään, hotelli haluaa pitää kirjaa hotellin huoneiden varauksista ja kauppaketju haluaa pitää kirjaa asiakkaistaan ja asiakkaiden ostoksista.
+</p>
+
+<p>
+  Tallennettava tieto liittyy tyypillisesti johonkin tavoitteeseen. Yliopisto haluaa seurata opintojen etenemistä muunmuassa valtionhallinnolle raportointia varten, huoneiden varaustilannetta seuraava hotelli haluaa tietää milloin huoneita on paljon tarjolla ja milloin huoneet ovat lopussa. Kauppaketjun ensisijaisena tavoitteena lienee asiakkaiden ostosten seuranta myynnin optimoimiseksi.
+</p>
+
+<p>
+  Tietokantojen rakennetta ja jäsentelyä suunniteltaessa ongelmaa lähestytään tunnistamalla ongelma-alueen oleelliset <strong>käsitteet</strong>. Käsitteitä tarkastelemalla tunnistetaan mikä osa tiedosta on epäoleellista ja mikä osa tulee säilöä. Käsitteiden tunnistamisen yhteydessä selvitetään käsitteiden ominaisuuksia sekä niiden <strong>yhteyksiä</strong>. Esimerkiksi opiskelijan opintomenestyksen seurannassa oleellisia ovat ainakin käsitteet <em>Opiskelija</em> ja <em>Kurssisuoritus</em>, joilla on yhteys: opiskelijalla on kurssisuorituksia.
+</p>
+
+
+
+<h1 class="material-heading">
+    Tiedon käsittelyn abstraktiot 
+
+</h1>
+
+<p>
+  Tietokannanhallintajärjestelmistä ja tallennettavasta tiedosta puhuttaessa tietoa käsitellään eri abstraktiotasoilla. Tällä kurssilla esiintyvät käsitteellinen abstraktiotaso, rakenteellinen abstraktiotaso ja fyysinen abstraktiotaso. 
+</p>
+
+
+<h2 class="material-heading">
+    Käsitteellinen abstraktiotaso
+
+</h2>
+
+
+<p>
+  <strong>Käsitteellinen abstraktiotaso</strong> (conceptual level) on kuvaus ongelma-alueesta ihmisten ymmärtämässä muodossa. Kuvaus voi esiintyä esimerkiksi tekstidokumentissa, puheessa, tai vaikkapa multimediaesityksessä.  Käsitteellisen abstraktiotason kuvauksen luomisen ja välittämisen esiehtona on oletus siitä, että kuvauksen käsitteisiin liittyy jonkinlainen ihmisen mielessä oleva ymmärrys (mentaalimalli).
+</p>
+
+<p>
+  <strong>Käsite</strong> on ihmisen mielessä oleva idea jostakin abstraktista tai konkreettisesta asiasta. Käsitteelliseen kuvaukseen liittyy tieto siitä, miten asiat toimivat ja miten asiat liittyvät toisiinsa, mutta tämä tieto ei aina esiinny konkreettisesti "nähtävänä".
+</p>
+
+<p>
+  Tarkastellaan konkreettisena esimerkkinä käsitteellisen abstraktiotason kuvauksesta seuraavaa pankin tallennustoiminnallisuuteen liittyvää lausetta: "<em>Tileillä on omistajia, joista jokainen yksilöidään henkilöturvatunnuksen avulla</em>".
+</p>
+
+<p>
+  Kuvaus sisältää käsitteet <em>tili</em>, <em>omistaja</em> ja <em>henkilöturvatunnus</em>. Tämän lisäksi käsitteisiin liittyy suhteita, jotka osittain ilmenevät kuvaksesta ja osittain vaativat aihealueen ymmärrystä. Esimerkiksi tili ja omistaja ovat erillisiä käsitteitä ja niiden välinen yhteys kuvaa omistajuutta. Omistajan ja henkilöturvatunnuksen välinen yhteys on taas riippuvainen olemassaolosta -- Omistajan henkilöturvatunnusta ei ole olemassa ilman omistajaa. Omistajalla on henkilöturvatunnus.
+</p>
+
+<p>
+  Tiedon käsittelyyn liittyy oleellisesti myös synonyymien tunnistaminen. Esimerkiksi käsite "omistaja" voidaan ajatella myös käsitteenä "henkilö", mikä voi tehdä kuvauksesta ymmärrettävämmän.
+</p>
+
+<p>
+  Käsitteellinen abstraktiotaso ei ota kantaa siihen, miten tietoa tulee kuvata tai miten tieto konkreettisesti tallennetaan. 
+</p>
+
+
+<h2 class="material-heading">
+    Rakenteellinen abstraktiotaso
+
+</h2>
+
+<p>
+  <strong>Rakenteellinen abstraktiotaso</strong> (logical level, structural level) on jotain sovittua loogista määritelmää noudattava kuvaus säilöttävän tiedon rakenteesta. Rakenteellisen abstraktiotason kuvaus on kaikkien käytettyä kuvaustyyppiä ymmärtävien henkilöiden ymmärrettävissä, mikä mahdollistaa muunmuassa kuvauksesta keskustelun.
+</p>
+
+<p>
+  Rakenteellisen abstraktiotason kuvaus voi olla esimerkiksi taulukkolaskentaohjelmaan tehty kuvaus käsitteistä ja niiden ominaisuuksista, luokkakaavio, tietokantakaavio, tai SQL-kielellä tehdyt tietokantataulujen luomislauseet.
+</p>
+
+<p>
+  Edeltävän esimerkin perusteella voisi taulukkolaskennassa puhua kahdesta välilehdestä: välilehti tili ja välilehti henkilö. Henkilön kuvaamiseen käytetty välilehti sisältäisi ainakin sarakkeen henkilötunnus, ja jokainen rivi vastaisi yhtä henkilöä. Vastaavasti välilehti tili sisältäisi tilin tietoja kuvaavat sarakkeet sekä tilikohtaisen henkilötunnuksen, mikä kuvaisi tilin omistajaa. Jokaista tiliä kohden taulukkolaskennassa olisi yksi rivi.
+</p>
+
+<p>
+  Rakenteellinen abstraktiotaso ei ota kantaa siihen, miten tieto tulee konkreettisesti tallentaa. Rakenteellisen abstraktiotason kuvauksesta on myös mahdollista tehdä useita käsitteellisen abstraktiotason kuvauksia.
+</p>
+
+
+<h2 class="material-heading">
+    Fyysinen abstraktiotaso
+
+</h2>
+
+<p>
+  <strong>Fyysinen abstraktiotaso</strong> (physical level, internal level) kuvaa konkreettista tiedon tallentamistapaa esimerkiksi kiintolevylle. Tämä sisältää tiedon tallennettavan tiedon formaatista tai muodosta, tietokantaa kuvaavan tai kuvaavien tiedostojen sijainnista, käytettävistä tietorakenteista, tiedon varmuuskopioinnista, hajauttamisesta, ja niin edelleen. Fyysinen abstraktiotaso on tyypillisesti järjestelmäkohtainen ja riippuu myös ainakin osittain tallennettavan tiedon muodosta.
+</p>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Abstraktio
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Käsite <strong>abstraktio</strong> esiintyi edellä useaan kertaan. Käsitteellä abstraktio tarkoitetaan tässä yksityiskohtien piilottamista mikä mahdollistaa kokonaisuuksien hallinnan. Jos tietokantoja käsiteltäisiin vain fyysisellä abstraktiotasolla, olisi tallennettavasta tiedosta keskustelu hyvin vaikeaa tai jopa mahdotonta tietokoneiden sisäisiä rakenteita heikommin ymmärtävien kanssa.
+  </p>
+
+  <p>
+    Tämän kurssin puitteissa tietokantoja suunniteltaessa lähdetään käsitteellisen abstraktiotason kuvauksesta ja pyritään rakenteellisen abstraktiotason kuvaukseen.
+  </p>
+    
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Tiedon kuvaamisesta UML-kielellä
+
+</h1>
+
+<p>
+  Käytämme tällä kurssilla ensisijaisesti <a href="http://www.uml.org/" target="_blank" norel>UML</a>-kieltä rakenteellisen abstraktiotason kuvauskielenä. Käytämme <a href="https://fi.wikipedia.org/wiki/Luokkakaavio" target="_blank" norel>luokkakaavioita</a> käsitteiden ominaisuuksien ja yhteyksien mallintamiseen ja <a href="https://fi.wikipedia.org/wiki/Sekvenssikaavio" target="_blank" norel>sekvenssikaavioita</a> järjestelmien välisen kommunikoinnin mallintamiseen. Koko UML-spesifikaatio ei kuitenkaan ole tässä oleellinen -- luokkakaavioistakin esimerkiksi kooste- ja kompositiomerkintä ei ole tällä kurssilla tarpeen.
+</p>
+
+
+<figure>
+  <img src="../img/opiskelija-ja-kurssisuoritus-luokkakaavio-1ca5d648.png" />
+  <figcaption>Luokkakaavio, jossa on luokat Opiskelija ja Kurssisuoritus. Opiskelijalla on monta (nollasta äärettömään kurssisuoritusta). Jokaiseen kurssisuoritukseen liittyy yksi opiskelija.</figcaption>
+</figure>
+
+
+
+<h2 class="material-heading">
+    Luokkien kuvaaminen luokkakaaviossa
+
+</h2>
+
+<p>
+  Luokkakaavion luominen lähtee luokan (käsitteen) määrittelystä. Luokkakaaviossa luokka piirretään laatikkona, jonka sisällä on luokan nimi. Alla on kuvattu luokka Opiskelija.
+</p>
+
+<figure>
+  <img src="../img/luokkakaavio/opiskelija-371ed5f2.png" alt="[Opiskelija]" />
+  <figcaption>Luokka Opiskelija luokkakaaviossa. Yllä oleva luokkakaavio ei sisällä muita luokkia, eikä opiskelijalla ole attribuutteja.</figcaption>
+</figure>
+
+<p>
+  Luokan määrittelyn jälkeen luokalle voidaan lisätä attribuutteja. Attribuutit lisätään luokkakaavioon luokan nimen alle. Alla olevassa esimerkissä jokaiseen Opiskelijaan liittyy opiskelijanumero, nimi ja syntymävuosi.
+</p>
+
+<figure>
+  <img src="../img/luokkakaavio/opiskelija-attribuutit-d5863149.png" alt="[Opiskelija|opiskelijanumero;nimi;syntymavuosi]" />
+  <figcaption>Luokka Opiskelija luokkakaaviossa. Opiskelijalle on määritelty attribuutit opiskelijanumero, nimi ja syntymävuosi.</figcaption>
+</figure>
+
+<p>
+  Luokkakaavioon voidaan merkitä myös muuttujien tyypit. Alla olevassa esimerkissä yllä olevaa luokkaa on muokattu siten, että opiskelijan attribuutteihin on lisätty myös niiden tyypit. Opiskelijanumero ja nimi ovat merkkijonoja, syntymävuosi on kokonaisluku. Attribuutin tyyppi merkitään attribuutin nimen jälkeen kaksoispisteellä erotettuna, esimerkiksi <code>nimi:String</code>. 
+</p>
+
+<figure>
+  <img src="../img/luokkakaavio/opiskelija-attribuutit-ja-tyypit-cc0954f8.png" alt="[Opiskelija|opiskelijanumero:String;nimi:String;syntymavuosi:int]" />
+  <figcaption>Luokka Opiskelija luokkakaaviossa. Opiskelijalle on määritelty attribuutit opiskelijanumero, nimi ja syntymävuosi. Attribuuteille on määritelty myös niiden tyypit.</figcaption>
+</figure>
+
+
+<p>
+  Lisätään luokkakaavioon toinen luokka. Lisätään luokkakaavioon käsite Harrastus.
+</p>
+
+
+<figure>
+  <img src="../img/luokkakaavio/harrastus-ce96514c.png" alt="[Opiskelija|opiskelijanumero:String;nimi:String;syntymavuosi:int]
+						  [Harrastus]" />
+  <figcaption>Luokkakaavio, joka sisältää luokat Opiskelija ja Harrastus. Opiskelijalle on määritelty attribuutit.</figcaption>
+</figure>
+
+<p>
+  Lisätään harrastukselle seuraavaksi nimi-attribuutti. Sovitaan, että nimi on merkkijono.
+</p>
+
+
+<figure>
+  <img src="../img/luokkakaavio/harrastus-nimi-f7261e30.png" alt="[Opiskelija|opiskelijanumero:String;nimi:String;syntymavuosi:int]
+						       [Harrastus|nimi:String]" />
+  <figcaption>Luokkakaavio, joka sisältää luokat Opiskelija ja Harrastus. Opiskelijalle ja harrastukselle on määritelty attribuutit.</figcaption>
+</figure>
+
+<p>
+  Luokkakaaviossa on nyt sekä opiskelija että harrastus. Näillä ei ole tällä hetkellä kuitenkaan minkäänlaista yhteyttä. Tutustutaan seuraavaksi yhteyksien merkintään luokkakaavioon.  
+</p>
+
+
+<h2 class="material-heading">
+    Yhteydet luokkakaaviossa
+
+</h2>
+
+
+<p>
+  Tutustutaan seuraavaksi yhteyksien luomiseen luokkakaaviossa. Yhteydet voidaan karkeasti ottaen jakaa kolmeen kategoriaan: monen suhde moneen, yhden suhde moneen ja yhden suhde yhteen. 
+</p>
+
+
+<h3 class="material-heading">
+    Monen suhde moneen
+
+</h3>
+
+<p>
+  Kahden käsitteen välillä on monen suhde moneen (<code>N-N</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä monta toisen käsitteen ilmentymää, ja toisen käsitteen ilmentymään voi liittyä monta ensimmäisen käsitteen ilmentymää.
+</p>
+
+<p>
+  Tällainen suhde on esimerkiksi annoksen ja raaka-aineen välillä. Käytännössä yksittäinen annos -- esimerkiksi <em>Poronkäristys</em> -- voi sisältää montaa eri raaka-ainetta kuten <em>perunaa</em>, <em>puolukkaa</em> ja <em>poroa</em>. Toisaalta, yksittäinen raaka-aine kuten <em>peruna</em> voi sisältyä moneen eri annokseen.
+</p>
+
+<figure>
+  <img src="../img/ravintola/annos-raaka_aine-e4132f53.png" alt="[Annos|nimi:String;koko:String;hinta:double]
+						      [RaakaAine|nimi:String]
+						      [Annos]*-*[RaakaAine]"/>
+  <figcaption>
+    Monen suhde moneen. Yllä annokseen voi liittyä montaa eri raaka-ainetta, ja yksi raaka-aine voi esiintyä useammassa eri annoksessa. Monen suhde moneen merkitään luokkakaavioon piirrettyyn viivaan kahdella tähdellä, missä viivan kummassakin päässä on tähti. 
+  </figcaption>
+</figure>
+
+
+
+
+<h3 class="material-heading">
+    Yhden suhde moneen
+
+</h3>
+
+<p>
+  Kahden käsitteen välillä on yhden suhde moneen (<code>1-N</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä monta toisen käsitteen ilmentymää, mutta yhteen toisen käsitteen ilmentymään voi liittyä vain yksi ensimmäisen käsitteen ilmentymä.
+</p>
+
+
+<p>
+  Tällainen suhde on esimerkiksi asiakkaan ja tilauksen välillä. Käytännössä yksittäinen asiakas -- esimerkiksi <em>Anna Asiakas</em> -- voi tehdä monta tilausta, mutta jokainen tehty tilaus liittyy täsmälleen yhteen asiakkaaseen. Sama tilaus ei voi liittyä samaan aikaan <em>Anna Asiakkaaseen</em> sekä <em>Essi Esimerkkiin</em>.
+</p>
+
+
+<figure>
+  <img src="../img/ravintola/asiakas-tilaus-896626b8.png" alt="[Asiakas|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						    [Tilaus|aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+						    [Asiakas]1-*[Tilaus]"/>
+  <figcaption>
+    Yhden suhde moneen. Yllä yhteen asiakkaaseen voi liittyä monta tilausta, mutta yksi tilaus liittyy aina täsmälleen yhteen asiakkaaseen. Yhden suhde moneen merkitään luokkakaavioon piirrettyyn viivaan tähdellä ja numerolla 1. Tähti tulee yhteyden siihen päähän, joita voi olla monta, ja ykkönen siihen päähän, joita voi olla vain yksi. 
+  </figcaption>
+</figure>
+
+
+<p>
+  Yhdestä moneen yhteystyyppi edellyttää sen käsitteen ilmentymän olemassaoloa, johon liittyy monta toisen käsitteen ilmentymää. Käytännössä  tilauksen luominen edellyttää tilaukseen liittyvän asiakkaan olemassaoloa. Toisin sanoen, tilausta ei voi luoda ilman, että sille olisi asiakas.
+</p>
+
+
+<h3 class="material-heading">
+    Yhden suhde yhteen
+
+</h3>
+
+
+<p>
+  Kahden käsitteen välillä on yhden suhde yhteen (<code>1-1</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä vain yksi toisen käsitteen ilmentymä, ja toisen käsitteen ilmentymään voi liittyä vain yksi ensimmäisen käsitteen ilmentymä.
+</p>
+
+<p>
+  Eräs esimerkki tällaisesta yhteystyypistä voisi olla kuljettajien ja kuljetusvälineiden välinen -- ehkäpä hieman teennäinen -- yhteys. Yhdellä kuljettajalla voi olla käytössään vain yksi kuljetusväline, ja yksi kuljetusväline voi olla vain yhden kuljettajan käytössä. Vastaavan esimerkin voisi rakentaa myös lainaesineiden kautta -- esimerkiksi yhdellä opiskelijalla voi olla vain yksi laite lainassa ylläpidolta, ja ylläpito voi lainata tietyn laitteen vain yhdelle opiskelijalle.
+</p>
+
+
+<h1 class="material-heading">
+    Käsiteanalyysi
+
+</h1>
+
+<p>
+  Käsiteanalyysia (conceptual modeling, domain modeling) käytetään ongelma-alueen käsitteellistämiseen ja kielentämiseen, mikä edesauttaa ongelma-alueeseen liittyvää keskustelua sekä päätöksentekoa. Käsiteanalyysi tehdään iteratiivisesti esimerkiksi ongelma-alueen tekstuaalista kuvausta läpikäyden. 
+</p>
+
+<p>
+  Käsiteanalyysin tuloksena saadaan aikaan ongelma-aluetta kuvaava tietomalli, joka sisältää ongelma-alueen käsitteet ja niiden yhteydet sekä käsitteisiin liittyvät attribuutit selkeästi ja kuvaavasti nimettyinä. Käsiteanalyysin lopputuloksessa ei ole sellaisia käsitteitä tai attribuutteja, jotka ovat ongelma-aluetta varten rakennettavan järjestelmän tai ratkaisun kannalta epäoleellisia.
+</p>
+
+<p>
+  Käsiteanalyysin lopputulos voi olla esimerkiksi luokkakaavio tai <a href="https://fi.wikipedia.org/wiki/ER-kaavio" target="_blank" norel>ER-kaavio</a>. Tällä kurssilla käsiteanalyysin lopputuloksena on luokkia, luokkien attribuutteja, sekä luokkien välisiä yhteyksiä, jotka kuvataan luokkakaaviossa.
+</p>
+
+<h2 class="material-heading">
+    Käsite ja käsitteiden väliset yhteydet
+
+</h2>
+
+<p>
+  Arkielämässä näkee useita saman tyyppisiä esineitä. Esimerkiksi suurin osa älypuhelimista on karkeasti ottaen saman mallisia -- jokainen puhelin on rakennettu tiettyä mallia noudattaen. Olio-ohjelmoinnin termejä noudattaen voimme sanoa, että omistamasi puhelin on Puhelin-luokasta tehty ilmentymä eli olio. Luokka on rakennuspiirrustus, jonka perusteella yksittäiset oliot luodaan.
+</p>
+
+<p>
+  Käsitteet ovat samalla tavalla abstrakteja kuin luokat, eli käsitteestä voi olla useampia ilmentymiä. Käsitteistä luodut ilmentymät voidaan toisaalta myös erottaa toisistaan jollain tavalla, tai niille tulee olla vähintään mahdollista määritellä jonkinlainen yksilöivä tunnus.
+</p>
+
+<p>
+  Käsitteiden välisillä yhteyksillä tarkoitetaan käsitteiden välisiä suhteita. Esimerkiksi puhelimella voi olla omistaja, ja toisaalta puhelimen omistaja voi opiskella jossain opinahjossa.
+</p>
+
+<p>
+  Käsitteitä voidaan ajatella myös hetkellisen olemassaolon kautta. Hyvät käsitteet eivät tyypillisesti ole (pysyvästi) olemassaoloriippuvaisia. Esimerkiksi puhelimen olemassaolo ei ole riippuvainen omistajasta, ja puhelimen omistaja ei ole riippuvainen opinahjosta. Käsitteen olemassaolosta riippuvaiset asiat -- kuten esimerkiksi henkilön nimi -- ovat hyviä attribuuttiehdokkaita.
+</p>
+
+
+<h2 class="material-heading">
+    Käsiteanalyysin vaiheet
+
+</h2>
+
+<p>
+  Käsiteanalyysi koostuu viidestä vaiheesta, jotka ovat seuraavat:
+</p>
+
+<ol>
+  <li><strong>Tunnista käsite-ehdokkaat</strong>. Käsite-ehdokkaat tunnistetaan etsimällä ongelma-alueen kuvauksesta oleellisia substantiiveja ja ilmiöitä. Tässä vaiheessa myös rajataan pois käsitteitä, jotka eivät ole oleellisia ongelma-alueen kannalta.</li>
+  <li><strong>Tunnista käsitteiden väliset yhteydet</strong>. Yhteydet tunnistetaan etsimällä ongelma-alueen kuvauksesta verbejä, käsitteiden yhteyksiä sekä käsitteitä kuvaavia lausahduksia. </li>
+  <li><strong>Tunnista ja määrittele osallistumisrajoitteet</strong>. Osallistumisrajoitteet tarkentavat lopputuloksena saatavaa tietomallia. Osallistumisrajoitteita saadaan selville ongelma-alueen kuvauksessa esiintyvien adjektiivien ja määreiden kautta.</li>
+  <li><strong>Tunnista attribuutit ja lisää ne käsitteille</strong>. Tunnista käsitteisiin liittyvät tiedot eli attribuutit, joita halutaan tallentaa tietokantaan. Käsitteisiin liittyvät attribuutit tunnistaa muunmuassa olemassaoloriippuvaisista substantiiveista sekä käsitteiden yleisistä ominaisuuksista. Attribuutti saattaa olla joko yksittäinen arvo tai arvojoukko -- arvojoukot tunnistetaan tyypillisesti lukumäärien kuvauksista.</li>
+  <li><strong>Yleistä ja eriytä käsitteitä</strong>. Tunnista käsitteistä yliluokkia ja aliluokkia. Näiden tunnistaminen tapahtuu esimerkiksi käsitteitä tarkastelemalla ja miettimällä "onko käsite toisen käsitteen erikoistapaus". </li>
+</ol>
+
+<p>
+  Sovelletaan käsiteanalyysin askeleita seuraavaan Uimaseuraesimerkkiin.
+</p>
+
+<aside>
+
+  <hr/>
+  
+  <p>
+    <em>
+      Uimaseuramme Loch Nessin hirviöt on tähän päivään asti käyttänyt paperia uimareidensa tulosten seuraamiseen ja ylläpitoon. Uimaseuraamme juuri liittynyt valmennuspäällikkö vaatii kirjanpidon nykyaikaistamista, ja haluaa että tulokset tallennetaan tietokoneelle.
+    </em>
+  </p>
+  
+  <p>
+    <em>
+      Valmennuspäällikkömme antoi minulle tehtäväksi välittää tietoa seurastamme, eli tässäpä sitä: Meillä on noin sata mies- ja naispuolista uimaria. Uimarit kilpailevat yleensä yhdessä lajissa, esimerkiksi selkäuinnissa, mutta jotkut uimarit kilpailevat useammassakin lajissa. Tuloksia kirjataan sekä kuukausittain järjestettävistä seuran sisäisistä "kuukauden vesihiisi"-kisoista, että jokaisesta seuran ulkopuolella järjestettävästä kilpailusta. Valmentajien tulee pystyä käyttämään tietokoneelle tallennettuja tietoja myös kotoa esimerkiksi internetin välityksellä.
+    </em>
+  </p>
+
+  <hr/>
+  
+</aside>
+
+<h3 class="material-heading">
+    Tunnista käsite-ehdokaat
+
+</h3>
+
+<p>
+  Käsite-ehdokkaita tunnistaessa laaditaan luettelo ongelma-alueen oleellisista tietokohteista. Luettelon laatiminen alkaa substantiivien tunnistamisesta. Ensimmäisessä vaiheessa oleelliset käsite-ehdokkaat alleviivataan.
+</p>
+
+
+<aside>
+
+  <hr/>
+  
+  <p>
+    <em>
+      <u>Uimaseuramme</u> Loch Nessin hirviöt on tähän päivään asti käyttänyt <u>paperia</u> <u>uimareidensa</u> <u>tulosten</u> seuraamiseen ja ylläpitoon. <u>Uimaseuraamme</u> juuri liittynyt <u>valmennuspäällikkö</u> vaatii <u>kirjanpidon</u> nykyaikaistamista, ja haluaa että <u>tulokset</u> tallennetaan <u>tietokoneelle</u>.
+    </em>
+  </p>
+
+  <p>
+    <em>
+      <u>Valmennuspäällikkömme</u> antoi minulle tehtäväksi välittää tietoa <u>seurastamme</u>, eli tässäpä sitä: Meillä on noin sata <u>mies- ja naispuolista</u> <u>uimaria</u>. <u>Uimarit</u> kilpailevat yleensä yhdessä <u>lajissa</u>, esimerkiksi <u>selkäuinnissa</u>, mutta jotkut uimarit kilpailevat useammassakin <u>lajissa</u>. Tuloksia kirjataan sekä kuukausittain järjestettävistä seuran sisäisistä "kuukauden vesihiisi"-<u>kisoista</u>, että jokaisesta seuran ulkopuolella järjestettävästä <u>kilpailusta</u>. Valmentajien tulee pystyä käyttämään tietokoneelle tallennettuja tietoja myös kotoa esimerkiksi internetin välityksellä.
+    </em>
+  </p>
+
+  <hr/>
+
+</aside>
+
+<p>
+  Substantiiveja tarkastelemalla luotu lista on seuraavanlainen. Alla olevassa listassa käsite-ehdokkaat on muutettu yksikkömuotoon.
+</p>
+
+<ul>
+  <li>Uimaseura</li>
+  <li>Paperi</li>
+  <li>Uimari</li>
+  <li>Tulos</li>
+  <li>Valmennuspäällikkö</li>
+  <li>Kirjanpito</li>
+  <li>Tietokone</li>
+  <li>Seura</li>
+  <li>Miesuimari</li>
+  <li>Naisuimari</li>
+  <li>Selkäuinti</li>
+  <li>Laji</li>
+  <li>Kilpailu</li>
+</ul>
+
+<p>
+  Käsite-ehdokkaiden karsinta tapahtuu harkitsemalla jokaista ehdokasta erikseen ja miettimällä onko se oleellinen ongelma-alueen ratkaisun kannalta. Alla kuvattu eräs karsinta.
+</p>
+
+
+<ul>
+  <li><s>Uimaseura</s> -- seuralle tehdään järjestelmää, voidaan jättää pois ainakin toistaiseksi.</li>
+  <li><s>Paperi</s> -- tästä haluttiin päästä eroon, tulokset kirjattiin aiemmin paperille.</li>
+  <li>Uimari</li>
+  <li>Tulos</li>
+  <li><s>Valmennuspäällikkö</s> -- valmennuspäällikkö haluaa uuden järjestelmän, mutta ei oleellinen käsite tietomallin kannalta.</li>
+  <li><s>Kirjanpito</s> -- järjestelmä tulee sisältämään kirjanpidon, mutta kirjanpito ei käsite järjestelmässä.</li>
+  <li><s>Tietokone</s> -- kts. edellinen</li>
+  <li><s>Seura</s> -- kts. uimaseura.</li>
+  <li><s>Miesuimari</s> -- Uimari on valittuna käsitteeksi, sukupuoli voi esim. olla uimarin attribuuttina.</li>
+  <li><s>Naisuimari</s> -- kts. edellinen</li>
+  <li><s>Selkäuinti</s> -- Laji on valittuna käsitteeksi.</li>
+  <li>Laji</li>
+  <li>Kilpailu</li>
+</ul>
+
+<p>
+  Ehdokkaiden karsinnan jälkeen seuraavat käsitteet ovat jäljellä:
+</p>
+
+<ul>
+  <li>Kilpailu</li>
+  <li>Laji</li>
+  <li>Uimari</li>
+  <li>Tulos</li>
+</ul>
+
+
+
+<h3 class="material-heading">
+    Tunnista käsitteiden väliset yhteydet
+
+</h3>
+
+<p>
+  Yhteydet tunnistetaan etsimällä tekstistä verbejä, käsitteiden yhteyksiä sekä käsitteitä kuvaavia lausahduksia. Tämän lisäksi aiempi aihealueen tietämys on tässä hyödyksi.
+</p>
+
+<aside>
+
+  <hr/>
+  
+  <p>
+    <em>
+      Uimaseuramme Loch Nessin hirviöt on tähän päivään asti käyttänyt paperia uimareidensa tulosten seuraamiseen ja ylläpitoon. Uimaseuraamme juuri liittynyt valmennuspäällikkö vaatii kirjanpidon nykyaikaistamista, ja haluaa että tulokset tallennetaan tietokoneelle.
+    </em>
+  </p>
+  
+  <p>
+    <em>
+      Valmennuspäällikkömme antoi minulle tehtäväksi välittää tietoa seurastamme, eli tässäpä sitä: <u>Meillä on noin sata mies- ja naispuolista uimaria</u>. <u>Uimarit kilpailevat yleensä yhdessä lajissa</u>, esimerkiksi selkäuinnissa, mutta <u>jotkut uimarit kilpailevat useammassakin lajissa</u>. <u>Tuloksia kirjataan sekä kuukausittain järjestettävistä seuran sisäisistä "kuukauden vesihiisi"-kisoista, että jokaisesta seuran ulkopuolella järjestettävästä kilpailusta</u>. Valmentajien tulee pystyä käyttämään tietokoneelle tallennettuja tietoja myös kotoa esimerkiksi internetin välityksellä.
+    </em>
+  </p>
+
+  <hr/>
+  
+</aside>
+
+<p>
+  Edellä tarkastellusta kuvauksesta nousee esille seuraavat tekstit:
+</p>
+
+<ul>
+  <li>
+    Meillä on noin sata mies- ja naispuolista uimaria
+  </li>
+  <li>
+    Uimarit kilpailevat yleensä yhdessä lajissa
+  </li>
+  <li>
+    jotkut uimarit kilpailevat useammassakin lajissa
+  </li>
+  <li>
+    Tuloksia kirjataan sekä kuukausittain järjestettävistä seuran sisäisistä "kuukauden vesihiisi"-kisoista, että jokaisesta seuran ulkopuolella järjestettävästä kilpailusta
+  </li>
+</ul>
+
+<p>
+  Teksteistä voidaan päätellä seuraavat yhteydet:
+</p>
+
+<ul>
+  <li>
+    Meillä on noin sata mies- ja naispuolista uimaria: seuraan liittyy uimareita. Poistimme aiemmin käsitteen seura, joten tämä yhteys ei ole relevantti.
+  </li>
+  <li>
+    Uimarit kilpailevat yleensä yhdessä lajissa: uimariin liittyy laji, uimariin liittyy kilpailu, kilpailuun liittyy laji.
+  </li>
+  <li>
+    jotkut uimarit kilpailevat useammassakin lajissa: (sama kuin yllä).
+  </li>
+  <li>
+    Tuloksia kirjataan sekä kuukausittain järjestettävistä seuran sisäisistä "kuukauden vesihiisi"-kisoista, että jokaisesta seuran ulkopuolella järjestettävästä kilpailusta: tulos liittyy kilpailuun. 
+  </li>
+</ul>
+
+<p>
+  <em>
+    Aiempi tieto aihealueeseen liittyen antaa olettaa, että tulokseen liittyy kilpailun lisäksi myös laji ja uimari. 
+  </em>
+</p>
+
+<p>
+  Esille nousee siis seuraavat yhteydet:
+</p>
+
+<ul>
+  <li>
+    Uimariin liittyy laji
+  </li>
+  <li>
+    Uimariin liittyy kilpailu
+  </li>
+  <li>
+    Kilpailuun liittyy laji
+  </li>
+  <li>
+    Tulokseen liittyy kilpailu
+  </li>
+  <li>
+    Tulokseen liittyy laji
+  </li>
+  <li>
+    Tulokseen liittyy uimari
+  </li>
+</ul>
+
+
+<figure>
+  <img src="../img/viikko3/uimari-kasitteet-e8df6a07.png" alt="[Uimari]-[Laji]
+						    [Laji]-[Kilpailu]
+						    [Kilpailu]-[Uimari]
+						    [Tulos]-[Uimari]
+						    [Tulos]-[Laji]
+						    [Tulos]-[Kilpailu]"/>
+  <p>&nbsp;</p>
+  <figcaption>Kun käsitteet on tunnistettu, hahmotellaan niiden välisiä yhteyksiä. Yllä on kuvattuna eräs mahdollisuus ongelma-alueen käsitteiden yhteyksiksi.</figcaption>
+</figure>
+
+
+<h3 class="material-heading">
+    Tunnista ja määrittele osallistumisrajoitteet
+
+</h3>
+
+<p>
+  Osallistumisrajoitteilla tarkoitetaan lukumäärällisiä rajoitteita käsitteiden välillä. Osallistumisrajoitteet merkitään luokkakaavioon käsitteitä yhdistävien viivojen päätyihin. Osallistumisrajoitteita saadaan selville ongelma-alueen kuvauksessa esiintyvien adjektiivien ja määreiden kautta, jonka lisäksi aihealueeseen liittyvä tietämyksestä on hyötyä.
+</p>
+
+<p>
+  Edellisessä askeleessa tunnistetuista yhteyksistä saadaan selville seuraavat tiedot: uimari voi osallistua yhteen tai useampaan lajiin, eli uimariin voi liittyä monta lajia. Toisaalta, yhtä lajia voi harrastaa useampi uimari. Kilpailussa voi olla monta lajia, ja lajia voidaan todennäköisesti uida monessa kilpailussa. Kilpailussa voi olla monta uimaria, ja uimari voi uida useammassa kilpailussa. Yksittäiseen tulokseen taas liittyy yksi uimari, yksi laji, ja yksi kilpailu -- mutta, yhteen uimariin voi liittyä monta tulosta, yhteen lajiin voi liittyä monta tulosta, ja yhteen kilpailuun voi liittyä monta tulosta.
+</p>
+
+<p>
+  Ehdotus käsitekaavioksi osallistumisrajoitteiden kanssa on seuraavanlainen:
+</p>
+
+<figure>
+  <img src="../img/viikko3/uimari-kasitteet-rajoitteilla-383a12ab.png" alt="[Uimari]*-*[Laji]
+								 [Laji]*-*[Kilpailu]
+								 [Kilpailu]*-*[Uimari]
+								 [Tulos]*-1[Uimari]
+								 [Tulos]*-1[Laji]
+								 [Tulos]*-1[Kilpailu]"/>
+  <p>&nbsp;</p>
+  <figcaption>Kun käsitteiden väliset yhteydet on tunnistettu, lisätään yhteyksiin osallistumisrajoitteet. Yllä pohdittu erästä mahdollisuutta osallistumisrajoitteiksi.</figcaption>
+</figure>
+
+
+
+
+<h3 class="material-heading">
+    Tunnista attribuutit ja lisää ne käsitteille
+
+</h3>
+
+<p>
+  Käsitteisiin liittyvät attribuutit tunnistaa muunmuassa olemassaoloriippuvaisista substantiiveista sekä käsitteiden yleisistä ominaisuuksista. Attribuutti saattaa olla joko yksittäinen arvo tai arvojoukko -- arvojoukot tunnistetaan tyypillisesti lukumäärien kuvauksista. Samalla kuitenkin halutaan tallentaa vain ne attribuutit (ja käsitteet), jotka ovat ongelma-alueen kannalta oleellisua. 
+</p>
+
+<p>
+  Ongelma-alueen kuvauksesta tiedämme, että kilpailuilla on paikka (esim. "paikalliset kilpailut", "seuran ulkopuoliset kilpailut") ja nimi (esim. "kuukauden vesihiisi"), jonka lisäksi nimestä voi päätellä, että kilpailuun liittyy aika. Vastaavasti uimareihin liittyy todennäköisesti nimi ja syntymäaika, vaikkei kuvauksessa kumpaakaan suoraan pyydetä. Nimen perusteella on helppo tarkastaa kenestä on kyse, ja syntymäaika auttaa seuraamaan tuloskehitystä. Tulokseen tarvitaan jonkinlainen tieto tuloksesta -- uimakisoissa kyseessä on tarkka aika, ja laji kerrotaan tässä nimenä.
+</p>
+
+<figure>
+  <img src="../img/viikko3/uimari-kasitteet-rajoitteilla-ja-attribuuteilla-163022f3.png" alt="[Uimari|nimi:String;syntymäaika:Date]
+										   [Laji|nimi:String]
+										   [Kilpailu|nimi:String;paikka:String;aika:Date]
+										   [Tulos|millisekuntia:Double]
+										   [Uimari]*-*[Laji]
+										   [Laji]*-*[Kilpailu]
+										   [Kilpailu]*-*[Uimari]
+										   [Tulos]*-1[Uimari]
+										   [Tulos]*-1[Laji]
+										   [Tulos]*-1[Kilpailu]"/>
+  <p>&nbsp;</p>
+  <figcaption>Kun käsitteiden väliset yhteydet ja osallistumisrajoitteet on tunnistettu, lisätään käsitteille attribuutit.</figcaption>
+</figure>
+
+
+
+<h3 class="material-heading">
+    Yleistä ja eriytä käsitteitä
+
+</h3>
+
+<p>
+  Tunnista käsitteistä yliluokkia ja aliluokkia. Näiden tunnistaminen tapahtuu esimerkiksi käsitteitä tarkastelemalla ja miettimällä "onko käsite toisen käsitteen erikoistapaus". Vastaavasti toistuvat attribuutit saattavat antaa ilmi yli- ja aliluokkia. 
+</p>
+
+<p>
+  Yli- ja aliluokkien etsintä kannattaa tehdä matriisina, missä jokaista käsitettä verrataan jokaiseen muuhun käsitteeseen. Käymällä läpi käsitteemme, huomaamme, ettei niissä ole yli- tai aliluokille tarvetta.
+</p>
+
+
+<table class="table">
+  <tr>
+    <th>
+      -
+    </th>
+    <th>
+      Kilpailu
+    </th>
+    <th>
+      Laji
+    </th>
+    <th>
+      Tulos
+    </th>
+    <th>
+      Uimari
+    </th>
+  </tr>
+  <tr>
+    <th>
+      Kilpailu
+    </th>
+    <td>
+      -
+    </td>
+    <td>
+      Kilpailu ei ole lajin erikoistapaus.
+    </td>
+    <td>
+      Kilpailu ei ole tuloksen erikoistapaus.
+    </td>
+    <td>
+      Kilpailu ei ole uimarin erikoistapaus.
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Laji
+    </th>
+    <td>
+      Laji ei ole kilpailun erikoistapaus.
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      Laji ei ole tuloksen erikoistapaus.
+    </td>
+    <td>
+      Laji ei ole uimarin erikoistapaus.
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Tulos
+    </th>
+    <td>
+      Tulos ei ole kilpailun erikoistapaus.
+    </td>
+    <td>
+      Tulos ei ole lajin erikoistapaus.
+    </td>
+    <td>
+      - 
+    </td>
+    <td>
+      Tulos ei ole uimarin erikoistapaus.
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Uimari
+    </th>
+    <td>
+      Uimari ei ole kilpailun erikoistapaus.
+    </td>
+    <td>
+      Uimari ei ole lajin erikoistapaus.
+    </td>
+    <td>
+      Uimari ei ole tuloksen erikoistapaus.
+    </td>
+    <td>
+      - 
+    </td>
+  </tr>
+</table>
+
+<p>
+  Luokkakaaviota ei siis tarvitse tässä tapauksessa muuttaa.
+</p>
+
+<p>
+  Tarkastellaan vielä tilannetta, missä luokkakaaviosta löytyy tapaus, missä toinen käsite on toisen käsitteen erikoistapaus. Oletetaan, että käytössämme ovat käsitteet Henkilö ja Opiskelija. Henkilöllä on nimi, syntymäaika ja sähköpostiosoite. Opiskelijalla on nimi, syntymäaika, sähköpostiosoite ja opiskelijanumero.
+</p>
+
+
+<figure>
+  <img src="../img/viikko3/henkilo-ja-opiskelija-69b8897a.png" alt="[Henkilo|nimi:String;syntymäaika:Date;email:String]
+							 [Opiskelija|nimi:String;syntymäaika:Date;email:String;opiskelijanumero:String]"/>
+  <p>&nbsp;</p>
+  <figcaption>Henkilö ja opiskelija luokkakaaviossa.</figcaption>
+</figure>
+
+<p>
+  Huomaamme, että opiskelija on henkilön erikoistapaus. Opiskelijalla on muuten samat ominaisuudet kuin henkilöllä, mutta sillä on lisäksi opiskelijanumero. Voimme luoda tämän perusteella luokkakaavion, missä opiskelija perii henkilön. Tämä merkitään seuraavasti.
+</p>
+
+<figure>
+  <img src="../img/viikko3/henkilo-ja-opiskelija-perinta-8771e097.png" alt="[Henkilo|nimi:String;syntymäaika:Date;email:String]
+								 [Opiskelija|opiskelijanumero:String]
+								 [Henkilo]^-[Opiskelija]"/>
+  <p>&nbsp;</p>
+  <figcaption>Henkilö ja opiskelija luokkakaaviossa. Opiskelija perii henkilön, eli opiskelijalla on kaikki henkilön attribuutit, jonka lisäksi opiskelijalla on myös omat attribuuttinsa.</figcaption>
+</figure>
+
+
+
+  
+
+<h1 class="material-heading">
+    Johdatus tiedon käsittelyyn Java-ohjelmoijalle
+
+</h1>
+
+<p>
+  Java-ohjelmoijalle tietokantaan tallennetuilla käsitteillä ja niiden yhteyksillä on suorat vertauskuvat. Käsitteet ovat luokkia -- käsitteisiin liittyy ominaisuuksia eli attribuutteja (tai oliomuuttujia) -- ja käsitteiden yhteydet ovat viitteitä luokkien välillä.
+</p>
+
+
+<h2 class="material-heading">
+    Luokkakaavio Java-luokkina
+
+</h2>
+
+<p>
+  Tarkastellaan seuraavaa Opiskelijaa ja Kurssisuoritusta sekä näiden välistä yhteyttä kuvaavaa luokkakaaviota.
+</p>
+
+<figure>
+  <img src="../img/opiskelija-ja-kurssisuoritus-luokkakaavio-1ca5d648.png" />
+  <figcaption>Luokkakaavio, jossa on luokat Opiskelija ja Kurssisuoritus. Opiskelijalla on monta (nollasta äärettömään kurssisuoritusta). Jokaiseen kurssisuoritukseen liittyy yksi opiskelija.</figcaption>
+</figure>
+
+<p>
+  Määritellään ensin luokat Opiskelija ja Kurssisuoritus siten, että niillä ei ole vielä yhteyksiä merkittynä.
+</p>
+
+<pre class="sh_java code-highlight"><code>public class Opiskelija {
+    String opiskelijanumero;
+    String nimi;
+    int syntymavuosi;
+}
+</code></pre>
+
+<pre class="sh_java code-highlight"><code>public class Kurssisuoritus {
+    String kurssi;
+}
+</code></pre>
+
+<p>
+  Lisätään seuraavaksi luokkien välille yhteys. Jokaiseen kurssisuoritukseen liittyy tasan yksi Opiskelija (kurssisuorituksen ja opiskelijan välisessä viivassa opiskelijan päädyssä on numero yksi). Lisätään siis luokkaan Kurssisuriotus viite Opiskelijaan.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>public class Kurssisuoritus {
+    Opiskelija opiskelija;
+    String kurssi;
+}
+</code></pre>
+
+<p>
+  Yllä kuvattu luokka Kurssisuoritus määrittelee Kurssisuorituksen, jolla on kurssin nimi. Kurssisuoritukseen liittyy yksi opiskelija.
+</p>
+
+<p>
+  Lisätään seuraavaksi yhteys opiskelijasta kurssisuoritukseen. Jokaiseen opiskelijaan voi liittyä nollasta äärettömään kurssisuoritusta (kurssisuorituksen ja opiskelijan välisessä viivassa kurssisuorituksen päädyssä on tähti). Lisätään siis luokkaan Opiskelija äärettömän määrän kurssisuorituksia mahdollistava viite eli lista.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.util.List;
+
+public class Opiskelija {
+    List&lt;Kurssisuoritus&gt; kurssisuoritukset;
+    String opiskelijanumero;
+    String nimi;
+    int syntymavuosi;
+}
+</code></pre>
+
+
+<p>
+  Oleellista luokkakaavioiden ja lähdekoodin välisessä muunnoksessa on se, että luokkien väliset yhteydet eivät näy luokkakaaviossa, mutta luokat sisältävät yhteyksiä kuvaavat oliomuuttujat. Esimerkiksi yllä olevassa lähdekoodissa Kurssisuoritus sisältää tiedon opiskelijasta, mutta luokkakaaviossa opiskelija ei ole kurssisuorituksen oliomuuttuja.
+</p>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Luokkakaaviosta luokiksi</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    <strong>
+      Huom! Päivitä TMC ennen tehtävien tekemisen aloittamista. TMC:n päivitys onnistuu valitsemalla TMC:ssä Help -> Check for Updates.
+    </strong>
+  </p>
+
+  <p>
+    Alla on kuvattuna erään kirjojen lainausjärjestelmän luokkakaavio. Luo tehtäväpohjaan luokkakaavion esittämät luokat ja lisää luokkiin tarvittavat oliomuuttujat. 
+  </p>
+
+  <figure>
+    <img src="../img/kirjastojarjestelma-d2bb675f.png" alt="[Kirja|nimi:String;kirjoittaja:String;julkaisuvuosi:Integer]
+						 [Hylly|sijainti:String]
+						 [Nide|tunnus:Integer]
+						 [Henkilo|nimi:String
+						 [Laina|alku:LocalDate;loppu:LocalDate;palautettu:Boolean]
+						 [Nide]*-1[Hylly]
+						 [Kirja]1-*[Nide]
+						 [Laina]*-1[Henkilo]
+						 [Nide]1-*[Laina]"/>
+  </figure>
+
+  <p>
+    Kun olet valmis, aja testit ja palauta tehtävä TMC:lle.
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tiedon tallentaminen ja lataaminen
+
+</h2>
+
+<p>
+  Tiedon tallentaminen pysyväismuistiin tarkoittaa käytännössä tiedon tallentamista kiintolevylle tai vastaavalle medialle. Tietokoneen käyttöjärjestelmä tarjoaa kiintolevyn käsittelylle abstraktion tiedosto -- tiedosto on käytännössä yksi tai useampi rajattu alue, johon tietoa on kirjoitettu. Tiedon tallennusmuoto määräytyy tallennettavan tiedon perusteella ja vaikuttaa sekä tallennusoperaatioiden että lukuoperaatioiden toteuttamiseen. Suoraviivainen tapa tallentaa tietoa on säilöä jokaisen käsitteen (luokan) ilmentymät (oliot) käsitekohtaisiin tiedostoihin, missä rivi kuvaa aina yksittäistä käsitettä.
+</p>
+
+<p>
+  Opiskelija- ja Kurssisuoritusoliot voidaan tallentaa tiedostoihin. Käytetään tiedostoja <code>opiskelija.data</code> ja <code>kurssisuoritus.data</code> -- tässä .data on itse keksimämme pääte.
+</p>
+
+<p>
+  Opiskelijalistan tallentaminen tiedostoon onnistuu nyt esimerkiksi seuraavasti. 
+</p>
+
+<pre class="sh_java code-highlight"><code>// oletetaan, että käytössä on lista opiskelijoita
+// List&lt;Opiskelija&gt; opiskelijat
+
+PrintWriter pw = new PrintWriter("opiskelija.data");
+opiskelijat.forEach(o -&gt; pw.println(o.opiskelijanumero + "\t" + o.nimi + "\t" + o.syntymavuosi));
+pw.flush();
+pw.close();
+</code></pre>
+
+<p>
+  Vastaavasti opiskelijoiden lataaminen onnistuu seuraavasti.
+</p>
+
+<pre class="sh_java code-highlight"><code>// oletetaan, että käytössä on tyhjä opiskelijalista
+// List&lt;Opiskelija&gt; opiskelijat
+
+Files.lines(Paths.get("opiskelija.data")).forEach(rivi -&gt; {
+    String[] palat = rivi.split("\t");
+
+    Opiskelija o = new Opiskelija();
+    o.opiskelijanumero = palat[0];
+    o.nimi = palat[1];
+    o.syntymavuosi = Integer.parseInt(palat[2]);
+
+    opiskelijat.add(o);
+});
+</code></pre>
+
+<p>
+  Opiskelijan kurssisuoritukset eivät tässä tallennu opiskelijaa kuvaavaan tiedostoon. Koska kurssisuoritus on erillinen -- vaikkakin opiskelijaan liittyvä -- käsite, tallennetaan kurssisuoritukset erilliseen tiedostoon. Miten sitten saamme selville jokaiseen opiskelijaan kuuluvat kurssisuoritukset? Kun tallennamme kurssisuorituksia, tallennamme jokaiseen kurssisuoritukseen tiedon opiskelijasta, johon kurssisuoritus kuuluu. Teemme samalla oletuksen, että opiskelijanumero yksilöi opiskelijan.
+</p>
+
+<pre class="sh_java code-highlight"><code>// oletetaan, että käytössä on lista kurssisuorituksia
+// List&lt;Kurssisuoritus&gt; kurssisuoritukset
+
+PrintWriter pw = new PrintWriter("kurssisuoritus.data");
+kurssisuoritukset.forEach(k -&gt; pw.println(k.opiskelija.opiskelijanumero + "\t" + k.kurssi));
+pw.flush();
+pw.close();
+</code></pre>
+
+<p>
+  Entä sitten kurssisuoritusten lataaminen? Kurssisuoritus-olio ei sisällä opiskelijanumeroa merkkijonona, joten kurssisuoritusten lataamisen yhteydessä tulee aiemmin ladatuista opiskelijoista aina etsiä opiskelijanumeroa vastaava olio.
+</p>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Kurssisuoritusten lukeminen</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+        
+  <p>
+    Tehtäväpohjassa on ohjelmakoodi opiskelijoiden lukemiseen ja tallentamiseen sekä kurssisuoritusten tallentamiseen. Täydennä tehtäväpohjassa olevan luokan <code>Lukija</code> metodia <code>lueKurssisuoritukset</code> siten, että se lukee kurssisuoritukset sekä kurssisuorituksiin liittyvät opiskelijat. Älä muuta metodin parametrien tyyppejä tai palautettavan arvon tyyppiä.
+  </p>
+  
+  
+
+    </div>
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Rajattu tiedon käsittely
+
+</h2>
+
+<p>
+  Edellinen esimerkki on tyypillinen ohjelmoinnin perusteiden ja jatkokurssin tiedon käsittelyesimerkki.
+</p>
+
+<p>
+  Esimerkissä on muutamia haasteita, sillä esimerkiksi pienten tietomäärien hakeminen isoista tiedostoista ei ole kovin tehokasta. Todellisuudessa suurten tietomäärien ohjelmallisessa käsittelyssä hyödynnetään käyttöjärjestelmän tarjoamaa mahdollisuutta tiedoston osien lukemiseen. Ohjelmointikielet kuten Java tarjoavat tähän myös abstraktion -- Javalla luokka <a href="https://docs.oracle.com/javase/8/docs/api/java/io/RandomAccessFile.html" target="_blank" norel">RandomAccessFile</a> tarjoaa lukumahdollisuuden vain osaan tiedoston sisällöistä.
+</p>
+
+<p>
+  Edellä mainitun työvälineen avulla tiedostojen käsittely tapahtuu tavumuodossa. Jos tiedämme, että opiskelijan opiskelijanumeron pituus on 10 merkkiä, ja opiskelijanumero on tiedoston alussa, onnistuu lukeminen seuraavasti.
+</p>
+
+<pre class="sh_java code-highlight"><code>// Avataan tiedosto 'opiskelija.data' lukemista varten
+RandomAccessFile tiedosto = new RandomAccessFile("opiskelija.data", "r");
+
+// Varataan 10 tavua tilaa muistista opiskelijanumeroa varten
+byte[] opnro = new byte[10];
+
+// luetaan opnro-taulukkoon tiedoston alusta taulukon kokoinen määrä sisältöä
+tiedosto.read(opnro);
+
+// luodaan opiskelijanumerosta merkkijono
+String opiskelijanumero = new String(opnro);
+</code></pre>
+
+<p>
+  Vastaavasti, opiskelijanumeron vaihtaminen tiedoston tietyssä kohdassa onnistuu seuraavasti.
+</p>
+
+<pre class="sh_java code-highlight"><code>// Avataan tiedosto 'opiskelija.data' lukemista ja kirjoittamista varten
+RandomAccessFile tiedosto = new RandomAccessFile("opiskelija.data", "rwd");
+
+// Oletetaan, että käytössämme on opiskelijanumero "0123456789"
+String opiskelijanumero = "0123456789";
+
+// Etsitään kohta, mihin opiskelijanumero halutaan kirjoittaa -- kirjoitetaan alkuun
+tiedosto.seek(0);
+
+// Kirjoitetaan opiskelijanumero tiedostoon tietyn opiskelijan kohdalle.
+tiedosto.write(opiskelijanumero.getBytes());
+
+// Nyt opiskelijanumero tiedostossa on muuttunut.
+</code></pre>
+
+
+<p>
+  Mitä hyötyä tästä on? Jos sovimme ennalta, että kunkin tiedostossa olevan kentän -- eli esimerkiksi opiskelijanumeron tai nimen -- pituus on ennalta määrätty, tiedämme ennalta opiskelijaolioiden sijainnit tiedostossa. Oletetaan, että opiskelijanumero on aina 10 merkkiä ja nimi 40 merkkiä. Tällöin uuden opiskelijan tiedot alkavat aina 50 merkin välein. Hyötynä tästä on muunmuassa se, että tällöin tietyn opiskelijan tietojen etsimisessä tiedostosta muistissa tulee olla korkeintaan vain 50 merkkiä -- alla esimerkki opiskelijan nimen etsimisestä tietyn opiskelijanumeron perusteella.
+</p>
+
+<pre class="sh_java code-highlight"><code>// Avataan tiedosto 'opiskelija.data' lukemista ja kirjoittamista varten
+RandomAccessFile tiedosto = new RandomAccessFile("opiskelija.data", "rwd");
+
+// Oletetaan, että haemme opiskelijanumeroa "0123456789"
+String haettava = "0123456789";
+
+byte[] opiskelijanumero = new byte[10];
+
+for (int indeksi = 0; indeksi &lt; tiedosto.length(); indeksi += 50) {
+    // tälle ei käytännössä olisi tarvetta, sillä tiedoston kohta päivittyy
+    tiedosto.seek(indeksi);
+
+    // komento tiedosto.read lukee tiedostosta annetun tiedoston mittaisen määrän tietoa
+    // tässä luettu määrä määräytyy opiskelijanumero-taulukon pituuden perusteella 
+    tiedosto.read(opiskelijanumero);
+
+    // lukemisen jälkeen tiedoston käsittelykohta siirtyy eteenpäin 10 merkillä
+
+    // tehokkuusnäkökulmasta tässäkin todennäköisesti oikeasti verrattaisiin
+    // yksittäisiä merkkejä
+    if(!haettava.equals(new String(opiskelijanumero))) {
+        continue;
+    }
+
+    // koska tiedoston käsittelykohta on siirtynyt eteenpäin 10 merkillä
+    // on seuraavaksi luettavana nimi
+    byte[] nimi = new byte[40];
+    tiedosto.read(nimi);
+    System.out.println("Haetun opiskelijan nimi on " + new String(nimi).trim());
+
+    break;
+}
+</code></pre>
+
+<p>
+  Toisaalta, jos haluaisimme pitää kirjaa opiskelijoiden sijainneista, ja hyväksyä ajatus siitä, että opiskelijanumerot ovat jatkuvasti muistissa, voi opiskelijoiden sijainnit tallentaa hajautustaulukkoon. 
+</p>
+
+<pre class="sh_java code-highlight"><code>// Avataan tiedosto 'opiskelija.data' lukemista ja kirjoittamista varten
+RandomAccessFile tiedosto = new RandomAccessFile("opiskelija.data", "rwd");
+
+// Oletetaan, että käytössä on hajautustaulukko, jossa
+// on tieto opiskelijanumerosta tiedoston indeksiin
+Map&lt;String, Integer&gt; opiskelijoidenSijainnit = new HashMap&lt;&gt;();
+
+// Oletetaan, että haemme opiskelijanumeroa "0123456789"
+String haettava = "0123456789";
+
+// nyt opiskelijan nimen saa helpohkosti -- olettaen, että opiskelija on olemassa ja että
+// hajautustaulussa on opiskelijan tiedot aloittava indeksi
+
+// siirrytään tiedostossa sopivaan kohtaan -- opiskelijan nimi tulee opiskelijanumeron jälkeen
+tiedosto.seek(opiskelijoidenSijainnit.get(haettava) + 10);
+
+// luetaan nimi
+byte[] nimi = new byte[40];
+tiedosto.read(nimi);
+System.out.println("Haetun opiskelijan nimi on " + new String(nimi).trim());
+</code></pre>
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Tiedon muokkaaminen</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Alla on kuvattuna erään viestijärjestelmän luokkakaavio. Jokaisella viestillä on sekä vastaanottaja että lähettäjä, jonka lisäksi viestiin kuuluu viestin sisältö. Käyttäjästä tallennetaan järjestelmään käyttäjätunnus, salasana, nimi, osoite ja puhelinnumero.
+  </p>
+
+
+  <figure>
+    <img src="../img/viestijarjestelma-fff3b9ec.png" alt="[Henkilo|kayttajatunnus:String;nimi:String;osoite:String;puhelinnumero:String]
+					       [Viesti|sisalto:String]
+					       [Henkilo]2-*[Viesti]"/>
+  </figure>
+
+  <p>
+    Tarkastellaan henkilöiden tallentamista ja lukemista RandomAccessFile-tiedoston avulla.
+  </p>
+
+  <p>
+    Oletetaan, että käyttäjätunnus on korkeintaan 8 merkkiä, salasana korkeintaan 8 merkkiä, nimi korkeintaan 30 merkkiä, osoite korkeintaan 30 merkkiä ja puhelinnumero korkeintaan 15 merkkiä. Tehtäväpohjassa on valmiina henkilöiden lukemis- ja kirjoitustoiminnallisuus.
+  </p>
+
+  <p>
+    Kirjoita toiminnallisuus, joka mahdollistaa henkilöiden tietojen muokkaamisen. Toteuta luokan <code>Tallentaja</code> metodi <code>korvaaHenkilo</code> siten, että metodi korvaa parametrina annetulla käyttäjätunnuksella tunnistettavan henkilön tiedon parametrina saadulla Henkilo-oliolla. Älä muokkaa metodin parametreja tai metodin palautustyyppiä.
+  </p>
+
+  <p>
+    Voit olettaa, että käyttäjä syöttää aina käyttäjätunnuksen, joka löytyy tiedostosta. Älä muokkaa muiden tiedostoon tallennettujen henkilöiden tietoja.
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part1.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

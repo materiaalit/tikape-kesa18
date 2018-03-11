@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 6</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kuudennen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+
+  <p>
+    Osaa tehdä yhteenvetokyselyitä SQL-kielellä. Osaa selvittää miten tietokannanhallintajärjestelmä hakee annetun SQL-kyselyn tuloksen. Tietää mitä indeksit ovat ja tietää milloin tietokantatauluun tulee määritellä indeksejä. Tuntee käsitteet tietokannan eheys ja tietokantatransaktio, ja tietää tilanteita milloin transaktioita kannattaa käyttää. Tietää tietokannanhallintajärjestelmältä vaadittuja ominaisuuksia, joita tarvitaan tietokantatransaktioiden toimintaan. Tuntee CAP-teoreeman ja tietää GDPR-lainsäädännön olemassaolon sekä ainakin muutamia siihen liittyviä säännöksiä. 
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Yhteenvetokyselyt SQL-kielellä
+
+</h1>
+
+<p>
+  Harjoittelemamme SQL-kyselyt ovat tähän mennessä tuottaneet listauksia tietokantataulujen sisällöistä. Listauksia tuottavat kyselyt ovat erittäin hyödyllisiä, kun halutaan vastata esimerkiksi kysymyksiin kuten "Listaa kaikki opiskelijat, jotka ovat osallistuneet kurssille tietokantojen perusteet" tai "Listaa kaikki kurssit, joille annettu opiskelija on ilmoittautunut". Kysymykset kuten "Kuinka moni opiskelija on osallistunut kurssille tietokantojen perusteet" ovat kuitenkin vaatineet manuaalista työtä, sillä kyselyn tulosrivit on pitänyt laskea käsin tai jonkun toisen ohjelman avulla.
+</p>
+
+<p>
+  SQL-kieli tarjoaa välineitä yhteenvetokyselyiden tekemiseen. Tällaisia kyselyitä ovat esimerkiksi juurikin yllä mainittu "kuinka moni" -- eli tulosrivien määrä -- sekä esimerkiksi erilaiset summa- ja keskiarvokyselyt. Käytännössä yhteenvetokyselyt tehdään SQL-kielen tarjoamien funktioiden avulla, jotka muuntavat tulosrivit toiseen muotoon. Alla on listattuna muutamia tyypillisimpiä funktioita, joita tietokantakyselyissä käytetään.
+</p>
+
+<table class="table">
+  
+  <tr>
+    <th>
+      Tavoite
+    </th>
+    <th>
+      Funktio
+    </th>
+    <th>
+      Esimerkki
+    </th>
+  </tr>
+
+  <tr>
+    <td>
+      Rivien lukumäärän selvittäminen
+    </td>
+    <td>
+      <code>COUNT</code>
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT COUNT(*) FROM <em>Taulu</em>
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Numeerisen sarakkeen keskiarvon laskeminen
+    </td>
+    <td>
+      <code>AVG</code>
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT AVG(<em>sarake</em>) FROM <em>Taulu</em>
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Numeerisen sarakkeen summan laskeminen
+    </td>
+    <td>
+      <code>SUM</code>
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT SUM(<em>sarake</em>) FROM <em>Taulu</em>
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Numeerisen sarakkeen minimiarvon selvittäminen
+    </td>
+    <td>
+      <code>MIN</code>
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT MIN(<em>sarake</em>) FROM <em>Taulu</em>
+</code></pre>
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      Numeerisen sarakkeen maksimiarvon selvittäminen
+    </td>
+    <td>
+      <code>MAX</code>
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT MAX(<em>sarake</em>) FROM <em>Taulu</em>
+</code></pre>
+    </td>
+  </tr>
+
+</table>
+
+
+<p>
+  Tarkastellaan näitä kyselyitä hieman tarkemmin. Oletetaan, että käytössämme on seuraava lentomatkoja kuvaava tietokantataulu.
+</p>
+
+
+<table class="table">
+  <tr>
+    <th colspan="4">
+      Lentomatka(yhtio, lahtopaikka, maaranpaa, pituus)
+    </th>
+  </tr>
+  <tr>
+    <th>
+      Lentoyhtiö
+    </th>
+    <th>
+      Lähtöpaikka
+    </th>
+    <th>
+      Määränpää
+    </th>
+    <th>
+      Lennon pituus (minuuttia)
+    </th>
+  </tr>
+  <tr>
+    <td>
+      Air Berlin
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Berliini
+    </td>
+    <td>
+      205
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Finnair
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Oulu
+    </td>
+    <td>
+      70
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Finnair
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Berliini
+    </td>
+    <td>
+      200
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Finnair
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Tukholma
+    </td>
+    <td>
+      50
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Finnair
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Mallorca
+    </td>
+    <td>
+      230
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Norwegian
+    </td>
+    <td>
+      Helsinki
+    </td>
+    <td>
+      Mallorca
+    </td>
+    <td>
+      240
+    </td>
+  </tr>
+</table>
+
+<p>
+  Yhteenvetokyselyiden avulla saamme selville erilaisia tilastoja. Alla muutamia esimerkkejä:
+</p>
+
+<ul>
+  <li>
+    Kuinka monta matkaa tietokantataulussa Lentomatka on yhteensä?
+<pre class="sh_sql code-highlight"><code>SELECT COUNT(*) FROM Lentomatka
+</code></pre>
+  </li>
+
+  <li>
+    Kuinka monta lentoyhtiötä on tietokantataulussa lentomatka? (Huomaa avainsanan DISTINCT käyttö)
+<pre class="sh_sql code-highlight"><code>SELECT COUNT(DISTINCT yhtio) FROM Lentomatka
+</code></pre>
+  </li>  
+  
+  <li>
+    Kuinka monta lentoa taulussa on Helsingistä Mallorcalle?
+<pre class="sh_sql code-highlight"><code>SELECT COUNT(*) FROM Lentomatka
+    WHERE lahtopaikka = 'Helsinki' AND maaranpaa = 'Mallorca'
+</code></pre>
+  </li>
+
+  <li>
+    Mikä on keskimääräinen Finnairin lennon pituus?
+<pre class="sh_sql code-highlight"><code>SELECT AVG(pituus) FROM Lentomatka
+    WHERE yhtio = 'Finnair'
+</code></pre>
+  </li>
+
+  <li>
+    Mikä on lyhin matkan kesto Helsingistä Berliiniin?
+<pre class="sh_sql code-highlight"><code>SELECT MIN(pituus) FROM Lentomatka
+    WHERE lahtopaikka = 'Helsinki' AND maaranpaa = 'Berliini'
+</code></pre>
+  </li>
+
+</ul>
+
+<p>
+  Yllä olevat esimerkit tuottavat tulokseksi aina yhden luvun. Entä jos haluaisimme saada selville yhtiökohtaisia tietoja kuten vaikkapa jokaisen yhtiön lyhimmän lennon? Tarkastellaan tätä seuraavaksi.
+</p>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Yhteenvetokyselyt, osa 1</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  
+  <p>
+    Tehtäväpohjan kansiossa <code>db</code> tulee tiedosto nimeltä <code>Chinook_Sqlite.sqlite</code>. Käytimme samaa tiedostoa myös yhdessä osan 3 tehtävistä. Tietokannassa on seuraavat taulut:
+  </p>
+
+  <pre>
+  sqlite&gt; .tables
+  Album          	Employee       	InvoiceLine    	PlaylistTrack
+  Artist         	Genre          	MediaType      Track        
+  Customer       	Invoice        	Playlist     
+  </pre>
+
+  <p>
+    Tietokanta kuvaa digitaalisen musiikin myyntipalvelua. Tietokannan relaatiokaavio löytyy osoitteesta <a href="https://github.com/lerocha/chinook-database/wiki/Chinook-Schema" target="_blank" norel>https://github.com/lerocha/chinook-database/wiki/Chinook-Schema</a>. Kirjoita SQLiten avulla kyselyt, joilla saa selville seuraavat tiedot.
+  </p>
+
+  
+  <ul>
+    <li>Kysely 1: Kuinka monta albumia (Album) tietokannassa on yhteensä?</li>
+    <li>Kysely 2: Minkä on kaikkien tietokannassa olevien laskujen (Invoice) hinnan (total) keskiarvo?</li>
+    <li>Kysely 3: Kuinka monta 'Blues', 'Jazz' tai 'Metal'-genren kappaletta tietokannassa on yhteensä?</li>
+  </ul>
+
+  <p>
+    Kun olet saanut kyselyt toimimaan, kopioi ne tehtäväpohjassa olevan luokan Kyselyja metodeihin kysely1, kysely2 ja kysely3. Metodeihin tulee siis kopioida SQL-kieliset kyselyt, joilla em. kysymyksiin saa vastaukset, ei kyselyiden vastauksia. 
+  </p>
+
+
+
+    </div>
+  </div>
+</div>
+
+<h2 class="material-heading">
+    Tulosten ryhmittely
+
+</h2>
+
+
+<p>
+  Tulosten ryhmittely tietyn sarakkeen perusteella tapahtuu komennon <code>GROUP BY</code> perustella. Komento <code>GROUP BY</code> lisätään taulujen listauksen ja mahdollisten kyselyn rajausehtojen jälkeen. Komentoa <code>GROUP BY</code> seuraa sarake, jonka perusteella tulokset ryhmitellään. Jotta ryhmittelystä tulee mielekäs, asetetaan ryhmittelyn peruste tyypillisesti myös SELECT-komentoa seuraavaan sarakelistaukseen.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT <em>ryhmittelysarake</em>, <em>FUNKTIO</em>(<em>sarake</em>) FROM <em>Taulu</em>
+    GROUP BY <em>ryhmittelysarake</em>
+</code></pre>
+
+
+<p>
+  Alla muutamia esimerkkejä:
+</p>
+
+<ul>
+  
+  <li>
+    Kuinka monta matkaa kullakin lentoyhtiöllä on tarjolla?
+<pre class="sh_sql code-highlight"><code>SELECT yhtio, COUNT(*) FROM Lentomatka GROUP BY yhtio
+</code></pre>
+  </li>
+
+  <li>
+    Kuinka monta alle 100 minuutin pituista lentomatkaa eri kaupungeista lähtee?
+<pre class="sh_sql code-highlight"><code>SELECT lahtopaikka, COUNT(*) FROM Lentomatka
+    WHERE pituus &lt; 100 GROUP BY lahtopaikka
+</code></pre>
+  </li>
+
+  <li>
+    Kuinka pitkiä kunkin lentoyhtiön matkat ovat keskimäärin?
+<pre class="sh_sql code-highlight"><code>SELECT yhtio, AVG(pituus) FROM Lentomatka GROUP BY yhtio
+</code></pre>
+  </li>
+  
+</ul>
+
+
+<p>
+  Taulujen yhdistäminen toimii kuten ennen. Valittavat taulut kerrotaan joko FROM -avainsanan jälkeen tai JOIN -avainsanan jälkeen, riippuen tavasta, jolla yhdistäminen tehdään. Ryhmittelykomento tulee mahdollisten WHERE-ehtojen jälkeen.
+</p>
+
+<p>
+  Oletetaan seuraavat taulut Kurssi ja Kurssitehtävä.
+</p>
+
+
+<ul>
+  <li>
+    Kurssi((pk) id, nimi, opintopisteet)
+  </li>
+  <li>
+    Kurssitehtava((pk) id, (fk) kurssi_id -&gt; Kurssi, tehtava)
+  </li>
+</ul>
+
+<p>
+  Kurssikohtaisten tehtävien lukumäärän laskeminen onnistuu seuraavasti. Avainsana AS muuntaa tuloksena saatavassa taulussa olevan sarakkeen nimen.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Kurssi.nimi AS kurssi, COUNT(*) AS tehtäviä FROM Kurssi, Kurssitehtävä
+    WHERE Kurssi.id = Kurssitehtava.kurssi_id
+    GROUP BY Kurssi.nimi
+</code></pre>
+
+
+<p>
+  Edellä kuvatun kyselyn tuloksia tarkastellessa huomaamme, että tuloksissa ei ole yhtäkään tehtävätöntä kurssia. Tämä selittyy kyselyillämme -- olemme valinneet mukaan vain rivit, joilla hakuehdot täyttyvät. Kirjoitetaan edellinen kysely siten, että otamme huomioon kurssit vaikka niihin ei liittyisikään yhtäkään toisen taulun riviä -- käytämme siis <code>LEFT JOIN</code>-liitosoperaatiota.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Kurssi.nimi AS kurssi, COUNT(Kurssitehtava.id) AS tehtäviä FROM Kurssi
+    LEFT JOIN Kurssitehtävä ON Kurssi.id = Kurssitehtava.kurssi_id
+    GROUP BY Kurssi.nimi
+</code></pre>
+
+<p>
+  Edellä COUNT-funktiolle annetaan parametrina kurssitehtävän id. Jos funktiolle annetaan parametrina *, myös NULL-arvo -- eli tyhjä arvo -- lasketaan (ainakin joissain tietokannanhallintajärjestelmissä).
+</p>
+
+
+<h2 class="material-heading">
+    Ryhmittely useamman sarakkeen perusteella
+
+</h2>
+
+
+<p>
+  Komennolle <code>GROUP BY</code> voi antaa myös useampia sarakkeita, jolloin ryhmittely tapahtuu sarakeryhmittäin. Esimerkiksi ryhmittely <code>GROUP BY kurssi, arvosana</code> ryhmittelisi taulussa olevat rivit ensin kurssin perusteella, jonka jälkeen kurssikohtaiset ryhmät ryhmiteltäisiin vielä arvosanan perusteella. Tällöin jokaiselle kurssille tulisi erilliset arvosanaryhmät.
+</p>
+
+<p>
+  Oletetaan edellä kuvatun taulun lisäksi taulut Kurssisuoritus ja Opiskelija:
+</p>
+
+<ul>
+  <li>
+    Kurssisuoritus((pk) id, (fk) kurssi_id -&gt; Kurssi, opiskelija_id -&gt; Opiskelija, arvosana, paivamaara)
+  </li>
+  <li>
+    Opiskelija((pk) id, opiskelijanumero, nimi, syntymävuosi)
+  </li>
+</ul>
+
+<p>
+  Kurssikohtaiset arvosanaryhmät saa selville seuraavalla kyselyllä.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT Kurssi.nimi AS kurssi, Kurssisuoritus.arvosana AS arvosana, COUNT (*) AS lukumäärä
+    FROM Kurssi, Kurssisuoritus
+    WHERE Kurssi.id = Kurssisuoritus.kurssi_id
+    GROUP BY Kurssi.nimi, Kurssisuoritus.arvosana
+</code></pre>
+
+<h2 class="material-heading">
+    Tulosten järjestäminen
+
+</h2>
+
+<p>
+  Kyselyn tulokset voi järjestää komennolla <code>ORDER BY</code>, jota seuraa järjestettävät sarakkeet. Sarakkeelle voi antaa myös lisämääreen <code>ASC</code> (<em>ascending</em>), joka kertoo että tulokset tulee järjestää nousevaan järjestykseen, ja <code>DESC</code> (<em>descending</em>), joka kertoo että tulokset tulee järjestää laskevaan järjestykseen. Oletuksena järjestys on nouseva.
+</p>
+
+<p>
+  Komento <code>ORDER BY</code> tulee kyselyn loppuun. Edellisen kurssiarvosanatilaston tulokset saisi kurssin nimen perusteella järjestykseen seuraavasti.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT Kurssi.nimi AS kurssi, Kurssisuoritus.arvosana AS arvosana, COUNT (*) AS lukumäärä
+    FROM Kurssi, Kurssisuoritus
+    WHERE Kurssi.id = Kurssisuoritus.kurssi_id
+    GROUP BY Kurssi.nimi, Kurssisuoritus.arvosana
+    ORDER BY Kurssi.nimi
+</code></pre>
+
+
+
+<h2 class="material-heading">
+    Hakutulosten rajaaminen yhteenvetokyselyissä
+
+</h2>
+
+<p>
+  Yhteenvetokyselyissä laskettavat tulokset kuten summa, rivien lukumäärä ja keskiarvo muodostetaan vasta, kun kaikki kyselyn rivit on selvillä. Kyselyiden tuloksen rajaamiseen käytetty WHERE toimii siten, että se tarkastelee tuloksia riveittäin -- se ei osaa odottaa summan laskemisen lopputulosta.
+</p>
+
+<p>
+  Jos yhteenvetokyselyn tuloksen perusteella halutaan rajata tuloksia, tulee käyttää <code>HAVING</code>-ehtoa. HAVING ehto tarkastetaan vasta, kun yhteenvetokyselyn tulokset ovat selvillä. Ehto HAVING lisätään ryhmittelykyselyn jälkeen esimerkiksi seuraavalla tavalla.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Kurssi.nimi AS kurssi, AVG(Kurssisuoritus.arvosana) keskiarvo
+    FROM Kurssi, Kurssisuoritus
+    WHERE Kurssi.id = Kurssisuoritus.kurssi_id
+    GROUP BY Kurssi.nimi
+    HAVING keskiarvo &lt; 2
+    ORDER BY Kurssi.nimi
+</code></pre>
+
+<p>
+  Yllä olevalla kyselyllä saadaan selville ne kurssit, joihin liittyvien kurssisuoritusten keskiarvo on alle 2. 
+</p>
+
+<p>
+  Kuten esimerkissä näkyy, samassa kyselyssä voi olla sekä <code>WHERE</code>-ehto että <code>HAVING</code>-ehto.
+</p>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Yhteenvetokyselyt, osa 2</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Jatketaan edellisestä tehtävästä tutun tietokannan parissa..
+  </p>
+  
+  <p>
+    Tehtäväpohjan kansiossa <code>db</code> tulee tiedosto nimeltä <code>Chinook_Sqlite.sqlite</code>. Tietokannassa on seuraavat taulut:
+  </p>
+
+  <pre>
+  sqlite&gt; .tables
+  Album          	Employee       	InvoiceLine    	PlaylistTrack
+  Artist         	Genre          	MediaType      Track        
+  Customer       	Invoice        	Playlist     
+  </pre>
+
+  <p>
+    Tietokanta kuvaa digitaalisen musiikin myyntipalvelua. Tietokannan relaatiokaavio löytyy osoitteesta <a href="https://github.com/lerocha/chinook-database/wiki/Chinook-Schema" target="_blank" norel>https://github.com/lerocha/chinook-database/wiki/Chinook-Schema</a>. Kirjoita SQLiten avulla kyselyt, joilla saa selville seuraavat tiedot.
+  </p>
+
+  
+  <ul>
+    <li>Kysely 1: Kuinka monta kappaletta kuhunkin genreen liittyy? Tuloksessa tulee olla kaksi saraketta, joista toisen nimi on <code>genre</code> ja toisen nimi on <code>kappaleita</code>.</li>
+    <li>Kysely 2: Kuinka monta kappaletta kustakin genrestä on ostettu? Voit olettaa, että kappale on ostettu jos lasku on olemassa. Tuloksessa tulee olla kaksi saraketta, joista toisen nimi on <code>genre</code> ja toisen nimi on <code>ostettuja</code>.</li>
+    <li>Kysely 3: Kuinka monella levyllä kukin artisti esiintyy? Tuloksessa tulee olla kaksi saraketta, joista toisen nimi on <code>artisti</code> ja toisen nimi on <code>levyt</code>.</li>
+  </ul>
+
+  <p>
+    Kun olet saanut kyselyt toimimaan, kopioi ne tehtäväpohjassa olevan luokan Kyselyja metodeihin kysely1, kysely2 ja kysely3. Metodeihin tulee kopioida SQL-kieliset kyselyt, joilla em. kysymyksiin saa vastaukset, ei siis vastauksia.
+  </p>
+
+  <p>
+    <em>
+      Huom! Tehtävässä on tilanteita, missä yhteenvetokyselyn tuloksessa esiintyvä lukumäärä (esim. kappaleet, ostetut, levyt) voi olla 0.
+    </em>
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Alikyselyt
+
+</h2>
+
+<p>
+  Alikyselyt ovat nimensä mukaan kyselyn osana suoritettavia alikyselyitä, joiden tuloksia käytetään osana pääkyselyä. Pohditaan kysymystä <em>Miten haen opiskelijat, jotka eivät ole vielä osallistuneet yhdellekään kurssille?</em>, ja käytetään siihen ensin aiemmin tutuksi tullutta tapaa, eli LEFT JOIN -kyselyä. Yhdistetään opiskelijaa ja kurssisuoritusta kuvaavat taulut LEFT JOIN-kyselyllä siten, että myös opiskelijat, joilla ei ole suorituksia tulevat mukaan vastaukseen. Tämän jälkeen, jätetään vastaukseen vain ne rivit, joilla kurssisuoritukseen liittyvät tiedot ovat tyhjiä -- tämä onnistuu katsomalla mitä tahansa kurssisuoritus-taulun saraketta, ja tarkistamalla onko se tyhjä, eli <em>null</em>. Tämä onnistuu seuraavasti:
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT opiskelijanumero FROM Opiskelija
+    LEFT JOIN Kurssisuoritus
+    ON Opiskelija.id = Kurssisuoritus.opiskelija_id
+    WHERE Kurssisuoritus.kurssi_id IS null
+</code></pre>
+
+<p>
+  Toinen vaihtoehto edellisen kyselyn toteuttamiseen on luoda kysely, joka hakee kaikki ne opiskelijat, jotka eivät ole kurssisuorituksia saaneiden opiskelijoiden joukossa. Tässä on oleellisesti kaksi kyselyä: (1) hae niiden opiskelijoiden tunnus, joilla on kurssisuoritus, ja (2) hae opiskelijat, jotka eivät ole edellisen kyselyn palauttamassa joukossa.
+</p>
+
+<p>
+  Ensimmäinen kysely on suoraviivainen.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT opiskelija_id FROM Kurssisuoritus
+</code></pre>
+
+<p>
+  Toinenkin kysely on melko suoraviivainen -- avainsanalla NOT IN voidaan rajata joukkoa.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Opiskelija
+    WHERE id NOT IN (<em>ensimmainen kysely</em>)
+</code></pre>
+
+<p>
+  Yhdessä kyselyt ovat siis muotoa:
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Opiskelija
+    WHERE id NOT IN (
+        SELECT opiskelija_id FROM Kurssisuoritus
+    )
+</code></pre>
+
+<p>
+  Käytännössä alikyselyt tuottavat kyselyn tuloksena taulun, josta pääkyselyssä tehtävä kysely tehdään. Ylläolevassa esimerkissä alikyselyn tuottamassa taulussa on vain yksi sarake, jossa on kurssisuorituksen saaneiden opiskelijoiden opiskelijanumerot.
+</p>
+
+<p>
+  Määreen <code>NOT IN</code>, joka tarkastaa että valitut arvot eivät ole alikyselyn tuottamassa taulussa, lisäksi käytössä on määre <code>IN</code>. Määreen <code>IN</code> avulla voidaan luoda ehto, jolla tarkastetaan, että valitut arvot ovat annetussa joukossa tai taulussa. Esimerkiksi alla haetaan kaikki kurssisuoritukset, joissa arvosana on kolme tai viisi.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Kurssisuoritus WHERE arvosana IN (3, 5)
+</code></pre>
+
+<p>
+  Määreiden IN ja NOT IN lisäksi alikyselyissä voidaan käyttää määreitä EXISTS ja NOT EXISTS, joiden avulla voidaan rajata hakujoukkoa alikyselyssä olevan ehdon perusteella. Voimme esimerkiksi kirjoittaa aiemmin kirjoitetun kursseja suorittamattomia opiskelijoita etsivän kyselyn siten, että jokaisen Opiskelija-taulussa olevan opiskelijanumeron kohdalla tarkistetaan, että sitä ei löydy taulusta Kurssisuoritus.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT opiskelijanumero FROM Opiskelija
+    WHERE NOT EXISTS (
+        SELECT opiskelija_id FROM Kurssisuoritus
+        WHERE Kurssisuoritus.opiskelija_id = Opiskelija.id
+    )
+</code></pre>
+
+<p>
+  Edellä oleva kysely tarkistaa jokaisen Opiskelija-taulussa olevan opiskelijanumeron kohdalla ettei sitä löydy Kurssisuoritus-taulun opiskelija-sarakkeesta. Käytännössä -- jos tietokantamoottori ei optimoi kyselyä -- jokainen opiskelija-taulun rivi aiheuttaa uuden kyselyn kurssisuoritus-tauluun, mikä tekee kyselystä tehottoman.
+</p>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kyselyn tulos on taulu
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Jokainen SQL-kysely tuottaa tuloksena taulun. Taulussa voi olla tasan yksi sarake ja rivi, tai vaikkapa tuhansia rivejä ja kymmeniä sarakkeita. Silloinkin, kun suoritamme yksinkertaisen haun, kuten vaikkapa "Hae kaikki kurssilla 'Tietokantojen perusteet' olevat opiskelijat", on haun tuloksena taulu.
+  </p>
+
+  <p>
+    Kaikki tekemämme SQL-kyselyt ovat liittyneet tauluihin. Emmekö siis voisi tehdä kyselyjä myös vastauksiin? Vastaus on kyllä.
+  </p>
+
+  <p>
+    Esimerkiksi vanhimman (tai vanhimmat, jos tämä ei ole yksikäsitteistä) opiskelijan löytää -- muunmuassa -- etsimällä kaikista pienimmän mahdollisimman syntymävuoden (kyselyn tulos on taulu), jonka jälkeen vastaustaulussa olevaa tulosta verrataan kaikkien opiskelijoiden syntymävuosiin.
+  </p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Opiskelija
+    WHERE syntymävuosi
+    IN (SELECT MIN(syntymavuosi) FROM Opiskelija)
+</code></pre>
+
+
+  </div>
+</div>
+
+
+
+
+<h1 class="material-heading">
+    Tietokantakyselyiden tehokkuudesta
+
+</h1>
+
+<p>
+  Tietokantaan tehtävä SQL-kielinen kysely voidaan suorittaa useammalla eri tavalla. Kyselyn suoritus voi käydä läpi tietokantataulun jokaisen rivin, se voi tarkastella vain rajattua osaa tietokantataulun riveistä, tai suoritus voi olla useamman taulun tapauksessa jonkinlainen yhdistelmä edellisiä. Kyselystrategia perustuu tietokannanhallintajärjestelmän sisäisen kyselynoptimoijan sekä tietokantatauluihin määriteltyjen ominaisuuksien kuten indeksien perusteella.
+</p>
+
+
+<h2 class="material-heading">
+    Tietokantakyselyn tarkastelu
+
+</h2>
+
+<p>
+  Tietokantakyselyiden suoritusstrategiaa voi tarkastella tietokannanhallintajärjestelmäkohtaisen apukyselyn avulla. SQLitessä kyselyn sisältöön pääsee kommennolla <code>EXPLAIN QUERY PLAN</code>, jota seuraa konkreettinen kysely. Suoritusstrategia sisältää tiedon läpikäytävistä tietokannoista sekä kyselyn muodosta. Kyselyn muoto on joko "SCAN" tai "SEARCH". Muoto SCAN käy koko tietokantataulun läpi ja SEARCH tarkastelee tietokantatauluun liittyvää indeksiä.
+</p>
+
+<p>
+  Tarkastellaan tätä konkreettisen esimerkin kautta. Oletetaan, että käytössämme on tietokanta, jossa on seuraavat tietokantataulut.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Asiakas (
+    id integer PRIMARY KEY,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varchar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+);
+</code></pre>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Tilaus (
+    id integer PRIMARY KEY,
+    asiakas_id integer,
+    aika date,
+    kuljetustapa varchar(40),
+    vastaanotettu boolean,
+    toimitettu boolean,
+    FOREIGN KEY (asiakas_id) REFERENCES Asiakas(id)
+);
+</code></pre>
+
+<p>
+  Jos haluamme listata asiakkaiden nimet ja puhelinnumerot, teemme kyselyn "SELECT nimi, puhelinnumero FROM Asiakas". Strategia on selvä -- käydään koko tietokantataulu läpi. Ensimmäisessä esimerkissä kytketään lisäksi SQLiten otsikot päälle ja vaihdetaan tulostusmuotoa kolumnimuotoon. Alla olevissa esimerkeissä on lisäksi käytetty .width -komentoa tulostuksen leveyden sovittamiseksi.
+</p>
+
+<pre class="sample-output">sqlite> .headers on
+sqlite> .mode column
+sqlite> EXPLAIN QUERY PLAN SELECT nimi, puhelinnumero FROM Asiakas;
+selectid order from detail                                                                      
+-------- ----- ---- ------------------
+0        0     0    SCAN TABLE Asiakas                                                          
+</pre>
+
+
+<p>
+  Vastaava strategia liittyy myös tietyn nimisen asiakkaan etsimiseen. Alla kuvatussa esimerkissä tarkastellaan kyselyä, missä etsitään Cobb-nimistä asiakasta.
+</p>
+
+<pre class="sample-output">sqlite> EXPLAIN QUERY PLAN SELECT nimi, puhelinnumero
+            FROM Asiakas WHERE nimi = 'Cobb';
+selectid order from  detail            
+-------- ----- ----  ------------------
+0        0     0     SCAN TABLE Asiakas
+</pre>
+
+<p>
+  Myös Tilaus-taulun tietojen listaaminen vaatii koko tietokantataulun läpikäynnin. Alla listataan tilaukset, jotka on jo toimitettu.
+</p>
+
+
+<pre class="sample-output">sqlite> EXPLAIN QUERY PLAN SELECT * FROM Tilaus
+            WHERE toimitettu = 1;
+selectid order from detail           
+-------- ----- ---- -----------------
+0        0     0    SCAN TABLE Tilaus
+</pre>
+
+<p>
+  Tarkastellaan seuraavaksi hieman monimutkaisempaa kyselyä, missä tulostetaan niiden asiakkaiden nimet, jotka ovat tehneet vähintään yhden tilauksen.
+</p>
+
+
+<pre class="sample-output">sqlite> EXPLAIN QUERY PLAN SELECT nimi, puhelinnumero
+            FROM Asiakas JOIN Tilaus
+                ON Asiakas.id = Tilaus.asiakas_id;
+selectid order from detail                                                  
+-------- ----- ---- --------------------------------------------------------
+0        0     1    SCAN TABLE Tilaus                                       
+0        1     0    SEARCH TABLE Asiakas USING INTEGER PRIMARY KEY (rowid=?)
+</pre>
+
+<p>
+  Kysely onkin nyt erilainen. Kyselyssä käydään ensin läpi koko taulu Tilaus, jonka jälkeen etsitään tietokantataulusta Asiakas rivejä asiakas-taulun pääavaimen perusteella. Entä jos tietokantataulu Asiakas olisikin määritelty siten, että kenttä <code>id</code> ei olisi pääavain?
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Asiakas (
+    id integer,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varchar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+);
+</code></pre>
+
+<pre class="sample-output">sqlite> EXPLAIN QUERY PLAN SELECT nimi, puhelinnumero
+            FROM Asiakas JOIN Tilaus
+                ON Asiakas.id = Tilaus.asiakas_id;
+selectid order from detail                                                           
+-------- ----- ---- -----------------------------------------------------------------
+0        0     0    SCAN TABLE Asiakas                                               
+0        1     1    SEARCH TABLE Tilaus USING AUTOMATIC COVERING INDEX (asiakas_id=?)
+</pre>
+
+<p>
+  Tietokannanhallintajärjestelmä vaihtaa läpikäytävien taulujen järjestystyä. Nyt kysely käy ensin läpi koko Asiakas-taulun, ja etsii tämän jälkeen Tilaus-taulusta tietoa automaattisesti luodun indeksin perusteella.
+</p>
+
+<h2 class="material-heading">
+    Indeksit eli hakua nopeuttavat tietorakenteet
+
+</h2>
+
+<p>
+  Indeksit ovat tietokantatauluista erillisiä yhden tai useamman sarakkeen tiedoista koostuvia tietorakenteita, jotka viittaavat tietokantataulun riveihin. Indeksirakenteita on useita erilaisia, mm. hajautustaulut ja puurakenteet. Indeksien tavoite on käytännössä -- tietokantojen yhteydessä -- tietokantakyselyiden nopeuttaminen.
+</p>
+
+<p>
+  <em>
+    Indeksiä voi ajatella perinteikkään kirjaston korttiluettelona. Kirjaston tiskille mentäessä ja tiettyä kirjaa kysyttäessä, kirjastovirkailija käy läpi kirjan nimen perusteella aakkostettuja kortteja. Koska nimet ovat aakkosjärjestyksessä, jokaista korttia ei tarvitse tarkastella tiettyä kirjaa etsittäessä. Kortissa on tieto kirjan konkreettisesta paikasta kirjastossa -- kun kortti löytyy, kirjan voi hakea. Jos kirjan nimen sijaan kirjaa etsitään kirjoittajan perusteella, tulee käyttää toista korttipakkaa, joka sisältää kirjoittajien nimet sekä mahdollisesti myös tiedon kirjojen nimistä. Jos kirjaa etsitään sisällön perusteella joudutaan huonolla tuurilla käymään jokainen fyysinen kirjaston kirja läpi.
+  </em>
+</p>
+
+<p>
+  Pohditaan tilannetta, missä miljardi riviä sisältävän taulun tiettyyn sarakkeeseen on määritelty indeksi. Oletetaan, että indeksi sisältää arvot järjestettynä. Tällöin, tiettyä arvoa haettaessa, voimme aloittaa keskimmäisestä arvosta -- jos haettava arvo on pienempi, tutkitaan "vasemmalla" olevaa puolikasta. Jos taas haettava arvo on suurempi, tutkitaan "oikealla" olevaa puolikasta. Alueen rajaaminen jatkuu niin pitkään, kunnes haettava arvo löytyy, tai rajaus päätyy tilanteeseen, missä tutkittavia arvoja ei enää ole. Tämä menetelmä -- <em>puolitushaku</em> tai <em>binäärihaku</em> lienee tuttu ohjelmointikursseilta.
+</p>
+
+<p>
+  Jos rivejä on yhteensä miljardi, voidaan ne jakaa kahteen osaan noin log<sub>2</sub> 1 000 000 000 kertaa, eli noin 30 kertaa. Jos oletamme, että arvoa ei löydy taulusta, tulee yhteensä tarkastella siis noin 30 riviä miljardin sijaan.
+</p>
+
+<p>
+  Indeksin määrittely tietokantataulun sarakkeelle tapahtuu tietokantataulun luomisen jälkeen komennolla <code>CREATE INDEX</code>, jota seuraa uuden indeksin nimi, avainsana <code>ON</code>, sekä taulu ja taulun sarakkeet, joille indeksi luodaan. Tietokannanhallintajärjestelmä luo tietokantataulun pääavaimelle ja viiteavaimille indeksit tyypillisesti automaattisesti.
+</p>
+
+<p>
+  Oletetaan, että sovelluksessamme asiakkaita haetaan usein nimen perusteella. Luodaan edellä kuvattuun Asiakas-taulun sarakkeelle nimi indeksi.
+</p>
+
+<pre class="sample-output">sqlite> CREATE INDEX idx_asiakas_nimi ON Asiakas (nimi);
+</pre>
+
+<p>
+  Tarkastellaan aiemmin tehtyä Cobb-nimisen henkilön hakua uudelleen.
+</p>
+
+<pre class="sample-output">sqlite> EXPLAIN QUERY PLAN SELECT nimi, puhelinnumero FROM Asiakas
+            WHERE nimi = 'Cobb';
+selectid order from detail                                                    
+-------- ----- ---- ----------------------------------------------------------
+0        0     0    SEARCH TABLE Asiakas USING INDEX idx_asiakas_nimi (nimi=?)
+</pre>
+
+<p>
+  Strategia muuttuu edellisestä. Aiemmin tietokannanhallintajärjestelmän strategia on ollut koko tietokantataulun Asiakas läpikäynti, nyt tietoa haetaan indeksistä. Jos käytössä oleva indeksi olisi esimerkiksi hajautustaulu, tapahtuisi haku vakioajassa -- eli "tarkasteluja" tehtäisiin "yksi" riippumatta tietomäärästä -- <em>tietorakenteisiin, niihin tehtäviin hakuihin sekä niiden tehokkuuksiin tutustutaan tarkemmin kurssilla tietorakenteet ja algoritmit.</em>
+</p>
+
+<p>
+  Taulut ja sarakkeet, joihin indeksejä kannattaa harkita, liittyvät paljon suoritettuihin (ja hitaahkoihin) tietokantakyselyihin. Ensimmäiset askeleet liittyvät (1) tietokantataulujen pää- ja viiteavainten indeksien luomiseen, (2) hakuehtoihin liittyvien sarakkeiden indeksien luomiseen sekä (3) järjestysehtoihin liittyvien sarakkeiden indeksien lumiseen. Alla on kuvattuna eräs suoraviivainen prosessi tietokantataulun indeksien päättämiselle: lähtökohtana on kysely.
+</p>
+
+<figure>
+  <img src="../img/indeksit-saanto-5abdbbc7.png" alt="alku=>start: Alku
+				    join=>condition: Käsitelläänkö 
+				    useampia
+				    tauluja?
+				    where=>condition: Kyselyssä
+				    rajausehtoja?
+				    loppu=>end: Loppu
+				    avaimet=>operation: Luo taulujen pääavaimille
+				    ja viiteavaimille indeksit
+				    rajaus=>operation: Luo indeksit rajausehdossa
+				    esiintyville sarakkeille.
+				    jarjestys=>condition: Järjestetäänkö 
+				    tuloksia?
+				    jarj=>operation: Luo indeksit 
+				    järjestettäville sarakkeille.
+				    alku->join
+				    join(yes,right)->avaimet->where
+				    join(no)->where
+				    where(yes,right)->rajaus->jarjestys
+				    where(no)->jarjestys
+				    jarjestys(no)->loppu
+				    jarjestys(yes,right)->jarj->loppu" />
+</figure>
+
+
+<p>
+  Indeksin luominen tietokantataululle luo tietorakenteen, jota käytetään tiedon hakemiseen. Jokaista indeksiä tulee päivittää myös tietokantaa muokkaavien operaatioiden yhteydessä, jotta indeksin tiedot ovat ajan tasalla. Käytännössä liiallinen indeksien luominen saattaa myös hidastaa sovelluksen toimintaa.
+</p>
+
+  
+<h2 class="material-heading">
+    Välimuistit sovelluksissa
+
+</h2>
+
+<p>
+  Kun tietokantaa käytetään osana annettua sovellusta (esimerkiksi web-sovellusta), sovelluksen vastuulla on tietokantakyselyiden tekeminen tietokannanhallintajärjestelmään. Jos sovellus on ainoa tietokannan käyttäjä (tietokantaa ei muokata muista järjestelmistä), ja jos merkittävä osa kyselyistä on toistuvia hakukyselyjä, voi sovellukseen rakentaa tietokannan toimintaa abstrahoiva välimuisti.
+</p>
+
+<p>
+  Välimuistissa on käytännössä kyse käsiteltävän tiedon tuomisesta lähemmäksi käyttäjää. Tietokantaa käyttävien sovellusten tapauksessa usein haettava tieto tuodaan sovelluksen muistiin, jolloin sovelluksen ei tarvitse hakea tietoa erikseen tietokannasta. Välimuisti tyhjennetään aina tietokannan päivityksen yhteydessä, jolloin käyttäjälle päätyvä tieto on aina ajan tasalla.
+</p>
+
+<p>
+  Yksinkertaisimmillaan välimuistitoteutus voi olla olemassaolevan Dao-toteutuksen kapselointi erilliseen Dao-toteutukseen. Oletetaan, että käytössämme on kolmannelta viikolta tuttu vaillinainen AsiakasDao-toteutus. Välimuistillisen toteutuksen luominen on melko suoraviivaista -- alla toteutuksessa muistetaan vain yksittäiset asiakkaat.
+</p>
+
+
+
+<pre class="sh_java code-highlight"><code>import java.util.*;
+import java.sql.*;
+
+public class CachedAsiakasDao extends AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
+
+    private HashMap&lt;Integer, Asiakas&gt; asiakkaatAvaimilla;
+  
+    public CachedAsiakasDao(Database database) {
+        super(database);
+        this.asiakkaatAvaimilla = new HashMap&lt;&gt;();
+    }
+
+    @Override
+    public Asiakas findOne(Integer key) throws SQLException {
+        if (!asiakkaatAvaimilla.containsKey(key)) {
+            Asiakas asiakas = super.findOne(key);
+            asiakkaatAvaimilla.put(key, asiakas);
+        }
+
+        return asiakkaatAvaimilla.get(key);
+    }
+
+    @Override
+    public Asiakas saveOrUpdate(Asiakas object) throws SQLException {
+        Asiakas asiakas = super.saveOrUpdate(object);
+        asiakkaatAvaimilla.put(asiakas.getId(), asiakas);
+        return asiakas;
+    }
+  
+    @Override
+    public void delete(Integer key) throws SQLException {
+        this.asiakkaatAvaimilla.removeKey(key);
+        return super.delete(key);
+    }
+}
+</code></pre>
+
+<p>
+  Jos asiakkaiden tietohin liittyvistä tietokantakyselyistä 99% on hakuoperaatioita, on merkittävässä osassa tapauksia tieto valmiiksi sovelluksen käytössä, jolloin tietokantaan ei tarvitse ottaa yhteyttä. Toisaalta, jos sovellus on sellainen, että merkittävä osa käsittelystä sisältää myös tietokannassa olevan tiedon muokkausoperaatioita, ei edellä kuvatusta välimuistista ole juurikaan hyötyä.
+</p>
+
+
+
+<h1 class="material-heading">
+    Tietokannan eheys ja transaktiot
+
+</h1>
+
+<p>
+  Eheydellä viitataan tallennetun tiedon oikeellisuuteen. Tietokannanhallintajärjestelmä ylläpitää tietokannan eheyttä jatkuvasti. Esimerkiksi sarakkeen, joka on määritelty sisältämään vain numeerista tietoa, ei pitäisi sisältää tekstimuotoista tietoa. Vastaavasti viiteavainten tulee viitata aina olemassaolevaan tietoon. 
+</p>
+
+<p>
+  Eheyden ylläpitämisen sekä kohta tutuksi tulevien tietokantatransaktioiden ymmärtämiseksi on hyvä tuntea tietokannan toimintaa sovellustasolla. Kurssin ensimmäisessä osassa tarkasteltiin tiedon käsittelyä tiedostoissa -- tietokanta käyttää kiintolevyä tiedon tallentamiseen, mutta rivien käsittely tapahtuu (keskus)muistissa. Kun riviä halutaan päivittää, se haetaan ensin kovalevyltä muistiin, päivitetään ja viedään takaisin levylle.
+</p>
+
+<p>
+  Keskusmuistin ongelma on se, että sen sisältö häviää esimerkiksi sähkökatkoksen sattuessa tai palvelimen kaatuessa. Havainnollistetaan ongelmallisuutta esimerkeillä:
+</p>
+
+<ul>
+  <li>Annetaan kaikille yrityksen 1000000 kuukausipalkkaiselle työntekijälle 5% palkan korotus. <code>UPDATE Palkat SET kkpalkka = kkpalkka * 1,05</code> Mitä jos tietokantapalvelin kaatuu, kun vasta 10000 muutettua riviä on tallennettu levylle? 990000 vihaista työntekijää jää ilman palkankorotusta? Tarvitaan jokin keino varmistaa, että päivitys tehdään kokonaan tai ei lainkaan.</li>
+  <li>Entä jos palkkojen maksuun liittyvä prosessi lukee palkkatietoja juuri samalla kun niitä ollaan päivittämässä? Lukuoperaatio voi lukea esimerkiksi vain tietyn toimipaikan työntekijöiden palkat - 100 riviä. Jos päivitys on yhtäaikaa kesken, voi käydä niin, että osaan luetuista riveistä on ehditty jo tehdä päivitys ja osaan ei. Nyt osa työntekijöistä saa syyskuun palkkansa korotettuna ja osa ei? Tarvitaan jokin keino hallita yhtäaikaisia prosesseja.</li>
+</ul>
+
+
+<h2 class="material-heading">
+    Tietokantatransaktiot
+
+</h2>
+
+<p>
+  Tietokantatransaktiot ratkaisevat edellä mainitut ongelmat. Ongelmat voidaan jakaa kahteen kategoriaan:
+</p>
+  
+<ul>
+  <li>Operaatioden keskeytymiset järjestelmän kaatuessa, häiriötilanteissa tai hallituissa keskeytyksissä</li>
+  <li>Samanaikaset prosessit</li>
+</ul>
+  
+<p>
+  Tietokantatransaktio sisältää yhden tai useamman tietokantaan kohdistuvan operaation, jotka suoritetaan (järjestyksessä) kokonaisuutena. Jos yksikin operaatio epäonnistuu, kaikki operaatiot perutaan, ja tietokanta palautetaan tilaan, missä se oli ennen transaktion aloitusta. Klassinen esimerkki tietokantatransaktiosta on tilisiirto, missä nostetaan rahaa yhdeltä tililtä, ja siirretään rahaa toiselle tilille. Jos tilisiirron suoritus ei onnistu -- esimerkiksi rahan lisääminen toiselle tilille epäonnistuu -- tulee myös rahan nostaminen toiselta tililtä perua.
+</p>
+
+<p>
+  Jokainen tietokantakysely suoritetaan omassa transaktiossaan, mutta, käyttäjä voi myös määritellä useamman kyselyn saman transaktion sisälle. Transaktio aloitetaan komennolla <code>BEGIN TRANSACTION</code>, jota seuraa kyselyt, ja lopulta komento <code>COMMIT</code>. Oletetaan, että käytössämme on taulu <code>Tili(id, saldo)</code>.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Tili (
+    id integer PRIMARY KEY,
+    saldo NOT NULL
+);
+</code></pre>
+
+<p>
+  Tilisiirto kahden tilin välillä toteutetaan yhtenä transaktiona seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>BEGIN TRANSACTION;
+  UPDATE Tili SET saldo = saldo - 10 WHERE id = 1;
+  UPDATE Tili SET saldo = saldo + 10 WHERE id = 2;
+COMMIT;
+</code></pre>
+
+<p>
+  Ylläolevassa transaktiossa suoritetaan kaksi kyselyä, mutta tietokannan näkökulmasta toiminto on <em>atominen</em>, eli sitä ei voi pilkkoa osiin. Komennon <code>COMMIT</code> yhteydessä muutokset joko tallennetaan kokonaisuudessaan tietokantaan, tai tietokantaan ei tehdä minkäänlaisia muutoksia.
+</p>
+
+<p>
+  Tietokantatransaktiota kirjoittaessa, ohjelmoija voi huomata tehneensä virheen. Tällöin suoritetaan komento <code>ROLLBACK</code>, joka peruu aloitetun transaktion aikana tehdyt muutokset. Suoritettua (<code>COMMIT</code>) tietokantatransaktiota ei voi perua.
+</p>
+
+<p>
+  Alla esimerkki kahdesta tietokantatransaktiosta. Ensimmäinen perutaan, sillä siinä yritettiin vahingossa siirtää rahaa väärälle tilille. Toinen suoritetaan. Kokonaisuudessaan allaolevan kyselyn lopputulos on se, että tililtä 1 on otettu 10 rahayksikköä, ja tilille 2 on lisätty 10 rahayksikköä.
+</p>
+
+<pre class="sh_sql code-highlight"><code>BEGIN TRANSACTION;
+  UPDATE Tili SET saldo = saldo - 10 WHERE id = 1;
+  UPDATE Tili SET saldo = saldo + 10 WHERE id = 3;
+ROLLBACK;
+
+BEGIN TRANSACTION;
+  UPDATE Tili SET saldo = saldo - 10 WHERE id = 1;
+  UPDATE Tili SET saldo = saldo + 10 WHERE id = 2;
+COMMIT;
+</code></pre>
+
+<p>
+  Jokainen tietokantakysely -- myös "yhden rivin kyselyt" -- suoritetaan transaktion sisällä. Tietokannanhallintajärjestelmän vastuulla on vahtia, että transaktiot suoritetaan peräkkäin siten, että samaa tietoa ei voida käsitellä useammasta transaktiosta saman aikaan.
+</p>
+
+
+<h2 class="material-heading">
+    Tietokantatransaktiot ja rajoitteet
+
+</h2>
+
+<p>
+  Koska tietokannanhallintajärjestelmä näkee transaktioiden sisällä suoritettavat käskyt atomisina, eli yksittäisenä kokonaisuutena, voivat tietokantatauluun määritellyt rajoitteet olla hetkellisesti rikki, kunhan ne transaktion suorituksen jälkeen ovat kunnossa.
+</p>
+
+<p>
+  Esimerkiksi suomen kirjanpitosääntöjen mukaan jokaisessa yrityksessä tulee olla kaksinkertainen kirjanpito. Tässä jokaisen tilitapahtuman yhteydessä tulee merkitä sekä mistä raha on otettu (debit), että mihin raha on laitettu (credit). Tällaisessa järjestelmässä tulee olla (esimerkiksi) tietokantataulu <code>Kirjanpitotapahtuma</code>, johon muutokset merkitään.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Kirjanpitotapahtuma
+(
+    id integer PRIMARY KEY,
+    paivamaara date NOT NULL,
+    kirjanpitotili integer NOT NULL,
+    kuvaus text NOT NULL,
+    debit integer NOT NULL,
+    credit integer NOT NULL,
+    FOREIGN KEY(kirjanpitotili) REFERENCES Tili(id),
+    CONSTRAINT kirjaus_tasmaa CHECK (SUM(debit) = SUM(credit))
+)
+</code></pre>
+
+<p>
+  Nyt yhden transaktion sisällä voi tehdä useamman kirjanpitotapahtuman, kunhan transaktion suorituksen yhteydessä kirjanpitotapahtumien debit- ja credit-sarakkeiden summa täsmää. Yllä tietokantataulun luomiskomentoon on lisätty rajoite (<code>CONSTRAINT</code>), jonka avulla tietokantatauluun voidaan lisätä sääntöjä, joiden tulee olla aina transaktion jälkeen voimassa.
+</p>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Tietokantatransaktio</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Netti on täynnä hyviä oppaita. Osoitteessa <a href="http://www.sqlitetutorial.net/sqlite-java/transaction/" target="_blank">http://www.sqlitetutorial.net/sqlite-java/transaction/</a> on eräs tällainen. Tutustu oppaaseen.
+  </p>
+
+  <p>
+    Luo tehtäväpohjaan oppaan kuvaama tiedosto <code>test.db</code> sekä ohjelma, jossa lisäät tietokantaan useamman rivin saman transaktion sisällä.
+  </p>
+
+  <p>
+    <em>
+      Tässä tehtävässä ei ole testejä. Palauta tehtävä se toimii toivotulla tavalla.
+    </em>
+  </p>  
+
+
+    </div>
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Tietokannanhallintajärjestelmän ominaisuuksia
+
+</h2>
+
+
+<p>
+  <strong>ACID</strong> (<strong>A</strong>tomicity, <strong>C</strong>onsistency, <strong>I</strong>solation, <strong>D</strong>urability) on joukko tietokannanhallintajärjestelmän ominaisuuksia:
+</p>
+
+<ul>
+
+  <li>Atomisuudella (<code>Atomicity</code>) varmistetaan, että tietokantatransaktio suoritetaan joko kokonaisuudessaan tai ei lainkaan. Jos tietokannanhallintajärjestelmään tehtävät transaktiot eivät olisi atomisia, voisi esimerkiksi päivityskyselyistä päätyä tietokantaan asti vain osa -- tilisiirtoesimerkissä vain rahan ottaminen yhdeltä tililtä, mutta ei sen lisäämistä toiselle.</li>
+    
+  <li>Eheydellä (<code>Consistency</code>) varmistetaan, että tietokantaan määritellyt rajoitteet, kuten viiteavaimet, pätevät jokaisen transaktion jälkeen. Jos tietokanta ei mahdollistaisi eheystarkistusta, voisi esimerkiksi kirjanpito olla virheellinen.</li>
+  
+  <li>Eristyvyydellä (<code>Isolation</code>) varmistetaan, että transaktio (A) ei voi lukea toisen transaktion (B) muokkaamaa tietoa ennenkuin toinen transaktio (B) on suoritettu loppuun. Tällä varmistetaan se, että jos transaktioita suoritetaan rinnakkaisesti, kumpikin näkee tietokannan eheässä tilassa.</li>
+
+  <li>Pysyvyydellä (<code>Durability</code>) varmistetaan, että transaktion suorituksessa tapahtuvat muutokset ovat pysyviä. Kun käyttäjä lisää tietoa tietokantaan, tietokannanhallintajärjestelmän tulee varmistaa että tieto säilyy myös virhetilanteissa (jos transaktion suoritus onnistuu).</li> 
+
+</ul>
+
+<p>
+  Perinteiset tietokannanhallintajärjestelmät tarvitsevat atomisuuden ja pysyvyyden toteuttamiseen write-ahead-lokia (WAL). Se tarkoittaa sitä, että suoritettavaksi tuleva tietokantaoperaatio tallennetaan tekstimuotoisena lokina levylle ennen rivien varsinaista päivitystä. Tällöin operaatiot voidaan suorittaa uudelleen, jos tietokantapalvelin kaatuu ennen kuin muistissa päivitetyt rivit ehditään tallentaa levylle. Tämä nopeuttaa tietokannan toimintaa merkittävästi, sillä pitkien operaatioiden kirjoittamista levylle ei tarvitse odottaa ennen kuin sovellukselle voidaan vastata operaation onnistuneen. Eristyvyyden toteuttamiseen käytetään mm. erilaisia taulu- ja rivilukitusmekanismeja. Kurssilla <em>Transaktioiden hallinta</em> tutustutaan tarkemmin transaktioiden toimintaan.
+</p>
+
+
+
+<h1 class="material-heading">
+    CAP-teoreema
+
+</h1>
+
+<p>
+  Merkittävä osa sovellusten toiminnallisuuden skaalaamisesta suuremmille käyttäjäjoukoille perustuu sovellusten toiminnallisuuden kopiointiin useammalle tietokoneelle eli palvelimelle. Kun sovellusta pyörittävä palvelin ei pysty enää vastaamaan kaikkiin sille tehtyihin pyyntöihin, hankitaan uusi palvelin, johon sovellus kopioidaan. Osa pyynnöistä ohjataan jatkossa tälle palvelimelle, jolloin palvelimet pystyvät yhdessä käsittelemään pyynnöt.
+</p>
+
+<p>
+  Sovelluksen kopiointi useammalle palvelimelle aiheuttaa haasteita tiedon hallintaan ja oikeellisuuteen liittyen. Jos sovelluksen toteuttaja haluaa, että jokaisella sovelluksella oleva tieto on aina ajankohtaista ja että pyyntöön annettava vastaus on aina ajankohtainen palvelimesta riippumatta, tulee palvelinten kommunikoida ja päivittää tietoa keskenään. Pankit eivät esimerkiksi voi hyväksyä tilannetta, missä yhdellä palvelimella tilillä olisi rahaa ja yhdellä ei. 
+</p>
+
+<p>
+  Tarkastellaan seuraavaksi lyhyesti CAP-teoreemaa. Sana CAP tulee termeistä Consistency, Availability, ja Partition tolerance.
+</p>
+
+<ul>
+  <li>
+    Consistency. Consistency viittaa järjestelmän ymmärrettävyyteen lineaarisesti toimivana prosessina. Mikäli järjestelmä toimii lineaarisesti (tai "Consistency" on olemassa), järjestelmän tulee aina palauttaa uusin mahdollinen tieto. Käytännössä jos järjestelmässä oleva prosessi B käynnistyy sen jälkeen kun prosessi A on suoritettu loppuun, ei prosessin B pitäisi koskaan nähdä tilaa, missä järjestelmä on ollut ennen prosessin A loppuun suorittamista. <em>Huom! CAP-teoreeman Consistency ei ole sama kuin ACID-termin Consistency (eristäytyneisyys). </em>
+  </li>
+  <li>
+    Availability. Availability viittaa järjestelmän saatavuuteen. Jos järjestelmä on saatava (tai "Availability" on olemassa), jokaisen palvelimelle ohjautuvan pyynnön tulee palauttaa toivottu vastaus järkevän ajan puitteissa. Järjestelmässä ei siis saa olla tilannetta, missä palvelin on vastaamatta, vaikka sillä olisi siihen mahdollisuus.
+  </li>
+  <li>
+    Partition tolerance. Partition tolerance viittaa siihen, että järjestelmän tulee toimia vaikka esimerkiksi palvelinkoneiden välinen yhteys olisi poissa käytöstä.
+  </li>
+</ul>
+
+<p>
+  CAP on <a href="https://en.wikipedia.org/wiki/Eric_Brewer_(scientist)" target="_blank">Eric Brewerin</a> ehdottama teoreema, jonka mukaan (useammalle tietokoneelle) hajautettu ohjelmisto voi saavuttaa samaan aikaan vain kaksi yllä olevasta kolmesta ominaisuudesta. 
+</p>
+
+<p>
+  Todellisuudessa tilanne on kuitenkin se, että palvelut toimivat verkossa, joka ei ole koskaan täysin luotettava. Tämä tarkoittaa sitä, että skaalautuvaa järjestelmää suunnitteleva joutuu käytännössä tekemään kompromissin Consistencyn ja Availabilityn välillä. 
+</p>
+
+<p>
+  Jos järjestelmä vaatii lineaarisen toiminnan (kuten esimerkiksi pankki), mutta järjestelmän toiminta tulee hajauttaa useammalle koneelle, tulee järjestelmän olla vastaamatta pyyntöihin virhetilanteissa -- järjestelmä ei voi olla aina saatavilla. Vastaavasti, jos järjestelmän tulee olla aina saatavilla (esimerkiksi sosiaalisen median palvelu) ja järjestelmän toiminta tulee hajauttaa useammalle koneelle, tulee järjestelmälle antaa mahdollisuus lähettää palvelun käyttäjille myös vanhentunutta tietoa.
+</p>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>BASE
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Tutustu myös Wikipedian artikkeliin <a href="https://en.wikipedia.org/wiki/Eventual_consistency" target="_blank">Eventual consistency</a>, mikä käsittelyy myös termiä BASE.
+  </p>
+  
+
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    GDPR-lainsäädäntö
+
+</h1>
+
+<p>
+  Viimeistään toukokuussa 2018 kaikki Euroopan Unionissa toimivat organisaatiot joutuvat noudattamaan uutta GDPR-lakia, joka ohjeistaa henkilökohtaisten tietojen käsittelyyn liittyvää toimintaa. Alla säädöksen ydinkohdat:
+</p>
+
+<ul>
+
+  <li>
+    Henkilötietojen keräämiseen tulee kysyä lupa. Jotta henkilökohtaisia tietoja saa kerätä, henkilön tulee eksplisiittisesti ja tietoisesti sallia tietojen kerääminen. Suostumuksen tietojen keruun sallimiseen tulee olla aito, eli tietojen keruusta pitää pystyä kieltäytymään ilman negatiivisia seuraamuksia.
+  </li>
+
+  <li>
+    Mitä tahansa ei saa kerätä. Kerättävien tietojen tulee olla perusteltavissa ja kerättävien tietojen tulee olla rajattu vain niihin, mitä organisaatio tarvitsee toimintaansa.
+  </li>
+
+  <li>
+    Henkilötietojen poistaminen pitää olla mahdollista. Henkilön tulee pystyä pyytämään tietojen poistamista järjestelmästä, ja tiedot tulee poistaa jos organisaatiolla ei ole mitään laillista syytä tiedon säilyttämiseen. Organisaation tulee myös informoida kolmannen osapuolen organisaatioita, joille henkilökohtaisia tietoja on annettu.
+  </li>
+
+  <li>
+    Tietoa ei saa "vuotaa". Lainsäädäntö mahdollistaa sakkojen antamisen kerätyn tiedon huonosta käsittelystä. Organisaatio voi saada jopa sakot, jonka koko on 4% organisaation vuotuisesta liikevaihdosta.
+  </li>
+
+  <li>
+    Ei vain Euroopan Unionissa. Myös Euroopan Unionin ulkopuoliset organisaatiot, joiden kohdeyleisönä on Euroopan Unionin jäsenet, ovat lain piirissä.
+  </li>
+  
+</ul>
+
+<p>
+  Tietojen käsittelyyn liittyviin oikeuksiin vaikuttaa myös käsittelijän tehtävä. Esimerkiksi Suomen koulutusjärjestelmällä on laillinen vastuu koulutuksen järjestämisestä -- omien koulutustietojen poistaminen ei todennäköisesti onnistu yliopiston rekisteristä, eikä yliopiston erikseen tule pyytää lupaa koulutustietojen tallentamiseen. Vastaavia poikkeuksia löytyy myös esimerkiksi tutkimukseen liittyen -- katso Anna Hännisen (OTM) video tietosuoja-asetuksesta sekä tieteellisestä tutkimuksesta.
+</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/lDS_kp116vM?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part6.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

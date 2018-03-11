@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 5</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Viidennen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Osaa siirtää web-sovelluksen verkkoon, missä se on kaikkien nähtävillä. Tuntee käsitteen SQL-injektio. Tietää menetelmiä SQL-injektioon perustuvien hyökkäysten tekemiseen ja osaa toisaalta puolustautua niiltä. Tietää käsitteet tietokannan normalisointi ja tietokannan denormalisointi. Tuntee tietokannan normalisointiin liittyvät ensimmäisen, toisen ja kolmannen normaalimuodon. Osaa perustella noudattaako annettu tietokanta em. normaalimuotoja.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Web-sovelluksen siirtäminen verkkoon
+
+</h1>
+
+<p>
+  Web-sovelluksemme on tähän mennessä toiminut vain paikallisella koneella, missä kehitystyötä on tehty. Tutustutaan tässä Heroku-nimisen pilvipalvelun käyttöön ja siirretään Web-sovellus verkkoon kaikkien nähtäväksi.
+</p>
+
+<p>
+  Herokulla on aiheeseen liittyen myös oma opas, johon kannattaa tutustua <a href="https://devcenter.heroku.com/articles/getting-started-with-java" target="_blank">täällä</a>.
+</p>
+
+<p>
+  Tarvitset sovelluksen siirtoon (1) <a href="https://signup.heroku.com/dc" target="_blank">tunnuksen Heroku-palveluun</a> sekä (2) <a href="https://toolbelt.heroku.com/" target="_blank">Heroku Toolbeltin</a>.
+</p>
+
+<h2 class="material-heading">
+    Alkutoimet
+
+</h2>
+
+<p>
+  Herokuun siirrettävät sovellukset tarvitsevat muutamia muutoksia:
+</p>
+
+<ol>
+
+  <li>
+    <p>
+      Ohjeet Herokulle sovelluksen käynnistämiseen. Ohjeet annetaan sovelluksen juuripolkuun lisättävän <code>Procfile</code>-nimisen tiedoston avulla. Tiedosto sisältää komennon, jota tulee käyttää sovelluksen käynnistämisessä.
+    </p>
+
+    <p>
+      Alla olevassa esimerkissä oletetaan, että sovelluksen käynnistävä luokka on nimeltä <code>Main</code> ja se sijaitsee pakkauksessa <code>tikape</code>.
+    </p>
+
+    <pre>
+web:    java -cp target/classes:target/dependency/* tikape.Main
+    </pre>
+
+    <p>
+      Komennon osa <code>tikape.Main</code> kuvaa pääohjelmaluokkaa, jonka kautta sovellus tulee käynnistää. Jos pääohjelmaluokkasi on toisessa pakkauksessa (ei tikape) tai pääohjelmaluokan nimi on jotain muuta (ei Main), tulee tätä muokata. Heroku käyttää tätä komentoa sovelluksen käynnistykseen.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Maven-liitännäiset ohjelman kääntöprosessin automatisointiin. Sovelluksen <code>pom.xml</code>-tiedostoon tulee lisätä seuraavat rivit. Rivit lisätään esimerkiksi <code>&lt;/properties&gt;</code>-rivin jälkeen.</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.5.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;1.8&lt;/source&gt;
+                &lt;target&gt;1.8&lt;/target&gt;
+                &lt;optimize&gt;true&lt;/optimize&gt;
+                &lt;debug&gt;true&lt;/debug&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;copy-dependencies&lt;/id&gt;
+                    &lt;phase&gt;package&lt;/phase&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;copy-dependencies&lt;/goal&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+  </li>
+
+  <li>
+    <p>
+      Sovelluksen käynnistäminen Herokun määräämässä portissa. Jokainen web-sovellus käynnistettään tiettyyn porttiin, jonka se varaa käyttöönsä. Heroku pyörittää useampia sovelluksia samalla palvelinkoneella, joten sille pitää antaa mahdollisuus portin asetukseen.
+    </p>
+
+    <p>
+      Portin asetus tapahtuu <em>ympäristömuuttujan</em> avulla, jonka Heroku antaa sovellukselle sovellusta käynnistettäessä. Käytännössä pääohjelmaluokkaan, joka käynnistää web-palvelimen, tulee lisätä seuraavat rivit -- lisää ne main-metodin alkuun.
+    </p>
+
+<pre class="sh_java code-highlight"><code>// asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+if (System.getenv("PORT") != null) {
+    Spark.port(Integer.valueOf(System.getenv("PORT")));
+}
+</code></pre>
+  </li>
+</ol>
+
+<p>
+  Ylläolevien muutosten avulla sovelluksen siirtäminen verkkoon onnistuu.
+</p>
+
+
+<h2 class="material-heading">
+    Heroku toolbeltin asennus
+
+</h2>
+
+<p>
+  Asenna <a href="https://toolbelt.heroku.com/" target="_blank">heroku toolbelt</a>. Ohjeita löytyy esimerkiksi osoitteessa <a href="https://devcenter.heroku.com/articles/heroku-command" target="_blank">https://devcenter.heroku.com/articles/heroku-command</a>.
+</p>
+
+<p>
+  Jos sinulla ei ole koneeseen pääkäyttäjän oikeuksia (root), asennuksen pitäisi silti olla mahdollista jos koneelle on ennestään asennettu muutama Herokun vaatima ohjelmapaketti. Joudut kuitenkin tekemään <a href="http://geek.co.il/2015/06/19/fix-another-curlsh-bogus-installation-heroku">asennuksen hieman toisin</a> (ohjeessa sudo-komennot ovat pääkäyttäjän oikeuksilla ajettavia komentoja, joita ei tarvita jos tarvittavat asennukset ovat jo ennalta tehtynä).
+</p>
+
+<h2 class="material-heading">
+    Sovelluksen luominen Herokuun
+
+</h2>
+
+<p>
+  Sovelluksen luomiseen Herokuun tarvitaan kaksi askelta. Ensimmäisessä askeleessa luodaan projektista git-repositorio (tätä ei tarvitse tehdä jos sovellus on jo git-versionhallinnassa), jonka jälkeen luodaan herokuun sijainti johon sovellus kopioidaan.
+</p>
+
+<p>
+  <em>
+    Mikäli et ole aiemmin käyttänyt Git-versionhallintaa, tutustu Gitin käyttöön nyt. Lue oppaat osoitteista <a href="https://guides.github.com/activities/hello-world/" target="_blank">https://guides.github.com/activities/hello-world/</a> ja <a href="http://bit.ly/tikapeGit" target="_blank">http://bit.ly/tikapeGit</a>.
+  </em>
+</p>
+
+<ol>
+  <li>
+    <p><strong>Projekti git-repositorioksi</strong> -- projektin luominen git-repositorioksi tapahtuu ajamalla komento <code>git init</code> projektin juurikansiossa (kansio, jossa löytyy tiedosto <code>pom.xml</code>). Jos sovellus on jo esimerkiksi githubissa, ei tätä tarvitse tehdä.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      <strong>Heroku-projektin luominen</strong> -- suorita juurikansiossa komento <code>heroku create</code>. Tämä luo sovellukselle sijainnin herokuun, johon sovelluksen voi lähettää. Komennon toimintaan tarvitset aiemmin asennetun heroku toolbeltin.
+    </p>
+  </li>
+
+</ol>
+
+<p>
+  Mahdollisissa ongelmatilanteissa kannattaa ensimmäiseksi katsoa mitä viestejä Herokun <a href="https://devcenter.heroku.com/articles/logging">lokitiedostoon</a> on päätynyt.
+</p>
+
+
+<h2 class="material-heading">
+    Sovelluksen lähetys Herokuun
+
+</h2>
+
+<p>
+  Sovelluksen lähetys herokuun sisältää tyypillisesti neljä askelta. Ensin poistamme turhat käännetyt lähdekooditiedostot, jotta ne eivät häiritse herokun toimintaa. Tämän jälkeen lisäämme tiedostot versionhallintaan, sitoudumme niiden lähettämiseen, ja siirrämme ne herokuun.
+</p>
+
+<ol>
+
+  <li>
+    <strong>Turhien lähdekooditiedostojen poistaminen</strong> -- suorita projektin juurikansiossa komento <code>mvn clean</code>, joka poistaa projektista käännetyt lähdekooditiedostot (kansio target).
+  </li>
+
+  <li>
+    <strong>Tiedostojen lisääminen versionhallintaan</strong> -- suorita projektin juurikansiossa komento <code>git add .</code>, joka lisää kaikki projektin tiedostot versionhallintaan. Huom! Varmista, että target-kansio ei pääse lipsahtamaan versionhallintaan tai Herokuun.
+  </li>
+
+  <li>
+    <strong>Tiedostojen lähettämiseen sitoutuminen</strong> -- suorita projektin juurikansiossa komento <code>git commit -m "viesti"</code>, joka sitouttaa lähetykseen juuri lisätyt tiedostot.
+  </li>
+
+  <li>
+    <strong>Tiedostojen siirtäminen herokuun</strong> -- suorita projektin juurikansiossa komento <code>git push heroku master</code>, joka lähettää tiedostot herokuun.
+  </li>
+  
+</ol>
+
+<p>
+  Nyt sovelluksesi on verkossa kaikkien nähtävillä. 
+</p>
+
+
+<h2 class="material-heading">
+    Olemassaolevan projektin siirto Herokuun askel askeleelta
+
+</h2>
+
+<p>
+  Oletetaan, että käytössämme on osoitteessa <a href="https://github.com/avihavai/huonekalut/tree/370a67fae46f6fbbd3f0e2e3d7aa34668f70a6a4" target="_blank">https://github.com/avihavai/huonekalut/tree/370a67fae46f6fbbd3f0e2e3d7aa34668f70a6a4</a> oleva esimerkkisovellus. Sovellus tarjoaa toiminnallisuuden huonekalujen listaamiseen ja lisäämiseen.
+</p>
+
+<h3 class="material-heading">
+    Procfilen puuttuminen
+
+</h3>
+
+<p>
+  Alla paikallisella koneella oleva projekti ensin putsataan (poistetaan turhat lähdekooditiedostot. Tämän jälkeen kirjaudutaan Heroku toolbeltin avulla Herokuun. Tätä seuraa uuden Heroku-sovelluksen luominen -- sovelluksen nimeksi asetetaan <code>huonekalut-esim</code>. Nimi on uniikki, eli kukaan muu ei voi ottaa tätä nimeä käyttöön. 
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>mvn clean</strong>
+...
+user@kone:~/kansio/huonekalut$ <strong>heroku login</strong>
+Enter your Heroku credentials:
+Email: sposti@osoite.net
+Password: ***************
+Logged in as sposti@osoite.net
+user@kone:~/kansio/huonekalut$ <strong>heroku create huonekalut-esim</strong>
+Creating ⬢ huonekalut-esim... done
+https://huonekalut-esim.herokuapp.com/ | https://git.heroku.com/huonekalut-esim.git
+user@kone:~/kansio/huonekalut$ <strong>git status</strong>
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+user@kone:~/kansio/huonekalut$ <strong>git push heroku master</strong>
+Counting objects: 13, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (13/13), 2.32 KiB | 0 bytes/s, done.
+Total 13 (delta 0), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Java app detected
+remote: -----> Installing JDK 1.8... done
+remote: -----> Installing Maven 3.3.9... done
+remote: -----> Executing: mvn -DskipTests clean dependency:list install
+...
+</pre>
+
+<p>
+  Sovellus asentuu. Kun menemme osoitteeseen <a href="https://huonekalut-esim.herokuapp.com/" target="_blank">https://huonekalut-esim.herokuapp.com/</a> näemme seuraavanlaisen sivun.
+</p>
+
+<figure>
+  <img src="../img/heroku/huonekalut-application-error-172c6154.png" alt="Herokun virheviesti: Application error."/>
+</figure>
+
+<p>
+  Sovelluksessa on virhe. Virheviestin saa selville Heroku toolbeltin avulla logeja tarkastelemalla.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku logs</strong>
+user@kone:~/kansio/huonekalut$ 
+...
+2018-02-11T14:07:31.000000+00:00 app[api]: Build succeeded
+2018-02-11T14:08:46.323557+00:00 heroku[router]: at=error code=H14 desc="No web processes running" method=GET path="/" host=huonekalut-esim.herokuapp.com request_id=43a2f9af-e5f6-4d60-9906-45f9d6145c32 fwd="..." dyno= connect= service= status=503 bytes= protocol=https
+</pre>
+
+<p>
+  Sovelluksen virheviesti on <strong>No web processes running</strong>, eli web-sovelluksia ei ole käynnissä. Sovellus tarvitsee Herokua sovelluksen käynnistämiseen ohjeistavan tiedoston <code>Procfile</code>.
+</p>
+
+<p>
+  Luodaan tiedosto Procfile. Koska huonekalut-projektin Main-luokka on pakkauksessa <code>tikape.huonekalut</code>, tulee Procfile-tiedoston sisältöä muokata sopivasti. Tiedoston sisällöksi tulee seuraava merkkijono:
+</p>
+
+<pre>
+web:    java -cp target/classes:target/dependency/* tikape.huonekalut.Main
+</pre>
+
+<p>
+  Lisätään Procfile versionhallintaan ja lähetetään projektista uusi versio Herokuun.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>echo "web:    java -cp target/classes:target/dependency/* tikape.huonekalut.Main" > Procfile</strong>
+user@kone:~/kansio/huonekalut$ <strong>git status</strong>
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+(use "git add &lt;file&gt;..." to include in what will be committed)
+
+  Procfile
+
+nothing added to commit but untracked files present (use "git add" to track)
+user@kone:~/kansio/huonekalut$ <strong>git add Procfile</strong>
+user@kone:~/kansio/huonekalut$ <strong>git commit -m "Herokun käynnistykseen tarvittava tiedosto Procfile"</strong>
+[master 123bla] Herokun käynnistykseen tarvittava tiedosto Procfile
+
+1 file changed, 1 insertion(+)
+create mode 100644 Procfile
+user@kone:~/kansio/huonekalut$ <strong>git push heroku master</strong>
+Counting objects: 13, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (13/13), 2.32 KiB | 0 bytes/s, done.
+Total 13 (delta 0), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Java app detected
+remote: -----> Installing JDK 1.8... done
+remote: -----> Installing Maven 3.3.9... done
+remote: -----> Executing: mvn -DskipTests clean dependency:list install
+...
+</pre>
+
+<p>
+  Sovellus siirtyy taas Herokuun. Kun tarkastelemme sovellusta, sovellus näyttää tutulta..
+</p>
+
+
+<figure>
+  <img src="../img/heroku/huonekalut-application-error-172c6154.png" alt="Herokun virheviesti: Application error."/>
+</figure>
+
+
+<h3 class="material-heading">
+    Maven-konfiguraation puuttuminen
+
+</h3>
+
+<p>
+  Sovelluksessa on yhä virhe. Tarkastellaan virheviestiä Herokun logeista.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku logs</strong>
+...
+2018-02-11T14:23:27.162335+00:00 heroku[web.1]: Starting process with command `java -cp target/classes:target/dependency/* tikape.huonekalut.Main`
+2018-02-11T14:23:29.732606+00:00 heroku[web.1]: Process exited with status 1
+2018-02-11T14:23:29.750379+00:00 heroku[web.1]: State changed from starting to crashed
+2018-02-11T14:23:29.359931+00:00 app[web.1]: Setting JAVA_TOOL_OPTIONS defaults based on dyno size. Custom settings will override them.
+2018-02-11T14:23:29.364538+00:00 app[web.1]: Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -Dfile.encoding=UTF-8 
+2018-02-11T14:23:29.642788+00:00 app[web.1]: Error: A JNI error has occurred, please check your installation and try again
+2018-02-11T14:23:29.643688+00:00 app[web.1]: Exception in thread "main" java.lang.NoClassDefFoundError: spark/TemplateEngine
+2018-02-11T14:23:29.643691+00:00 app[web.1]: 	at java.lang.Class.getDeclaredMethods0(Native Method)
+2018-02-11T14:23:29.643693+00:00 app[web.1]: 	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+2018-02-11T14:23:29.646781+00:00 app[web.1]: 	at java.lang.Class.privateGetMethodRecursive(Class.java:3048)
+2018-02-11T14:23:29.646784+00:00 app[web.1]: 	at java.lang.Class.getMethod0(Class.java:3018)
+2018-02-11T14:23:29.646786+00:00 app[web.1]: 	at java.lang.Class.getMethod(Class.java:1784)
+2018-02-11T14:23:29.646788+00:00 app[web.1]: 	at sun.launcher.LauncherHelper.validateMainClass(LauncherHelper.java:544)
+2018-02-11T14:23:29.646789+00:00 app[web.1]: 	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:526)
+2018-02-11T14:23:29.646791+00:00 app[web.1]: Caused by: java.lang.ClassNotFoundException: spark.TemplateEngine
+2018-02-11T14:23:29.646793+00:00 app[web.1]: 	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+2018-02-11T14:23:29.646795+00:00 app[web.1]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+2018-02-11T14:23:29.646796+00:00 app[web.1]: 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:338)
+2018-02-11T14:23:29.646798+00:00 app[web.1]: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+2018-02-11T14:23:29.646800+00:00 app[web.1]: 	... 7 more
+2018-02-11T14:23:31.210681+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=huonekalut-esim.herokuapp.com request_id=35d815fe-806f-412b-8808-d775895d671a fwd="..." dyno= connect= service= status=503 bytes= protocol=https
+</pre>
+
+<p>
+  Virheviesti <code>java.lang.NoClassDefFoundError</code> on melko selkeä. Java ei löydä tarvitsemaamme luokkaa. Lisätään projektin pom.xml-tiedostoon Maven-liitännäisen tarvitsemat tiedot. Tiedoston <code>pom.xml</code> sisältö on tämän jälkeen kokonaisuudessaan seuraava.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;tikape&lt;/groupId&gt;
+  &lt;artifactId&gt;huonekalut&lt;/artifactId&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+    
+  &lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+  &lt;/properties&gt;
+    
+  &lt;dependencies&gt;
+      
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+      &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+      &lt;version&gt;3.21.0.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+      &lt;artifactId&gt;spark-core&lt;/artifactId&gt;
+      &lt;version&gt;2.7.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+      &lt;artifactId&gt;spark-template-thymeleaf&lt;/artifactId&gt;
+      &lt;version&gt;2.7.1&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+      &lt;artifactId&gt;gson&lt;/artifactId&gt;
+      &lt;version&gt;2.8.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+      &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+      &lt;version&gt;1.7.25&lt;/version&gt;
+    &lt;/dependency&gt;
+      
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5.1&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;source&gt;1.8&lt;/source&gt;
+          &lt;target&gt;1.8&lt;/target&gt;
+          &lt;optimize&gt;true&lt;/optimize&gt;
+          &lt;debug&gt;true&lt;/debug&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.4&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;copy-dependencies&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;copy-dependencies&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+    
+&lt;/project&gt;
+</code></pre>
+
+<p>
+  Lähetetään projekti taas Herokuun. Sormet ristiin jne.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>git status</strong>
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+  modified:   pom.xml
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@kone:~/kansio/huonekalut$ <strong>git add pom.xml</strong>
+user@kone:~/kansio/huonekalut$ <strong>git commit -m "Projektin käännökseen tarvitut liitännäiset"</strong>
+[master 124bla] Projektin käännökseen tarvitut liitännäiset
+...
+1 file changed, 31 insertions(+), 1 deletion(-)
+user@kone:~/kansio/huonekalut$ <strong>git push heroku master</strong>
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 647 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Java app detected
+remote: -----> Installing JDK 1.8... done
+remote: -----> Installing Maven 3.3.9... done
+remote: -----> Executing: mvn -DskipTests clean dependency:list install
+...
+</pre>
+
+
+<h3 class="material-heading">
+    Portin määrittely
+
+</h3>
+
+
+<p>
+  Sovellukseen on nyt lisätty tarvittu Procfile sekä pom.xml-tiedostoon tarvitut rivit. Kun tarkastelemme sovellusta, näkymä on harmittavan tuttu..
+</p>
+
+<figure>
+  <img src="../img/heroku/huonekalut-application-error-172c6154.png" alt="Herokun virheviesti: Application error."/>
+</figure>
+
+<p>
+  Tiedämme onneksi mitä tehdä. Tarkastellaan virheviestiä Herokun logeista.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku logs</strong>
+...
+2018-02-11T14:37:29.796865+00:00 heroku[web.1]: Starting process with command `java -cp target/classes:target/dependency/* tikape.huonekalut.Main`
+2018-02-11T14:37:31.109739+00:00 app[web.1]: Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -Dfile.encoding=UTF-8 
+2018-02-11T14:37:31.106706+00:00 app[web.1]: Setting JAVA_TOOL_OPTIONS defaults based on dyno size. Custom settings will override them.
+2018-02-11T14:37:31.217373+00:00 app[web.1]: Hello world!
+2018-02-11T14:37:31.409503+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.util.log - Logging initialized @295ms to org.eclipse.jetty.util.log.Slf4jLog
+2018-02-11T14:37:31.487930+00:00 app[web.1]: [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - == Spark has ignited ...
+2018-02-11T14:37:31.488042+00:00 app[web.1]: [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - >> Listening on 0.0.0.0:4567
+2018-02-11T14:37:31.492481+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.Server - jetty-9.4.6.v20170531
+2018-02-11T14:37:31.559757+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2018-02-11T14:37:31.563164+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.session - Scavenging every 660000ms
+2018-02-11T14:37:31.559867+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2018-02-11T14:37:31.592726+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.AbstractConnector - Started ServerConnector@1faa7888{HTTP/1.1,[http/1.1]}{0.0.0.0:4567}
+2018-02-11T14:37:31.592938+00:00 app[web.1]: [Thread-0] INFO org.eclipse.jetty.server.Server - Started @483ms
+2018-02-11T14:39:00.117450+00:00 heroku[web.1]: Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 90 seconds of launch 
+2018-02-11T14:39:00.117535+00:00 heroku[web.1]: Stopping process with SIGKILL
+2018-02-11T14:39:00.205503+00:00 heroku[web.1]: State changed from starting to crashed
+2018-02-11T14:39:00.194080+00:00 heroku[web.1]: Process exited with status 137
+2018-02-11T14:39:11.229117+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=huonekalut-esim.herokuapp.com request_id=695ac260-a6d7-4e37-a453-ea089e680740 fwd="..." dyno= connect= service= status=503 bytes= protocol=https
+</pre>
+
+<p>
+  Rivejä tarkasteltaessamme huomaamme tulostuksen "Hello world!". Sovellus on siis käynnistynyt! Viestejä eteenpäin tarkasteltaessamme huomaamme kuitenkin, että sovellus ei ole toiminut Herokun toivomalla tavalla. Virhe <code>Web process failed to bind to $PORT within 90 seconds of launch</code> kertoo, että sovellus ei ole ottanut Herokun tarjoamaa porttia käyttöön.
+</p>
+
+<p>
+  Lisätään sovelluksen käynnistämiseen käytettävän <code>tikape.huonekalut.Main</code> päämetodin alkuun rivit:
+</p>
+
+<pre class="sh_java code-highlight"><code>// asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+if (System.getenv("PORT") != null) {
+    Spark.port(Integer.valueOf(System.getenv("PORT")));
+}
+</code></pre>
+
+<p>
+  Lähetetään sovellus taas Herokuun.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>git add src/main/java/tikape/huonekalut/Main.java</strong>
+user@kone:~/kansio/huonekalut$ <strong>git commit -m "Käytetään Herokun tarjoamaa porttia."</strong>
+[master 125bla] Käytetään Herokun tarjoamaa porttia.
+...
+user@kone:~/kansio/huonekalut$ <strong>git push heroku master</strong>
+...
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 61.2M
+remote: -----> Launching...
+remote:        Released v5
+remote:        https://huonekalut-esim.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/huonekalut-esim.git
+...
+</pre>
+
+<p>
+  Entä nyt? Tarkastellaan taas sovelluksen osoitetta -- tuntuu toimivan.
+</p>
+
+
+<figure>
+  <img src="../img/heroku/heroku-huonekalut-sqlite-8278032c.png" alt="Sovellus on Herokussa."/>
+</figure>
+
+<p>
+  Sovellus on verkossa ja sinne voi lisätä huonekaluja.
+</p>
+
+
+
+
+<h2 class="material-heading">
+    Herokun tarjoaman tietokannan käyttöönotto
+
+</h2>
+
+<p>
+  Olemme saaneet sovelluksemme verkkoon. Sovelluksessa on kuitenkin vielä iso ongelma. Se käyttää SQLiteä, joka hallinnoi tietokantaa levylle tallennettuna tiedostona. Pilvipalvelut kuten Heroku kuitenkin toimivat niin, että sovellukset voivat sammua ja käynnistyä uudestaan tarvittaessa -- levylle tehtyjä muutoksia ei hallinnoida. Käytännössä jokaisen uudelleenkäynnistyksen yhteydessä sovellus on siinä pisteessä, missä se lähettiin verkkoon. <strong>Käytetty tietokantatoiminnallisuus ei siis toimi pilvipalvelussa.</strong>
+</p>
+
+<p>
+  Tarvitsemme käyttöömme erillisen tietokannanhallintajärjestelmän. Heroku tarjoaa palveluna <a href="https://www.postgresql.org/" target="_blank">PostgreSQL</a>-tietokannanhallintajärjestelmän. Ohjeistukset PostgreSQL:n käyttöönottoon löytyvät osoitteesta <a href="https://devcenter.heroku.com/articles/heroku-postgresql" target="_blank">https://devcenter.heroku.com/articles/heroku-postgresql</a>.
+</p>
+
+<p>
+  Tarvitsemme (1) PostgreSQL-ajurin tietokantayhteyden luomiseen, (2) Herokun tarjoaman PostgreSQL-tietokannan sekä (3) tavan muodostaa yhteys PostgreSQL-tietokantaan. 
+</p>
+
+<h3 class="material-heading">
+    PostgreSQL-ajuri
+
+</h3>
+
+<p>
+  PostgreSQL-ajuri lisätään projektin pom.xml-tiedostossa määriteltyihin riippuvuuksiin. Ajuri noudattaa JDBC-rajapintaa, eli tietokannanhallintajärjestelmän vaihtaminen ei ideaalitilanteessa vaikuta sovelluksessa käytettyihin SQL-kyselyihin tai muuhun koodiin. PostgreSQL-tietokannanhallintajärjestelmän ajurin riippuvuus on seuraavanlainen. 
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+  &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+  &lt;version&gt;42.2.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>
+  Kun riippuvuus on lisätty projektin pom.xml-tiedostoon, sovelluksessa voidaan käyttää PostgreSQL-tietokantoja.
+</p>
+
+
+<h3 class="material-heading">
+    PostgreSQL-tietokannan luominen
+
+</h3>
+
+<p>
+  Heroku tarjoaa harrastuskäyttöön ilmaisen PostgreSQL-tietokannan. Tietokanta on tosin hieman rajattu: ilmaisessa versiossa saa olla korkeintaan 10000 riviä -- tämä on ok kurssimme tarkoituksiin. Tietokannan luominen onnistuu Heroku toolbeltin avulla. Komento <code>heroku addons:create heroku-postgresql:hobby-dev</code> lisää Herokussa sijaitsevan sovelluksen käyttöön PostgreSQL-tietokannan. 
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku addons:create heroku-postgresql:hobby-dev</strong>
+Creating heroku-postgresql:hobby-dev on ⬢ huonekalut-esim... free
+Database has been created and is available
+ ! This database is empty. If upgrading, you can transfer
+ ! data from another database with pg:copy
+Created <em>tietokannan-nimi</em> as DATABASE_URL
+Use heroku addons:docs heroku-postgresql to view documentation
+</pre>
+
+<p>
+  Nyt sovelluksemme käytössä on tietokanta. Tietokannan yhteystiedot saadaan Herokun kautta ympäristömuuttujana käyttöön.
+</p>
+
+<p>
+  Mikäli käytössä olevalle koneelle on asennettu PostgreSQL, yhteyden muodostaminen Herokun tarjoamaan tietokantaan on myös komentoriviltä helppoa. Tämä onnistuu komennolla. <code>heroku pg:psql</code>. Yleiset tietokannanhallintajärjestelmäkohtaiset komennot poikkeavat SQLite-tietokannanhallintajärjestelmästä, mutta SQL-komennot ovat tuttuja.
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku pg:psql</strong>
+--> Connecting to <em>tietokannan-nimi</em>
+psql (9.5.11, server 10.1)
+WARNING: psql major version 9.5, server major version 10.
+         Some psql features might not work.
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+<em>tietokannan-nimi</em>::DATABASE=> help
+You are using psql, the command-line interface to PostgreSQL.
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help with psql commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+<em>tietokannan-nimi</em>::DATABASE=> \d
+No relations found.
+<em>tietokannan-nimi</em>::DATABASE=> SELECT 1;
+ ?column? 
+----------
+        1
+(1 row)
+
+<em>tietokannan-nimi</em>::DATABASE=> \q
+</pre>
+
+<p>
+  Tietokanta on olemassa ja saamme muodostettua yhteyden siihen komentoriviltä.
+</p>
+
+
+<h3 class="material-heading">
+    Yhteys PostgreSQL-tietokantaan
+
+</h3>
+
+<p>
+  Muokataan vielä sovelluksemme lähdekoodia siten, että otamme yhteyden Herokun tietokantaan mikäli yhteyteen liittyvä ympäristömuuttuja on tarjolla. Tehdään tästä erillinen metodi.
+</p>
+
+<pre class="sh_java code-highlight"><code>public static Connection getConnection() throws Exception {
+    String dbUrl = System.getenv("JDBC_DATABASE_URL");
+    if (dbUrl != null && dbUrl.length() > 0) {
+        return DriverManager.getConnection(dbUrl);
+    }
+
+    return DriverManager.getConnection("jdbc:sqlite:huonekalut.db");
+}
+</code></pre>
+
+<p>
+  Lähdekoodia tulee muuttaa myös niistä kohdista, missä yhteys muodostetaan. Esimerkiksi esineiden noutamiseen liittyvässä toiminnallisuudessa ohjelman tulee hyödyntää uutta yhteyttä.
+</p>
+
+<pre class="sh_java code-highlight"><code>// ...
+  
+// avaa yhteys tietokantaan
+Connection conn = getConnection();
+
+// tee kysely
+PreparedStatement stmt = conn.prepareStatement("SELECT nimi FROM Huonekalu");
+ResultSet tulos = stmt.executeQuery();
+
+// käsittele kyselyn tulokset
+while (tulos.next()) {
+    String nimi = tulos.getString("nimi");
+    huonekalut.add(nimi);
+}
+// sulje yhteys tietokantaan
+conn.close();
+
+// ...
+</code></pre>
+
+<h3 class="material-heading">
+    Sovelluksen siirto Herokuun
+
+</h3>
+
+<p>
+  Siirretään lopuksi sovellus Herokuun. 
+</p>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>git status</strong>
+On branch master
+Your branch is ahead of 'origin/master' by 3 commits.
+(use "git push" to publish your local commits)
+Changes to be committed:
+(use "git reset HEAD &lt;file&gt;..." to unstage)
+
+  modified:   pom.xml
+  modified:   src/main/java/tikape/huonekalut/Main.java
+
+user@kone:~/kansio/huonekalut$ <strong>git add pom.xml</strong>
+user@kone:~/kansio/huonekalut$ <strong>git add src/main/java/tikape/huonekalut/Main.java</strong>
+user@kone:~/kansio/huonekalut$ <strong>git commit -m "Herokun tarjoaman tietokannan käyttöönotto."</strong>
+user@kone:~/kansio/huonekalut$ <strong>git push heroku master</strong>
+...
+</pre>
+
+<p>
+  Kun tarkastelemme sovellusta verkossa, virheviesti on tällä kertaa hieman vähemmän kuvaava..
+</p>
+
+<figure>
+  <img src="../img/heroku/heroku-500-7f28d8cd.png" alt="Herokun virheviesti: 500 Internal Server Error."/>
+</figure>
+
+<p>
+  Sovellus on käynnissä, mutta siinä tapahtuu virhe. Seuraava askel on tuttu. Tarkastellaan Herokun logeja.
+</p>
+
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku logs</strong>
+2018-02-11T15:32:25.356102+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=huonekalut-esim.herokuapp.com request_id=3b463660-67b3-420e-8b10-2dfb5ec53b1e fwd="..." dyno=web.1 connect=1ms service=157ms status=500 bytes=216 protocol=https
+2018-02-11T15:32:25.353146+00:00 app[web.1]: [qtp1497053618-15] ERROR spark.http.matching.GeneralError - 
+2018-02-11T15:32:25.353211+00:00 app[web.1]: org.postgresql.util.PSQLException: ERROR: relation "huonekalu" does not exist
+2018-02-11T15:32:25.353216+00:00 app[web.1]:   Position: 18
+2018-02-11T15:32:25.353388+00:00 app[web.1]: 	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2422)
+2018-02-11T15:32:25.353443+00:00 app[web.1]: 	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2167)
+2018-02-11T15:32:25.353491+00:00 app[web.1]: 	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+2018-02-11T15:32:25.353525+00:00 app[web.1]: 	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+2018-02-11T15:32:25.353570+00:00 app[web.1]: 	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+2018-02-11T15:32:25.353615+00:00 app[web.1]: 	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+2018-02-11T15:32:25.353659+00:00 app[web.1]: 	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:118)
+2018-02-11T15:32:25.353693+00:00 app[web.1]: 	at tikape.huonekalut.Main.lambda$main$0(Main.java:34)
+2018-02-11T15:32:25.353743+00:00 app[web.1]: 	at spark.TemplateViewRouteImpl$1.handle(TemplateViewRouteImpl.java:66)
+2018-02-11T15:32:25.353819+00:00 app[web.1]: 	at spark.http.matching.Routes.execute(Routes.java:61)
+2018-02-11T15:32:25.353852+00:00 app[web.1]: 	at spark.http.matching.MatcherFilter.doFilter(MatcherFilter.java:130)
+2018-02-11T15:32:25.353900+00:00 app[web.1]: 	at spark.embeddedserver.jetty.JettyHandler.doHandle(JettyHandler.java:50)
+2018-02-11T15:32:25.353943+00:00 app[web.1]: 	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1568)
+2018-02-11T15:32:25.354035+00:00 app[web.1]: 	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+2018-02-11T15:32:25.354108+00:00 app[web.1]: 	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+2018-02-11T15:32:25.354183+00:00 app[web.1]: 	at org.eclipse.jetty.server.Server.handle(Server.java:564)
+2018-02-11T15:32:25.354257+00:00 app[web.1]: 	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:317)
+2018-02-11T15:32:25.354330+00:00 app[web.1]: 	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+2018-02-11T15:32:25.354447+00:00 app[web.1]: 	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:279)
+2018-02-11T15:32:25.354545+00:00 app[web.1]: 	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:110)
+2018-02-11T15:32:25.354644+00:00 app[web.1]: 	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:124)
+2018-02-11T15:32:25.354739+00:00 app[web.1]: 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:673)
+2018-02-11T15:32:25.354816+00:00 app[web.1]: 	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:591)
+2018-02-11T15:32:25.354886+00:00 app[web.1]: 	at java.lang.Thread.run(Thread.java:748)
+</pre>
+
+<p>
+  Virhe <strong>ERROR: relation "huonekalu" does not exist</strong> on selkeä. Relaatio (tai toisin sanoen tietokantataulu) <code>huonekalu</code> puuttuu Herokun käyttämästä tietokannasta. Tämä johtuu siitä, että kyseistä tietokantataulua ei ole sinne koskaan luotukaan.
+</p>
+
+<h3 class="material-heading">
+    Tietokantataulun luominen Herokun PostgreSQL:ään
+
+</h3>
+
+<p>
+  Jotta sovelluksemme toimisi, tulee käytössä olla tietokantataulu <code>Huonekalu</code>. Otetaan yhteys Herokun tarjoamaan tietokantaan komennolla <code>heroku pg:psql</code> ja luodaan tietokantataulu Huonekalu. PostgreSQL ei toimi täysin samalla tavalla kuin SQLite siinä, että pääavaimen automaattisen numeroinnin määräämiseen tapahtuu muuttujatyypin SERIAL avulla. Tästä lisää <a href="https://www.postgresql.org/docs/9.1/static/datatype-numeric.html" target="_blank">PostgreSQL:n dokumentaatiossa</a>.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Huonekalu (
+    id SERIAL PRIMARY KEY,
+    nimi VARCHAR(255)
+);
+</code></pre>
+
+<pre>
+user@kone:~/kansio/huonekalut$ <strong>heroku pg:psql</strong>
+--> Connecting to postgresql-encircled-91328
+psql (9.5.11, server 10.1)
+WARNING: psql major version 9.5, server major version 10.
+         Some psql features might not work.
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+<em>tietokannan-nimi</em>::DATABASE=> CREATE TABLE Huonekalu (
+<em>tietokannan-nimi</em>::DATABASE(>     id SERIAL PRIMARY KEY,
+<em>tietokannan-nimi</em>::DATABASE(>     nimi VARCHAR(255)
+<em>tietokannan-nimi</em>::DATABASE(> );
+CREATE TABLE
+<em>tietokannan-nimi</em>::DATABASE=> 
+<em>tietokannan-nimi</em>::DATABASE=> SELECT * FROM Huonekalu;
+ id | nimi 
+----+------
+(0 rows)
+
+<em>tietokannan-nimi</em>::DATABASE=> \quit
+</pre>
+
+<p>
+  Kun tietokantataulu on lisätty, sovellus alkaa toimimaan (ja mikäli ei, Herokun logit auttavat!).
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>En halua asentaa PostgreSQL:ää omalle koneelleni!
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Edellisen esimerkin tietokantayhteyden muodostaminen olettaa, että koneelle asennetaan PostgreSQL. Voit halutessasi tehdä myös (esimerkiksi) niin, että tietokantataulu luodaan ohjelmallisesti Herokuun lähetettävän sovelluksen lähdekoodissa. Komennot kuten <strong>CREATE TABLE</strong> toimivat Javan kautta aivan yhtä hyvin kuin esimerkiksi <strong>INSERT</strong>-komennot.
+  </p>
+   
+
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    SQL-injektiot
+
+</h1>
+
+<p>
+  Suurin osa olemassaolevista sovelluksista käyttää tietokannanhallintajärjestelmiä jollain tavalla: tietoa haetaan tietokannasta, tietokannassa olevaa tietoa muokataan, ja tietokantaan tallennetaan tietoa. Tyypillisesti sovelluksiin on myös käyttöliittymä, minkä kautta sovelluksen käyttäjät pääsevät vaikuttamaan kyselyiden sisältöön.
+</p>
+
+<p>
+  SQL-injektioiden tekeminen onnistuu jos ohjelmoija jättää tietokantaa käsitteleviin kyselyihin ns. käyttäjän mentävän aukon. Tämä onnistuu Javalla siten, että kyselyt luodaan niin, että kyselyihin lisättävät parametrit syötetään kyselyyn suoraan merkkijonona.
+</p>
+
+<p>
+  Alla on esimerkki, missä käyttäjältä kysytään haettavan pyörän merkkiä.
+</p>
+
+<pre class="sh_java code-highlight"><code>Scanner lukija = new Scanner(System.in);
+System.out.println("Minkä merkkiset pyörät tulostetaan?");
+String merkki = lukija.nextLine();
+
+// ...
+
+PreparedStatement statement = connection.prepareStatement("SELECT * FROM Pyora WHERE merkki = ?");
+statement.setString(1, merkki);
+
+// ...
+
+ResultSet resultSet = statement.executeQuery();
+</code></pre>
+
+<p>
+  Kysely on turvallinen, sillä merkki asetetaan metodin setString avulla. Metodi tarkastaa myös, ettei kyselyssä ole ylimääräistä sisältöä. 
+</p>
+
+<p>
+  Kyselystä saa helposti erittäin turvattoman. Seuraavassa esimerkissä on mahdollisuus SQL-injektioon.
+</p>
+
+<pre class="sh_java code-highlight"><code>Scanner lukija = new Scanner(System.in);
+System.out.println("Minkä merkkiset pyörät tulostetaan?");
+String merkki = lukija.nextLine();
+
+// ...
+
+PreparedStatement statement = connection.prepareStatement("SELECT * FROM Pyora WHERE merkki = '" + merkki + "'");
+
+// ...
+
+ResultSet resultSet = statement.executeQuery();
+</code></pre>
+
+<p>
+  Kun käyttäjän syöttämä merkkijono lisätään suoraan osaksi kyselyä, voi käyttäjä syöttää SQL-lauseita komentoonsa. Jos käyttäjä syöttää ohjelmaan esimerkiksi merkkijono <code>a' OR 'a'='a</code>, on suoritettava SQL-lause lopulta muotoa:
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Pyora WHERE merkki = 'a' OR 'a'='a'
+</code></pre>
+
+<p>
+  Edellinen lause on aina totta, sillä tarkastus 'a'='a' on totta.
+</p>
+
+<p>
+  Myös muunlaisten SQL-lauseiden suoritus olisi em. tapauksessa mahdollista. Web-sarjakuva <a href="http://xkcd.com/" target="_blank">xkcd</a> kuvastaa tätä ilmiötä hyvin <em>Exploits of a Mom</em>-sarjakuvallaan.
+</p>
+
+<figure>
+  
+  <img src="http://imgs.xkcd.com/comics/exploits_of_a_mom.png" alt="School: Hi, this is your son's school. We're having some computer trouble.
+								    
+								    Mom: Oh, dear -- Did he break something?
+								    
+								    School: In a way. Did you really name your son Robert'); DROP TABLE Students;--?
+								    
+								    Mom: Oh. Yes. Little Bobby Tables we call him.
+								    
+								    School: Well, we've lost this year's student records. I hope you're happy.
+								    
+								    Mom: And I hope you've learned to sanitize your database inputs."/>
+  
+  <figcaption>http://xkcd.com/327/ -- Exploits of a Mom. </figcaption>
+  
+</figure>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">SQL-injektio</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa on sovellus, joka mahdollistaa huonekalujen lisäämisen, listaamisen ja poistamisen. Muokkaa sovellusta siten, että huonekalujen poistamisessa on SQL-injektiomahdollisuus. Tällä hetkellä huonekalun, jonka id on 3, poistaminen onnistuu POST-pyynnöllä sovelluksen polkuun <code>/delete/3</code>. SQL-injektion tulee muuntaa tilannetta siten, että esimerkiksi pyyntö osoitteeseen <code>/delete/3%20OR%2042=42</code> poistaakin kaikki tietokannan rivit. Edellisessä esimerkissä <code>%20</code> on osoitteissa käytettävä välilyönnin merkki.
+  </p>
+  
+
+    </div>
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Tietokannan normalisointi ja denormalisointi
+
+</h1>
+
+<p>
+  Tietokannan normalisointi on askeleittainen prosessi, mikä sisältää mahdollisten ongelmakohtien tunnistamisen ja niiden korjaamisen. Tietokannan normalisointiprosessin tuloksena tietokanta sisältää hyvin vähän toisteista tietoa. Tietokannan denormalisointi on käänteinen prosessi, missä tietokannassa sijaitsevan toisteisuuden määrä lisääntyy. Samalla tietokantakyselyiden tehokkuus tyypillisesti kasvaa.
+</p>
+
+<p>
+  Tarkastellaan näitä kahta seuraavaksi.
+</p>
+
+<h2 class="material-heading">
+    Tietokannan normalisointi
+
+</h2>
+
+<p>
+  Tietokannan normalisoinnin tavoite on vähentää tietokantatauluissa esiintyvää toisteista tietoa. Pääpiirteittäin tavoite on sama kuin käsiteanalyysissä: lopulta jokainen taulu liittyy vain tiettyyn käsitteeseen ja taulun attribuutit liittyvät vain kyseisen taulun esittämään käsitteeseen.
+</p>
+
+<p>
+  Toisin kuin käsiteanalyysi, tietokannan normalisointi tehdään tyypillisesti olemassaolevalle tietokannalle tai sen suunnitelmalle. Tietokannan normalisoinnissa etsimme epäkohtia, jonka jälkeen näitä epäkohtia korjataan.
+</p>
+
+<p>
+  Tietokannan normalisointi tapahtuu askeleittain normaalimuotojen avulla. 
+</p>
+
+
+<h3 class="material-heading">
+    Ensimmäinen normaalimuoto
+
+</h3>
+
+<p>
+  Tietokantataulu on ensimmäisessä normaalimuodossa, jos se täyttää seuraavat ehdot:
+</p>
+
+<ol>
+  <li>
+    Sarakkeen arvot eivät saa sisältää listoja.
+  </li>
+  <li>
+    Taulun sarakkeet eivät muodosta toistuvia ryhmiä.
+  </li>
+  <li>
+    Sarakkeen arvojen tulee olla saman tyyppisiä. 
+  </li>
+  <li>
+    Jokaisen sarakkeen nimen tulee olla tietokantataulussa uniikki.
+  </li>
+  <li>
+    Sarakkeiden järjestyksen ei tule vaikuttaa tietokantataulun toimintaan.
+  </li>
+  <li>
+    Tietokantataulussa ei saa olla kahta täsmälleen samanlaista riviä.
+  </li>
+  <li>
+    Rivien järjestyksen ei tule vaikuttaa tietokantataulun toimintaan.
+  </li>
+</ol>
+
+<p>
+  Alla on esimerkki henkilöitä sisältävästä tietokantataulusta. Jokaiseen henkilöön liittyy tunnus (id), nimi sekä pilkuilla eroteltu lista puhelinnumeroita. Esimerkki rikkoo ensimmäistä normaalimuotoa, sillä puhelinnumerot sisältävät listoja.
+</p>
+
+<table class="table">
+  <tr>
+    <th colspan=3>Henkilo((pk) id, nimi, puhelinnumerot)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	id
+      </u>
+    </th>
+    <th>
+      nimi
+    </th>
+    <th>
+      puhelinnumerot
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Larry
+    </td>
+    <td>
+      555-1024, 555-2048
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Moe
+    </td>
+    <td>
+      555-0512, 555-0256, 555-0128
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      Curly
+    </td>
+    <td>
+      555-0001, 555-0002, 555-0004
+    </td>
+  </tr>
+</table>
+
+<p>
+  Ensimmäinen korjaus ylläolevaan tietokantatauluun on eritellä puhelinnumerot erillisiksi sarakkeikseen (tehty alla). Tämä ei ole kovin hyvä ratkaisu -- koko tietokantataulun rakennetta tulee muuttaa mikäli jollain on esimerkiksi neljä tai viisi erillistä numeroa. Tämä myös rikkoo ensimmäistä normaalimuotoa, sillä puhelinnumero muodostaa toistuvan ryhmän.
+</p>
+
+
+<table class="table">
+  <tr>
+    <th colspan=5>Henkilo((pk) id, nimi, puhelinnumero1, puhelinnumero2, puhelinnumero3)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	id
+      </u>
+    </th>
+    <th>
+      nimi
+    </th>
+    <th>
+      puhelinnumero1
+    </th>
+    <th>
+      puhelinnumero2
+    </th>
+    <th>
+      puhelinnumero3
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Larry
+    </td>
+    <td>
+      555-1024
+    </td>
+    <td>
+      555-2048
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Moe
+    </td>
+    <td>
+      555-0512
+    </td>
+    <td>
+      555-0256
+    </td>
+    <td>
+      555-0128
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      Curly
+    </td>
+    <td>
+      555-0001
+    </td>
+    <td>
+      555-0002
+    </td>
+    <td>
+      555-0004
+    </td>
+  </tr>
+</table>
+
+<p>
+  Sopivampi korjaus ongelmaan on muodostaa erillinen tietokantataulu puhelinnumeroille. Henkilön ja puhelinnumeron välillä on yhden suhden moneen -yhteys, eli yhteen henkilöön liittyy monta puhelinnumeroa, mutta jokainen puhelinnumero liittyy yhteen henkilöön.
+</p>
+
+
+<table class="table">
+  <tr>
+    <th colspan=2>Henkilo((pk) id, nimi)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	id
+      </u>
+    </th>
+    <th>
+      nimi
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Larry
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Moe
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      Curly
+    </td>
+  </tr>
+</table>
+
+<p>
+  &nbsp;
+</p>
+
+<table class="table">
+  <tr>
+    <th colspan=3>Puhelinnumero((pk) id, (fk) henkilo_id -&gt; Henkilo, puhelinnumero)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	id
+      </u>
+    </th>
+    <th>
+      <u>
+	henkilo_id
+      </u>
+    </th>
+    <th>
+      puhelinnumero
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      555-1024
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      555-2048
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      2
+    </td>
+    <td>
+      555-0512
+    </td>
+  </tr>
+  <tr>
+    <td>
+      4
+    </td>
+    <td>
+      2
+    </td>
+    <td>
+      555-0256
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+  </tr>
+</table>
+
+
+
+<h3 class="material-heading">
+    Funktionaalinen riippuvuus
+
+</h3>
+
+
+<p>
+  Ensimmäisessä normaalimuodossa kyse on ensiaskeleista tietokannan rakenteen järkevöittämiseen. Muissa normaalimuodoissa käsite <em>funktionaalinen riippuvuus</em> sarakkeiden välillä on oleellinen.
+</p>
+
+<p>
+  Sarake B on funktionaalisesti riippuvainen sarakkeesta A (A määrää funktionaalisesti B:n), jos sarakkeen A arvon perusteella voidaan yksikäsitteisesti selvittää sarakkeen B arvo. Tällöin kirjoitetaan <code>A -&gt; B</code>, ja sanotaan, että "sarake B on funktionaalisesti riippuvainen sarakkeesta A". Huom! A voi olla myös kokoelma sarakkeita!
+</p>
+
+<p>
+  <em>
+    Esimerkiksi henkilön nimi on funktionaalisesti riippuvainen henkilötunnuksesta, sillä henkilötunnuksen perusteella voidaan yksikäsitteisesti selvittää nimi. Toisaalta, henkilötunnus ei ole funktionaalisesti riippuvainen henkilön nimestä, koska useammalla henkillä voi olla sama nimi.
+  </em>
+</p>
+
+<p>
+  Selvittäminen voi tapahtua kyselyllä "SELECT DISTINCT b FROM Taulu WHERE a=tiedetty_arvo", missä avainsana DISTINCT palauttaa uniikit rivit. Jos attribuutti <code>b</code> on funktionaalisesti riippuva <code>a</code>:sta, tuottaa ylläoleva kysely joko yhden tai ei yhtään tulosriviä, mutta ei koskaan enempää. Tämän ehdon on oltava voimassa aina, ei vain hetkellisesti.
+</p>
+
+
+<p>Esimerkki: <code>Henkilo( (pk) id, nimi, henkilötunnus)</code> -- mitkä arvot ovat funktionaalisesti riippuvaisia toisistaan?</p>
+
+<table class="table">
+  
+  <thead>
+    <tr>
+      <th>Henkilo</th>
+      <th>A: id</th>
+      <th>A: nimi</th>
+      <th>A: henkilötunnus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>B: id</td>
+      <td>?</td>
+      <td>?</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: nimi</td>
+      <td>?</td>
+      <td>?</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: henkilötunnus</td>
+      <td>?</td>
+      <td>?</td>
+      <td>?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sarakkeen perusteella voi aina määritellä itsensä. Esimerkiksi <code>id -&gt; id</code> on aina totta.</p>
+
+<table class="table">
+  
+  <thead>
+    <tr>
+      <th>Henkilo</th>
+      <th>A: id</th>
+      <th>A: nimi</th>
+      <th>A: henkilötunnus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>B: id</td>
+      <td>kyllä</td>
+      <td>?</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: nimi</td>
+      <td>?</td>
+      <td>kyllä</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: henkilötunnus</td>
+      <td>?</td>
+      <td>?</td>
+      <td>kyllä</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Voimmeko tunnistaa nimen perusteella henkilön yksilöivän tunnisteen? Useammalla henkilöllä voi olla sama nimi, joten tämä ei pidä paikkansa. Voimmeko tunnistaa henkilötunnuksen perusteella henkilön yksilöivän tunnisteen? Henkilötunnus on uniikki, joten oletetaan että kyllä (tämä pätee tosin vain Suomessa..).</p>
+
+<table class="table">
+  
+  <thead>
+    <tr>
+      <th>Henkilo</th>
+      <th>A: id</th>
+      <th>A: nimi</th>
+      <th>A: henkilötunnus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>B: id</td>
+      <td>kyllä</td>
+      <td>ei</td>
+      <td>kyllä</td>
+    </tr>
+    <tr>
+      <td>B: nimi</td>
+      <td>?</td>
+      <td>kyllä</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: henkilötunnus</td>
+      <td>?</td>
+      <td>?</td>
+      <td>kyllä</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Voiko yksilöivän avaimen perusteella tunnistaa henkilön nimen? Kyllä. </p>
+
+<table class="table">
+  
+  <thead>
+    <tr>
+      <th>Henkilo</th>
+      <th>A: id</th>
+      <th>A: nimi</th>
+      <th>A: henkilötunnus</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>B: id</td>
+      <td>kyllä</td>
+      <td>ei</td>
+      <td>kyllä</td>
+    </tr>
+    <tr>
+      <td>B: nimi</td>
+      <td>kyllä</td>
+      <td>kyllä</td>
+      <td>?</td>
+    </tr>
+    <tr>
+      <td>B: henkilötunnus</td>
+      <td>?</td>
+      <td>?</td>
+      <td>kyllä</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Loput jäävät omatoimiseen harjoitteluun.</p>
+
+
+<h3 class="material-heading">
+    Toinen normaalimuoto
+
+</h3>
+
+
+<p>
+  Tietokantataulu on toisessa normaalimuodossa jos (1) se on ensimmäisessä normaalimuodossa ja (2) tietokantataulun sarakkeet (poislukien avaimet) ovat <em>funktionaalisesti riippuvaisia</em> tietokantataulun (yhdellä sarakkeella määritellystä) pääavaimesta.
+</p>
+
+<p>
+  Jos tietokantataulun pääavain on määritelty yhden sarakkeen avulla, ovat kaikki tietokantataulun sarakkeet automaattisesti funktionaalisesti riippuvaisia pääavaimesta. Käytännössä siis, jos taulu on ensimmäisessä normaalimuodossa ja sillä on yhden sarakkeen avulla määritelty pääavain, on se automaattisesti toisessa normaalimuodossa.
+</p>
+
+<p>
+  Jos taas tietokantataulun pääavain on määritelty useamman sarakkeen avulla, tulee tietokantataulun jokaisen sarakkeen olla riippuvainen koko avaimesta, eli osittaista riippuvuutta pääavaimesta ei sallita. Tarkastellaan tilannetta, missä tietokantataulun pääavain on määritelty useamman sarakkeen kautta ja tällainen tilanne tapahtuu.
+</p>
+
+<p>
+  Oletetaan seuraavat tietokantataulut, joissa pääavaimet on alleviivattu. Ensimmäisessä kahdessa tietokantataulussa pääavain on id, kolmannessa taulussa pääavain on määrätty kahden viiteavaimen yhdistelmänä. 
+</p>
+
+<ul>
+  <li>Asiakas ((pk) <u>id</u>, nimi)</li>
+  <li>Kauppa ((pk) <u>id</u>, nimi, osoite)</li>
+  <li>Ostos ((fk) <u>asiakas_id</u> -&gt; Asiakas, (fk) <u>kauppa_id</u> -&gt; Kauppa, hinta, kaupunki)</li>
+</ul>
+
+<p>
+  Taulut Asiakas ja Kauppa ovat ensimmäisessä ja toisessa normaalimuodossa.
+</p>
+
+<p>
+  Tarkastellaan taulua Ostos. Taulun Ostos sarake hinta kertoo ostoksen hinnan. Sarake kaupunki kertoo missä ostos tehtiin.
+</p>
+
+
+
+<table class="table">
+  <tr>
+    <th colspan=3>Ostos ((fk) <u>asiakas_id</u> -&gt; Asiakas, (fk) <u>kauppa_id</u> -&gt; Kauppa, hinta, kaupunki)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	asiakas_id
+      </u>
+    </th>
+    <th>
+      <u>
+	kauppa_id
+      </u>
+    </th>
+    <th>
+      hinta
+    </th>
+    <th>
+      kaupunki
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      14.90
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      3
+    </td>
+    <td>
+      15.20
+    </td>
+    <td>
+      Vantaa
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      8.40
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      2
+    </td>
+    <td>
+      19.20
+    </td>
+    <td>
+      Espoo
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      3
+    </td>
+    <td>
+      10.40
+    </td>
+    <td>
+      Vantaa
+    </td>
+  </tr>
+  <tr>
+    <td>
+      4
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      12.20
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+  </tr>
+</table>
+
+<p>
+  Kun tarkastelemme taulua Ostos, huomaamme, että tietokantataulun sarake kaupunki on funktionaalisesti riippuvainen sarakkeesta kauppa_id. Koska sarake kauppa_id on osa tietokantataulun pääavaimesta, tämä rikkoo toista normaalimuotoa. Yksi ratkaisu ongelmaan on kaupungin siirtäminen tauluun Kauppa.
+</p>
+
+
+<ul>
+  <li>Asiakas ((pk) <u>id</u>, nimi)</li>
+  <li>Kauppa ((pk) <u>id</u>, nimi, osoite, kaupunki)</li>
+  <li>Ostos ((fk) <u>asiakas_id</u> -&gt; Asiakas, (fk) <u>kauppa_id</u> -&gt; Kauppa, hinta)</li>
+</ul>
+
+<p>
+  Nyt jokainen ylläolevista tietokantatauluista on ensimmäisessä ja toisessa normaalimuodossa.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kandidaattiavain
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Toisen normaalimuodon voi määritellä myös kandidaattiavain-käsitteen kautta. Tietokantataulun kandidaattiavaimet määritellään niiden tietokantataulun sarakkeiden joukkona, joiden avulla tietokantataulun rivit voidaan yksilöidä. Toisin sanoen, kandidaattiavainjoukko mahdollistaa tietokantatauuln rivin yksilöimisen.
+  </p>
+
+  <p>
+    Tietokantataululle voidaan määritellä tyypillisesti useampia kandidaattiavaimia, mutta näistä valitaan vain yksi tietokantataulun pääavaimeksi. Tarkastellaan taulua Henkilö, joka sisältää sarakkeet syntymäaika, etunimi, sukunimi ja puhelinnumero.
+  </p>
+
+  <p>
+    Kandidaattiavaimia etsitään sarakkeiden avulla muodostetusta joukkojen joukosta: {{syntymäaika}, {etunimi}, {sukunimi}, {puhelinnumero}, {syntymäaika, etunimi}, {syntymäaika, sukunimi}, {syntymäaika, puhelinnumero}, {etunimi, sukunimi}, {etunimi, puhelinnumero}, {syntymäaika, etunimi, sukunimi}, {syntymäaika, etunimi, puhelinnumero}, {syntymäaika, sukunimi, puhelinnumero}, {etunimi, sukunimi, puhelinnumero}, {syntymäaika, etunimi, sukunimi, puhelinnumero}}.
+  </p>
+
+  <p>
+    Jokaista joukkoa tarkastellaan niiden sisältämien sarakkeiden arvojoukkojen kautta. Jos joukolle on mahdollista löytää useampia rivejä, joissa kandidaattiavainjoukon arvot ovat samat, hylätään kandidaattiavain. Esimerkiksi useammalla henkilöllä voi olla sama syntymäaika, useammalla henkilöllä voi olla sama etunimi, ja useammalla henkilöllä voi olla sama sukunimi, joten {syntymäaika}, {etunimi}, {sukunimi} eivät ole kandidaattiavaimia. Vastaavasti joukko {etunimi, sukunimi} ei voi olla kandidaattiavain, sillä useammalla henkilöllä voi olla sama etunimi ja sukunimi.
+  </p>
+
+  <p>
+    Tätä prosessia jatkamalla tunnistetaan lopullinen kandidaattiavainten joukko. Edellisessä taulussa oikeastaan yksikään esitellyistä joukoista ei ole kandidaattiavainjoukko jos oletamme, että useammalla henkilöllä voi olla sama puhelinnumero.
+  </p>
+
+  <p>
+    Kandidaattiavainten avulla määriteltynä taulu on toisessa normaalimuodossa jos ja vain jos se on ensimmäisessä normaalimuodossa ja jokainen taulun kandidaattiavaimeen kuulumaton sarake on riippuvainen koko kandidaattiavaimen joukosta, mutta ei yksittäisestä joukon jäsenestä (jos joukkoon kuuluu useampi sarake).
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<h3 class="material-heading">
+    Kolmas normaalimuoto
+
+</h3>
+
+<p>
+  Kolmanteen normaalimuotoon liittyy oleellisesti käsite transitiivinen riippuvuus.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Transitiivinen riippuvuus
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Transitiivisella riippuvuudella tarkoitetaan sitä, että sarake A on funktionaalisesti riippuvainen sarakkeesta C jonkun toisen sarakkeen kautta. Sarake A on transitiivisesti riippuvainen sarakkeesta C, jos sarake A on funktionaalisesti riippuvainen sarakkeesta B ja sarake B on funktionaalisesti riippuvainen sarakkeesta C. Tässä A, B ja C voivat olla myös sarakejoukkoja.
+  </p>
+
+
+  </div>
+</div>
+
+<p>
+  Tietokantataulu on kolmannessa normaalimuodossa jos se on toisessa normaalimuodossa ja siinä olevat sarakkeet eivät ole transitiivisesti riippuvaisia taulun pääavaimesta.
+</p>
+
+
+<p>
+  Jos tietokantataulu rikkoo kolmannen normaalimuodon, eli tietokantataulusta tunnistetaan sarakkeita, jotka ovat transitiivisesti riippuvaisia pääavaimesta, eriytetään ne omaksi taulukseen. Eräs klassinen esimerkki tällaisesta tilanteesta liittyy postinumeroon -- tarkastellaan seuraavaa taulua Osoite.
+</p>
+
+
+<table class="table">
+  <tr>
+    <th colspan=4>Osoite((pk) <u>id</u>, katuosoite, postinumero, postitoimipaikka)</th>
+  </tr>
+  <tr>
+    <th>
+      <u>
+	id
+      </u>
+    </th>
+    <th>
+      katuosoite
+    </th>
+    <th>
+      postinumero
+    </th>
+    <th>
+      postitoimipaikka
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Työpajankatu 13
+    </td>
+    <td>
+      00580
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Työpajankatu 2 R1 C
+    </td>
+    <td>
+      00580
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      Siltavuorenranta 18
+    </td>
+    <td>
+      00170
+    </td>
+    <td>
+      Helsinki
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+    <td>
+      ...
+    </td>
+  </tr>
+</table>
+
+
+<p>
+  Yllä olevassa tietokantataulussa havaitaan funktionaalinen riippuvuus <code>postinumero -&gt postitoimipaikka</code>, eli postitoimipaikan saa selvitettyä postinumeron perusteella. Samalla kaikki sarakkeet ovat selvitettävissä taulun pääavaimen kautta, joten taulusta löytyy myös transitiivinen riippuvuus. Ratkaisu tähän on -- esimerkiksi -- luoda erillinen taulu postinumeroille. 
+</p>
+
+<ul>
+  <li>Osoite((pk) <u>id</u>, katuosoite, postinumero)</li>
+  <li>Postinumero((pk) <u>postinumero</u>, postitoimipaikka)</li>
+</ul>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Muita normaalimuotoja
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Ensimmäisen, toisen ja kolmannen normaalimuodon lisäksi tietokannan normalisointiin käytetään <a href="https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form" target="_blank" norel>Boyce-Codd -normaalimuotoa</a>, <a href="https://en.wikipedia.org/wiki/Fourth_normal_form" target="_blank" norel>Neljättä normaalimuotoa</a> ja <a href="https://en.wikipedia.org/wiki/Fifth_normal_form" target="_blank" norel">Viidettä normaalimuotoa</a>.
+  </p>
+
+  <p>
+    Tämän kurssin puitteissa ensimmäiset kolme normaalimuotoa riittävät suunnitteluun.
+  </p>
+  
+
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Tietokannan denormalisointi
+
+</h2>
+
+<p>
+  Tietokannan normalisointi johtaa tyypillisesti tilanteeseen, missä tietokannassa on useita tietokantatauluja, joista jokainen kuvaa jotain selkeää käsitettä. Tietokantataulujen väliset yhteydet tunnistetaan pää- ja viiteavainten avulla, ja taulujen attribuutit ovat selkeitä. Tietokannasta puuttuu toisteinen tieto.
+</p>
+
+<p>
+  Yleisesti ottaen yllä kuvattu tilanne on hyvä, mutta absoluuttinen hyvyys liittyy paljolti myös käyttötarkoitukseen. Esimerkiksi raportointiin tarkoitettujen järjestelmien ei kannata todennäköisesti -- jos raportin luonti on hidas operaatio -- luoda samoja raportteja yhä uudelleen ja uudelleen, vaan voi olla mielekästä luoda erillinen tietokantataulu (tai muutama), jotka sisältävät raporteille oleelliset tiedot valmiiksi laskettuna.
+</p>
+
+<p>
+  Myös tietokannan (tai tietokantataulun) käyttötarkoitus vaikuttaa normalisoinnin tarpeeseen. Esimerkiksi sivukäyntien kirjaamiseen tarkoitettu logitusjärjestelmä toimii tehokkaammin jos sivukäyntien tallentamiseen tarkoitetut osat järjestelmästä on denormalisoitu. Tarkastellaan tätä seuraavan esimerkin kautta.
+</p>
+
+<p>
+  Alla on annettuna kaksi tietokantaa, toinen on normalisoitu ja toinen denormalisoitu. Kumpaakin käytetään järjestelmässä kävijöiden tekemien tapahtumien kirjaamiseen.
+</p>
+
+<p>
+  Alla olevassa versiossa käyttäjä ja sivu on eriytetty omaksi käsitteekseen, johon tapahtuma-taulu viittaa. Kun tapahtumaa luodaan, tulee tapahtuman lisäämisen yhteydessä hakea käyttäjän tunnus taulusta Kayttaja sekä osoitetta vastaavan sivun tunnus taulusta Sivu.
+</p>
+
+
+<ul>
+  <li>
+    Kayttaja ((pk) id, kayttajatunnus)
+  </li>
+  <li>
+    Sivu ((pk) id, osoite)
+  </li>
+  <li>
+    Tapahtuma ((pk) id, (fk) kayttaja_id -&gt; Kayttaja, (fk) sivu_id -&gt; Sivu, aika, operaatio, ip, laite)
+  </li>
+</ul>
+
+<p>
+  Toinen vaihtoehto on tallentaa käyttäjätunnus ja sivun osoite sellaisenaan.
+</p>
+
+<ul>
+  <li>
+    Tapahtuma ((pk) id, kayttajatunnus, osoite, aika, operaatio, ip, laite)
+  </li>
+</ul>
+
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Operaatioiden tehokkuuden tarkastelu</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Luo SQLiten avulla tehtäväpohjan kansioon <code>db</code> kaksi yllä kuvattua tietokantaa. Ensimmäisen nimeksi tulee 'tapahtumat-normalisoitu.db' ja toisen nimeksi 'tapahtumat-denormalisoitu.db'. Tee tämän jälkeen ohjelma, joka testaa tiedon lisäämisen nopeutta edellä mainittuihin tietokantatauluihin. Luokan <code>OperaatioidenTehokkuus</code> <code>main</code>-metodin kutsun tulee lisätä 100 tapahtumaa kumpaankin tietokantaan.
+  </p>
+
+  <p>
+    Ota seuraava CREATE TABLE-lause lähtökohdaksi.
+  </p>
+
+  <pre>
+    CREATE TABLE Tapahtuma (
+        id integer PRIMARY KEY, 
+        kayttajatunnus varchar(255), 
+        osoite varchar(255), 
+        aika integer, 
+        operaatio varchar(255), 
+        ip varchar(255), 
+        laite varchar(255)
+    );
+  </pre>
+
+  <p>
+    Voit olettaa, että järjestelmä saa jokaisen tapahtuman yhteydessä tietoonsa käyttäjätunnuksen, osoitteen, ajan, tehdyn operaation, ip-osoitteen sekä käyttäjän käyttämän laitteen. Tehtäväpohjassa on valmis toiminnallisuus satunnaisen tiedon luomiseen sekä paikat lisäyskyselyiden tekemiseen.
+  </p>
+
+  <p>
+    Kun tietoa lisätään normalisoituun tietokantaan, tapahtuman lisäämisen yhteydessä tulee hakea käyttäjätaulusta tieto käyttäjästä (ja tallentaa käyttäjä tauluun jos kyseistä käyttäjää ei vielä ole), jonka lisäksi sivutaulusta tulee hakea tieto sivusta osoitteen perusteella (sekä lisätä sivu jos sitä ei vielä ole).
+  </p>
+
+  <p>
+    Kun tietoa lisätään denormalisoituun tietokantaan, riittää tiedon tallentaminen tietokantatauluun.
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Normalisoida vai eikö normalisoida?
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Lue CodingHorror.com-blogista kirjoitus <a href="http://blog.codinghorror.com/maybe-normalizing-isnt-normal/" target="_blank">Maybe Normalizing Isn't Normal</a>.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Sanitettitarkastus</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa on tehtävien hallintaan tarkoitettu sovellus. Sovelluksessa on kuitenkin harmittava ominaisuus: kun käyttäjälle lisätään tehtävä, kyseistä tehtävää ei enää näytetä sivulla, missä tehtäviä voi lisätä käyttäjille. Mikään ei kuitenkaan estä ilkeämielistä käyttäjää leikkimästä selainta ja tekemästä pyyntöjä palvelimelle.
+  </p>
+  
+  <p>
+    Voit kokeilla tätä myös itse -- linux/unix/mac -komentorivillä seuraava komento lisää käyttäjälle, jonka pääavain on 2 tehtävän, jonka pääavain on 1.
+  </p>
+  
+  <pre>
+kayttaja@kone:~/kansio$ curl --data "userId=2" http://localhost:4567/tasks/1
+  </pre>
+
+  <p>
+    Yllä kuvatun komennon voi ajaa tällä hetkellä halutessaan vaikkapa miljoona kertaa, jolloin TaskAssignment-tauluun päätyy miljoona riviä.
+  </p>
+
+  <p>
+    Korjaa tilanne. Muokkaa sovellusta siten, että jokainen tehtävä voi olla määrättynä korkeintaan yhdelle käyttäjälle.
+  </p>
+
+  <p>
+    <em>
+      Tehtäväpohjassa ei ole toistaiseksi testejä, eli testaa korjauksesi toimintaa itse.
+    </em>
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part5.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

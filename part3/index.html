@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kolmannen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Osaa hakea useammasta tietokantataulusta tietoa JOIN-kyselyiden avulla. Osaa luoda ohjelman, joka kommunikoi tietokannanhallintajärjestelmän kanssa valmiin rajapinnan kautta. Osaa luoda ohjelman, joka hyödyntää useamman tietokantataulun sisältävää tietokantaa ja tuntee data access object (DAO) -suunnittelumallin. Osaa esittää tietoa JSON-kielellä. Osaa luoda web-sovelluksen, joka näyttää käyttäjälle tietokannasta haettua tietoa JSON-muodossa.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Tiedon hakeminen kahdesta tai useammasta taulusta
+
+</h1>
+
+
+<p>
+  Kurssimateriaalin ensimmäisessä kahdessa osassa tutustuimme tietokannan suunnitteluun. Olemme luoneet käsiteanalyysin avulla luokkakaavion (tai käsitekaavion) ja tehneet käsitekaaviosta tietokantakaavion. Tutustuimme toisessa osassa myös SQL-kieleen, jonka tietokantakaaviosta luodaan konkreettinen tietokanta tietokannanhallintajärjestelmään. Olemme harjoitelleet myös hieman muunlaisia SQL-kyselyitä. Tutustutaan seuraavaksi tiedon hakemiseen useammasta taulusta.
+</p>
+
+<p>
+  Tässä luvussa oletetaan, että tietokantataulu on seuraava:
+</p>
+
+<ul>
+  <li>Asiakas((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Ravintola((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Annos((pk) id:Integer, (fk) ravintola_id -&gt; Ravintola, nimi:String, koko:String, hinta:double)</li>
+  <li>Tilaus((pk) id:Integer, (fk) asiakas_id -&gt; Asiakas, aika:Date, kuljetustapa:String, vastaanotettu:Boolean, toimitettu:Boolean)</li>
+  <li>RaakaAine((pk) id:Integer, nimi:String)</li>
+  <li>AnnosRaakaAine((fk) annos_id - &gt; Annos, (fk) raaka_aine_id -&gt; RaakaAine)</li>
+  <li>TilausAnnos((fk) tilaus_id - &gt; Tilaus, (fk) annos_id -&gt; Annos)</li>
+</ul>
+
+
+
+<h2 class="material-heading">
+    Kahden tietokantataulun rivien yhdistäminen
+
+</h2>
+
+<p>
+  SQL-kielen SELECT-lauseen avainsanaa FROM seuraa taulu, josta tietoa haetaan. Esimerkiksi lause <code>SELECT * FROM Asiakas</code> tulostaa kaikki Asiakas-taulun rivit.
+</p>
+
+<p>
+  Haun ei tarvitse rajoittua yhteen tauluun. Voimme määritellä haun kohteeksi useampia tauluja listaamalla ne FROM-avainsanan jälkeen pilkulla eroteltuna seuraavasti <code>SELECT * FROM Asiakas, Tilaus</code>. Lauseen tulos ei kuitenkaan ole tyypillisesti toivottu: <strong>jos emme kerro miten taulujen rivit yhdistetään, on lopputuloksessa kaikki ensimmäisen taulun rivit yhdistettynä kaikkiin toisen taulun riveihin</strong> -- esimerkiksi jokainen taulun Asiakas rivi yhdistettynä jokaiseen taulun Tilaus riviin.
+</p>
+
+<p>
+  Tällaisen kyselyn tulostaulu listaa jokaiseen asiakkaaseen kytkettynä jokaisen tilauksen, jolloin tulostaulun riveistä ei voi päätellä kenelle mikäkin tilaus kuuluu.
+</p>
+
+<p>
+  Taulujen yhdistäminen tapahtuu kyselyä rajaavan <code>WHERE</code>-ehdon avulla siten, että taulun pääavainta verrataan siihen viittaavan taulun viiteavaimeen. Esimerkiksi, jos haluamme vain asiakkaat sekä asiakkaisiin liittyvät tilaukset, hyödynnämme Asiakas-taulun pääavainta id sekä Tilaus-taulussa olevaa Asiakas-taulun pääavaimeen viittaavaa viiteavainta asiakas_id. Käytännössä tämä tapahtuu ehdolla <code>WHERE Asiakas.id = Tilaus.asiakas_id</code>.
+</p>
+
+<p>
+  Kokonaisuudessaan lause "Listaa jokaisen asiakkaan tekemät tilaukset" kirjoitetaan seuraavasti:
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Asiakas, Tilaus WHERE Asiakas.id = Tilaus.asiakas_id
+</code></pre>
+
+
+<h2 class="material-heading">
+    Tulosten nimeäminen
+
+</h2>
+
+<p>
+  Useamman taulun yhdistäminen onnistuu samalla tavalla. Kaikki taulut, jotka haluamme lisätä kyselyyn, tulevat FROM-avainsanan jälkeen. Jos tauluja on useampi, on hyvä varmistaa, että kaikki taulut yhdistetään avainkenttien perusteella.
+</p>
+
+<p>
+  Kun yhdistämme useampia tauluja, päädymme helposti tilanteeseen, missä tuloksessa on myös useampia samannimisiä kenttiä. Esimerkiksi tilaustietokannassa taulut Asiakas, Ravintola, Annos ja RaakaAine kukin sisältää attribuutin nimi. Voimme määritellä taulun, mihin haettava kenttä liittyy, pisteoperaattorin avulla. Kyselyn <code>SELECT nimi FROM Asiakas</code> voi siis kirjoittaa myös muodossa <code>SELECT Asiakas.nimi FROM Asiakas</code>.
+</p>
+
+<p>
+  Voimme toisaalta myös nimetä kentän tulostusmuodon seuraavasti <code>SELECT Asiakas.nimi AS asiakas FROM Asiakas</code>. Edelläoleva kysely hakee Asiakas-taulusta asiakkaan nimen, mutta tulostaa nimet otsikolla 'asiakas'.
+</p>
+
+<p>
+  Alla oleva kysely listaa asiakkaan sekä kaikki asiakkaan tilauksissa olleet annokset. Jokainen annos tulee omalle rivilleen, joten saman nimisellä asiakkaalla voi olla listauksessa useita eri annoksia.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas, Annos.nimi AS annos
+    FROM Asiakas, Tilaus, TilausAnnos, Annos
+    WHERE Asiakas.id = Tilaus.asiakas_id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id;
+</code></pre>
+
+
+
+<h2 class="material-heading">
+    Taulujen yhdistämisestä WHERE-kyselyllä
+
+</h2>
+
+<p>
+  Jotta tietokantakysely tulostaa oleelliset rivit, on jokainen kyselyyn lisättävä taulu kytkettävä toisiinsa. Eräs hyödyllinen tapa taulujen yhdistämiseen tarvittujen kyselyjen hahmottamiseen on tietokantakaavion katsominen. Jos tavoitteena olisi esimerkiksi etsiä kaikki raaka-aineet, joita Leevi-niminen asiakas on saattanut syödä, ensimmäinen askel on etsiä polku taulusta <code>Asiakas</code> tauluun <code>RaakaAine</code>.
+</p>
+
+<p>
+  Aloitamme taulusta <code>Asiakas</code> ja etsimme polkua tauluun <code>RaakaAine</code>. Jotta pääsemme taulusta Asiakas tauluun RaakaAine, tulee meidän vierailla tauluissa <code>TilausAnnos</code>, <code>Annos</code> ja <code>AnnosRaakaAine</code>.
+</p>
+
+<ol>
+  <li>
+    Haemme aluksi asiakkaan nimeltä Leevi.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas
+    WHERE Asiakas.nimi = 'Leevi';
+</code></pre>
+  </li>
+
+
+  <li>
+    Kytketään tähän seuraavaksi kaikki Leevin tekemät tilaukset.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id;
+</code></pre>
+  </li>
+
+
+  <li>
+    Yhdistämme edelliseen kyselyyn taulun TilausAnnos.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id;
+</code></pre>
+  </li>
+
+
+  <li>
+    Yhdistämme edelliseen kyselyyn taulun Annos.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos, Annos
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id;
+</code></pre>
+  </li>
+
+  <li>
+    Yhdistämme edelliseen kyselyyn taulun AnnosRaakaAine.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id
+        AND AnnosRaakaAine.annos_id = Annos.id;
+</code></pre>
+  </li>
+
+
+  <li>
+    Yhdistämme edelliseen kyselyyn taulun RaakaAine.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id
+        AND AnnosRaakaAine.annos_id = Annos.id
+        AND RaakaAine.id = AnnosRaakaAine.raaka_aine_id;
+</code></pre>
+  </li>
+
+
+  <li>
+    Lopulta lisäämme raaka-aineen nimien SELECT-komentoon.
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas, RaakaAine.nimi AS raaka_aine
+    FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
+    WHERE Asiakas.nimi = 'Leevi'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id
+        AND AnnosRaakaAine.annos_id = Annos.id
+        AND RaakaAine.id = AnnosRaakaAine.raaka_aine_id;
+</code></pre>
+  </li>
+
+</ol>
+
+<p>
+  Huomaa, että jokaista askelta voi ja kannattaa testata tietokannanhallintajärjestelmän tarjoamassa konsolissa.
+</p>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>DISTINCT valitsee vain uniikit rivit
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Entä jos haluaisimme tietää vain ne henkilöt, joiden annoksessa on ollut paprikaa raaka-aineena? Tämä onnistuu edellistä kyselyä muokkaamalla näppärästi.
+  </p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
+        WHERE RaakaAine.nimi = 'Paprika'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id
+        AND AnnosRaakaAine.annos_id = Annos.id
+        AND RaakaAine.id = AnnosRaakaAine.raaka_aine_id;
+</code></pre>
+
+  <p>
+    <strong>Mutta!</strong> Jos henkilö on tehnyt useamman Paprikaa sisältäneen tilauksen -- tai yhteen tilaukseen liittyy useampi annos, jossa esiintyy Paprikaa -- on tulostuksessa jokaista Paprikaa sisältänyttä annosta kohden oma rivi. Tällöin henkilön nimi tulostuu kerran jokaista tulosriviä kohden.
+  </p>
+
+  <p>
+    Jos tulostukseen haluaa vain uniikit rivit, tulee kyselyyn lisätä komento <code>DISTINCT</code>. Kun SELECT-lauseessa on komento DISTINCT, tulostuksen rivit ovat uniikkeja.
+  </p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT DISTINCT Asiakas.nimi AS asiakas
+    FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
+        WHERE RaakaAine.nimi = 'Paprika'
+        AND Tilaus.asiakas_id = Asiakas.id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id
+        AND AnnosRaakaAine.annos_id = Annos.id
+        AND RaakaAine.id = AnnosRaakaAine.raaka_aine_id;
+</code></pre>
+
+
+  </div>
+</div>
+
+
+
+
+<h2 class="material-heading">
+    Taulujen yhdistämisestä JOIN-kyselyillä
+
+</h2>
+
+
+<p>
+  Kyselyssä, missä taulujen rivit yhdistetään WHERE-ehdon ja avainten perusteella, valitaan näytettäväksi vain ne rivit, jotka täyttävät annetun ehdon. Entä jos haluaisimme nähdä myös ne kurssit, joita kukaan ei ole suorittanut? Tämä ei ole suoraviivaista WHERE-ehdon kautta rakennetun kyselyn avulla.
+</p>
+
+<p>
+  Vuonna 1992 julkaistu SQL-standardin versio toi mukanaan JOIN-kyselyt, joiden avulla edellä määritelty ongelma ratkeaa -- pienen harjoittelun kautta. Tutustutaan seuraavaksi aiemmin oppimaamme taulujen yhdistämistapaa tukeviin erityyppisiin JOIN-kyselyihin.
+</p>
+
+
+<h3 class="material-heading">
+    INNER JOIN
+
+</h3>
+
+<p>
+  Edellä tutuksi tullut kysely <code>SELECT * FROM Asiakas, Tilaus WHERE Asiakas.id = Tilaus.asiakas_id</code> valitsee vastaukseen vain ne rivit, joiden kohdalla ehto <em>Asiakas.id = Tilaus.asiakas_id</em> pätee, eli missä Asiakkaan id-sarakkeen (pääavaimen) arvo on sama kuin Tilaus-taulun asiakas_id-sarakkeen (viiteavain).
+</p>
+
+<p>
+  Edellinen kysely voidaan kirjoittaa myös muodossa <code>SELECT * FROM Asiakas INNER JOIN Tilaus ON Asiakas.id = Tilaus.asiakas_id</code>.
+</p>
+
+<p>
+  Jos haluamme kyselyyn useampia tauluja, lisätään ne INNER JOIN -komennon avulla kyselyn jatkoksi. Esimerkiksi kaksi seuraavaa kyselyä ovat toiminnallisuudeltaan samankaltaiset.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika, Annos.nimi AS annos
+    FROM Asiakas, Tilaus, TilausAnnos, Annos
+    WHERE Asiakas.id = Tilaus.asiakas_id
+        AND TilausAnnos.tilaus_id = Tilaus.id
+        AND Annos.id = TilausAnnos.annos_id;
+</code></pre>
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika, Annos.nimi AS annos
+    FROM Asiakas
+    INNER JOIN Tilaus ON Asiakas.id = Tilaus.asiakas_id
+    INNER JOIN TilausAnnos ON TilausAnnos.tilaus_id = Tilaus.id
+    INNER JOIN Annos ON Annos.id = TilausAnnos.annos_id
+</code></pre>
+
+<p>
+  Kyselyn <em>INNER JOIN</em> avulla voimme siis tehdä kutakuinkin saman työn kuin aiemman WHERE-ehdon avulla, eli valita mukaan vain ne rivit, joiden kohdalla ehto pätee.
+</p>
+
+
+<h3 class="material-heading">
+    LEFT JOIN
+
+</h3>
+
+<p>
+  Mikä tekee taulujen liitoksesta JOIN-kyselyn avulla WHERE-ehtoa monipuolisemman, on se, että JOIN-kyselyn avulla voidaan määritellä kyselyehtoa täyttämättömille riveille toiminnallisuutta. Avainsanalla <code>LEFT JOIN</code> voidaan määritellä kyselyn tulos sellaiseksi, että ehdon täyttävien rivien lisäksi vastaukseen sisällytetään kaikki FROM-avainsanaa seuraavan taulun rivit, joille liitosehto ei täyttynyt.
+</p>
+
+<p>
+  Allaoleva kysely listaa tilauksia tehneiden asiakkaiden lisäksi myös ne asiakkaat, joilla ei ole yhtäkään tilausta. Tällöin tilaukseen liittyvä vastauksen osa jää tyhjäksi.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
+    FROM Asiakas
+    LEFT JOIN Tilaus ON Asiakas.id = Tilaus.asiakas_id
+</code></pre>
+
+
+<h3 class="material-heading">
+    Liitostyypit lyhyesti
+
+</h3>
+
+<p>
+  Kyselyn JOIN-tyypin voi muotoilla usealla eri tavalla:
+</p>
+
+<ul>
+  <li>
+    <code>INNER JOIN</code> -- palauta vain ne rivit, joihin valintaehto kohdistuu.
+  </li>
+  <li>
+    <code>LEFT JOIN</code> -- palauta kaikki FROM-komentoa seuraavan taulun rivit, ja liitä niihin LEFT JOIN-komentoa seuraavan taulun rivit niiltä kohdin, kuin se on ON-liitosehdossa määritellyn ehdon mukaan mahdollista
+  </li>
+  <li>
+    <code>RIGHT JOIN</code> -- palauta kaikki RIGHT JOIN-komentoa seuraavan taulun rivit, ja liitä niihin FROM-komentoa seuraavan taulun rivit niiltä kohdin, kuin se on ON-liitosehdossa määritellyn ehdon mukaan mahdollista
+  </li>
+  <li>
+    <code>FULL JOIN</code> -- palauta kaikki FROM-komentoa seuraavan taulun rivit sekä kaikki FULL JOIN-komentoa seuraavan taulun rivit, ja liitä ne toisiinsa niiltä kohdin, kuin se on ON-liitosehdossa määritellyn ehdon mukaan mahdollista
+  </li>
+</ul>
+
+<p>
+  <em>
+    Valitettavasti SQLite ei tue RIGHT JOIN ja FULL JOIN -tyyppisiä kyselyitä.
+  </em>
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Visuaalinen opas JOIN-kyselyihin
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    C.L. Moffatt on kirjoittanut hyvän yhteenvedon erilaisista JOIN-tyypeistä. Tutustu yhteenvetoon osoitteessa <a href="http://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins" target="_blank">http://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins</a>.
+  </p>
+
+  <figure>
+    <img src="../img/viikko3/moffatt-visual_joins-462fda2a.png"/>
+    <p>&nbsp;</p>
+    <figcaption>Yhteenveto erilaisista JOIN-kyselyistä ja niiden merkityksistä joukkojen kautta visualisoituna.</figcaption>
+  </figure>
+
+
+  </div>
+</div>
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Kyselyjä</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjan kansiossa <code>db</code> tulee tiedosto nimeltä <code>Chinook_Sqlite.sqlite</code>. Avaa tiedosto SQLiten avulla. Kun tietokanta on avattu oikein, komento .tables antaa seuraavanlaisen tulostuksen.
+  </p>
+
+  <pre>
+  sqlite&gt; .tables
+  Album          	Employee       	InvoiceLine    	PlaylistTrack
+  Artist         	Genre          	MediaType      Track
+  Customer       	Invoice        	Playlist
+  </pre>
+
+  <p>
+    Kuten taulujen nimistä voi arvata, tietokanta kuvaa digitaalisen musiikin myyntipalvelua. Chinook on esimerkkikäyttöön tarkoitettu tietokantaprojekti, joka löytyy osoitteesta <a href="https://archive.codeplex.com/?p=chinookdatabase" target="_blank">https://archive.codeplex.com/?p=chinookdatabase</a>. Tietokannan tietokantakaavio on seuraavanlainen.
+  </p>
+
+  <figure>
+    <img src="../img/chinook-schema-04bccb89.png"/>
+  </figure>
+
+  <p>
+    Kirjoita SQLiten avulla kyselyt, joilla saa selville seuraavat tiedot. Tehtävän palautukseen tulee antaa konkreettiset SQL-kyselyt.
+  </p>
+
+  <ul>
+    <li>
+      Kysely 1: Listaa artistit, jotka soittavat Blues-musiikkia. <em>Kyselyssä halutaan vain artistien nimet -- käytä sarakkeen nimenä joko <code>name</code> tai <code>nimi</code></em>
+    </li>
+    <li>
+      Kysely 2: Listaa soittolistat (playlist), joilla Eric Clapton esiintyy. <em>Kyselyssä halutaan vain soittolistojen nimet -- käytä sarakkeen nimenä joko <code>name</code> tai <code>nimi</code></em>
+    </li>
+    <li>
+      Kysely 3: Listaa sähköpostiosoitteet niiltä asiakkailta, jotka ovat ostaneet Jazz-musiikkia. <em>Kyselyssä halutaan vain sähköpostiosoitteet. Käytä sarakkeen nimenä nimeä <code>email</code>.</em>
+    </li>
+  </ul>
+
+  <p>
+    Kun olet saanut kyselyt toimimaan, kopioi kyselyt tehtäväpohjassa olevan luokan Kyselyja metodeihin kysely1, kysely2 ja kysely3. Tehtävässä olevat testit ovat vain TMC-palvelimella.
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Tietokannan käsittely ohjelmallisesti
+
+</h1>
+
+<p>
+  Lähes jokainen ohjelmointikieli tarjoaa jonkinlaisen rajapinnan tietokantakyselyiden tekemiseen. Nämä rajapinnat suoraviivaistavat kyselyiden tekemistä tietokantoihin ja tietokannanhallintajärjestelmien käyttöönoottoa, sillä rajapintaa noudattamalla yhteydenotto tietokannantallintajärjestelmään on lähes samankaltaista käytetystä tietokannanhallintajärjestelmästä riippumatta.
+</p>
+
+<p>
+  Java-kielessä tähän tehtävään on <a href="https://en.wikipedia.org/wiki/Java_Database_Connectivity" target="_blank" nodel>Java Database Connectivity</a> (JDBC) -rajapinta. JDBC tarjoaa tuen tietokantayhteyden luomiseen sekä kyselyiden suorittamiseen tietokantayhteyden yli. Jotta JDBCn avulla voidaan ottaa yhteys tietokantaan, tulee käytössä olla tietokannanhallintajärjestelmäkohtainen ajuri, jonka vastuulla on tietokantayhteyden luomiseen liittyvät yksityiskohdat sekä tietokannanhallintajärjestelmän sisäisten kyselytulosten muuntaminen JDBC-rajapinnan mukaiseen muotoon.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>JDBC-ajurin noutaminen
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    JDBC-ajurit ovat käytännössä Java-kielellä kirjoitettuja ohjelmia, joita tietokannanhallintajärjestelmän toteuttajat tarjoavat ohjelmoijien käyttöön. Kurssin toisessa osassa ajurit on lisätty valmiiksi tehtäväpohjien <code>lib</code>-kansioon, jonka lisäksi niiden käyttö on valmiiksi määritelty tehtäväpohjissa.
+  </p>
+
+  <p>
+    Myöhemmissä osissa tutustumme kirjastojen käyttöönottoon ja hakemiseen <a href="https://maven.apache.org/" target="_blank" norel">Maven</a>-apuvälineen avulla.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Ohjelmallinen tietokantakysely kokonaisuudessaan
+
+</h2>
+
+
+<p>
+  Oletetaan, että käytössämme on seuraava tietokantataulu Opiskelija:
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>opiskelijanumero (integer)</th>
+      <th>nimi (varchar)</th>
+      <th>syntymävuosi (integer)</th>
+      <th>pääaine (varchar)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>9999999</td>
+      <td>Pihla</td>
+      <td>1997</td>
+      <td>Tietojenkäsittelytiede</td>
+    </tr>
+    <tr>
+      <td>9999998</td>
+      <td>Joni</td>
+      <td>1993</td>
+      <td>Tietojenkäsittelytiede</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+  JDBCn avulla kyselyn tekeminen tietokantatauluun tapahtuu seuraavasti -- olettaen, että käytössämme on sekä tietokanta, että tietokannan ajuri.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // luodaan yhteys jdbc:n yli sqlite-tietokantaan nimeltä "tietokanta.db"
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:tietokanta.db");
+
+        // luodaan kyely "SELECT * FROM Opiskelija", jolla haetaan
+        // kaikki tiedot Opiskelija-taulusta
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Opiskelija");
+
+        // suoritetaan kysely -- tuloksena resultSet-olio
+        ResultSet resultSet = statement.executeQuery();
+
+        // käydään tuloksena saadussa oliossa olevat rivit läpi -- next-komento hakee
+        // aina seuraavan rivin, ja palauttaa true jos rivi löytyi
+        while(resultSet.next()) {
+            // haetaan nykyiseltä riviltä opiskelijanumero int-muodossa
+            Integer opNro = resultSet.getInt("opiskelijanumero");
+            // haetaan nykyiseltä riviltä nimi String-muodossa
+            String nimi = resultSet.getString("nimi");
+            // haetaan nykyiseltä riviltä syntymävuosi int-muodossa
+            Integer syntVuosi = resultSet.getInt("syntymävuosi");
+            // haetaan nykyiseltä riviltä pääaine String-muodossa
+            String paaAine = resultSet.getString("pääaine");
+
+            // tulostetaan tiedot
+            System.out.println(opNro + "\t" + nimi + "\t" + syntVuosi + "\t" + paaAine);
+        }
+
+        // suljetaan lopulta yhteys tietokantaan
+        connection.close();
+    }
+}
+</code></pre>
+
+<p>
+  Ohjelman suoritus tuottaa (esimerkiksi) seuraavanlaisen tulostuksen:
+</p>
+
+<pre class="sample-output">999999	Pihla	1997	Tietojenkäsittelytiede
+999998	Joni	1993	Tietojenkäsittelytiede
+999997	Anna	1991	Matematiikka
+999996	Krista	1990	Tietojenkäsittelytiede
+...
+</pre>
+
+
+<h2 class="material-heading">
+    Ohjelman rakentaminen osissa
+
+</h2>
+
+<p>
+  <em>Tässä oletetaan, että projektiin on lisätty tarvittava JDBC-ajuri.</em>
+</p>
+
+<p>
+  Avaa projektiin liittyvä <em>Source Packages</em> ja valitse (tai tarvittaessa luo) sopiva pakkaus. Oletetaan tässä, että käytössä on pakkaus <code>tikape</code>. Valitse tämän jälkeen <em>New</em> -> <em>Java Class</em>, jonka jälkeen avautuu valikko, missä voit antaa luokalle nimen. Anna luokan nimeksi <code>Main</code>.
+</p>
+
+<p>
+  Avaa tiedosto tuplaklikkaamalla sitä. Muokkaa tiedostoa vielä siten, että se on seuraavan näköinen:
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+    }
+}
+</code></pre>
+
+
+
+<h3 class="material-heading">
+    Tietokantayhteyden luominen
+
+</h3>
+
+<p>
+  Lisää projektiin komento <code>import java.sql.*;</code>, joka hakee kaikki SQL-kyselyihin liittyvät Javan kirjastot.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.sql.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+    }
+}
+</code></pre>
+
+<p>
+  Avataan seuraavaksi tietokantayhteys tietokantatiedostoon nimeltä <em>testi.db</em> ja tehdään kysely "SELECT 1", jolla pyydetään tietokantaa palauttamaan luku 1 -- käytämme tätä yhteyden testaamiseksi. Jos yhteyden luominen onnistuu, tulostetaan "Hei tietokantamaailma!", muulloin "Yhteyden muodostaminen epäonnistui".
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.sql.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:testi.db");
+
+        PreparedStatement statement = connection.prepareStatement("SELECT 1");
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            System.out.println("Hei tietokantamaailma!");
+        } else {
+            System.out.println("Yhteyden muodostaminen epäonnistui.");
+        }
+    }
+}
+</code></pre>
+
+<pre class="sample-output">Hei tietokantamaailma!
+</pre>
+
+<p>
+  Kun suoritamme ohjelman ensimmäistä kertaa valitsemalla <em>Run</em> -> <em>Run Project</em>, puuttuvan tietokannan paikalle luodaan tietokanta (ainakin SQLiteä käyttäessä). Projektin kansiossa on nyt tiedosto <code>testi.db</code>, joka on tietokantamme.
+</p>
+
+
+<figure>
+  <img src="../img/viikko3/nb-testidb-d6184833.png" alt="Kun ohjelma on suoritettu ensimmäistä kertaa, tiedosto testi.db luodaan projektiin."/>
+  <figcaption>Tietokantatiedosto <em>testi.db</em> löytyy projektin kansiosta. Tiedostot löytyvät <em>Files</em>-välilehdeltä.</figcaption>
+</figure>
+
+
+
+<h3 class="material-heading">
+    Tietokantakyselyiden tekeminen
+
+</h3>
+
+<p>
+  Osoitteessa <a href="https://materiaalit.github.io/tikape-kesa18/dbs/vuokraamo.db">vuokraamo.db</a> löytyy kuvitteellisen moottoripyörävuokraamon tietokanta. Lataa se edellä tehdyn projektin juureen ja kokeile kyselyn tekemistä kyseiseen tietokantaan.
+</p>
+
+<p>
+  Tietokannassa on tietokantataulu <code>Pyora</code>, jolla on sarakkeet <code>rekisterinumero</code> ja <code>merkki</code>. Jokaisen pyörän rekisterinumeron ja merkin tulostaminen tapahtuu seuraavasti -- huomaa myös, että olemme vaihtaneet käytössä olevaa tietokantaa.
+</p>
+
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
+
+PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Pyora");
+ResultSet rs = stmt.executeQuery();
+
+while (rs.next()) {
+    String rekisterinumero = rs.getString("rekisterinumero");
+    String merkki = rs.getString("merkki");
+
+    System.out.println(rekisterinumero + " " + merkki);
+}
+
+stmt.close();
+rs.close();
+
+connection.close();
+</code></pre>
+
+<p>
+  Käydään ylläoleva ohjelmakoodi läpi askeleittain.
+</p>
+
+<ol>
+  <li>
+    <p>Luomme ensin JDBC-yhteyden tietokantaan <em>vuokraamo.db</em>.
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
+</code></pre>
+    </p>
+  </li>
+
+  <li>
+    <p>Kysely luodaan antamalla yhteydelle merkkijono, jossa on kysely. Yhteys palauttaa <em>PreparedStatement</em>-olion, jota käytetään kyselyn suorittamiseen ja tulosten pyytämiseen. Metodi <em>executeQuery</em> suorittaa SQL-kyselyn ja palauttaa tulokset sisältävän <em>ResultSet</em>-olion.
+
+<pre class="sh_java code-highlight"><code>PreparedStatement statement = connection.prepareStatement("SELECT * FROM Pyora");
+ResultSet resultSet = statement.executeQuery();
+</code></pre>
+    </p>
+  </li>
+
+  <li>
+    <p>Tämän jälkeen ResultSet-oliossa olevat tulokset käydään läpi. Metodia next() kutsumalla siirrytään kyselyn palauttamissa tulosriveissä eteenpäin. Kultakin riviltä voi kysyä sarakeotsikon perusteella solun arvoa. Esimerkiksi kutsu getString("rekisterinumero") palauttaa kyseisellä rivillä olevan sarakkeen "rekisterinumero" arvon String-tyyppisenä.
+
+<pre class="sh_java code-highlight"><code>while(resultSet.next()) {
+    String rekisterinumero = rs.getString("rekisterinumero");
+    String merkki = rs.getString("merkki");
+
+    System.out.println(rekisterinumero + " " + merkki);
+}
+</code></pre>
+    </p>
+  </li>
+
+  <li>
+    <p>Kun kyselyn vastauksena saadut rivit on käyty läpi, eikä niitä enää tarvita, vapautetaan niihin liittyvät resurssit.
+
+<pre class="sh_java code-highlight"><code>stmt.close();
+rs.close();
+</code></pre>
+    </p>
+  </li>
+
+
+  <li>
+    <p>Lopulta tietokantayhteys suljetaan.
+
+<pre class="sh_java code-highlight"><code>connection.close();
+</code></pre>
+    </p>
+  </li>
+</ol>
+
+
+
+<h3 class="material-heading">
+    Parametrien lisääminen kyselyyn
+
+</h3>
+
+<p>
+  Kyselyihin halutaan usein antaa rajausehtoja. Ohjelmallisesti tämä tapahtuu lisäämällä kyselyä muodostaessa rajausehtoihin kohtia, joihin asetetaan arvot. Alla olevassa esimerkissä kyselyyn lisätään merkkijono.
+</p>
+
+<pre class="sh_java code-highlight"><code>PreparedStatement statement =
+    connection.prepareStatement("SELECT * FROM Pyora WHERE merkki = ?");
+statement.setString(1, "Royal Enfield");
+
+ResultSet resultSet = statement.executeQuery();
+</code></pre>
+
+<p>
+  Kyselyiden paikat indeksoidaan kohdasta 1 alkaen. Alla olevassa esimerkissä haetaan Henkilo-taulusta henkilöitä, joiden syntymävuosi on 1952.
+</p>
+
+<pre class="sh_java code-highlight"><code>PreparedStatement statement =
+    connection.prepareStatement("SELECT * FROM Henkilo WHERE syntymavuosi  = ?");
+statement.setInt(1, 1952);
+
+ResultSet resultSet = statement.executeQuery();
+</code></pre>
+
+<p>
+  Ohjelma voi toimia myös siten, että rajausehdot kysytään ohjelman käyttäjältä.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>Scanner lukija = new Scanner(System.in);
+System.out.println("Minkä vuoden opiskelijat tulostetaan?");
+int vuosi = Integer.parseInt(lukija.nextLine());
+
+// ...
+
+PreparedStatement statement =
+    connection.prepareStatement("SELECT * FROM Henkilo WHERE syntymavuosi  = ?");
+statement.setInt(1, vuosi);
+
+ResultSet resultSet = statement.executeQuery();
+
+// ...
+</code></pre>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>PreparedStatement ja setterit
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Kun kyselyt luodaan tietokantayhteyteen liittyvän olion prepareStatement oliolla, kyselyihin merkitään kysymysmerkeillä ne kohdat, joihin käyttäjän syöttämiä arvoja voidaan lisätä. Kun ns. setterimetodilla -- esim setInt -- asetetaan parametrin arvo kyselyyn, Java tarkastaa (1) että arvo on varmasti halutun kaltainen ja (2) että arvossa ei ole esimerkiksi hipsuja, jolloin parametrina annetulla arvolla voisi vaikuttaa kyselyyn.
+  </p>
+
+
+  </div>
+</div>
+
+
+<h3 class="material-heading">
+    Päivityskyselyiden tekeminen
+
+</h3>
+
+<p>
+  Myös päivityskyselyiden kuten rivien lisäämisten ja rivien poistamisten tekeminen onnistuu ohjelmallisesti. Tällöin tuloksessa ei ole erillistä ResultSet-oliota, vaan luku, joka kertoo muuttuneiden rivien määrän. Allaoleva ohjelmakoodi lisää pyöriä sisältävään tietokantaan uuden pyörän.
+</p>
+
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
+
+PreparedStatement stmt =
+    connection.prepareStatement("INSERT INTO Pyora (rekisterinumero, merkki) VALUES (?, ?)");
+stmt.setString(1, "RIP-34");
+stmt.setString(2, "Jopo");
+
+int changes = stmt.executeUpdate();
+
+System.out.println("Kyselyn vaikuttamia rivejä: " + changes);
+stmt.close();
+
+connection.close();
+</code></pre>
+
+
+
+<h2 class="material-heading">
+    Oliot ja tietokantataulut
+
+</h2>
+
+<p>
+  Käsittelimme äskettäin tietokantakyselyiden tekemistä ohjelmallisesti. Tietokantakyselyiden tekeminen koostuu oleellisesti muutamasta osasta: (1) yhteyden muodostaminen tietokantaan, (2) kyselyn muodostaminen, (3) kyselyn suorittaminen, (4) vastausten läpikäynti, ja (5) resurssien vapauttaminen sekä yhteyden sulkeminen. Edellisessä osassa käsiteltiin Pyora-taulun sisältävää tietokantaa seuraavasti.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
+
+PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Pyora");
+ResultSet rs = stmt.executeQuery();
+
+while (rs.next()) {
+    String rekisterinumero = rs.getString("rekisterinumero");
+    String merkki = rs.getString("merkki");
+
+    System.out.println(rekisterinumero + " " + merkki);
+}
+
+stmt.close();
+rs.close();
+
+connection.close();
+</code></pre>
+
+
+<p>
+  Ohjelmoijan näkökulmasta on paljon mielekkäämpää jos tietoa pystyy käsittelemään olioiden avulla. Oletetaan, että käytössämme on luokka Asiakas sekä tietokantataulu Asiakas. Tietokantataulu on luotu seuraavalla CREATE TABLE -lauseella.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Asiakas (
+    id integer PRIMARY KEY,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varcar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+);
+</code></pre>
+
+<p>
+  Alla on taulua vastaava luokka.
+</p>
+
+<pre class="sh_java code-highlight"><code>public class Asiakas {
+    Integer id;
+    String nimi;
+    String puhelinnumero;
+    String katuosoite;
+    Integer postinumero;
+    String postitoimipaikka;
+
+    public Asiakas(Integer id, String nimi, String puhelinnumero, String
+            katuosoite, Integer postinumero, String postitoimipaikka) {
+        this.id = id;
+        this.nimi = nimi;
+        this.puhelinnumero = puhelinnumero;
+        this.katuosoite = katuosoite;
+        this.postinumero = postinumero;
+        this.postitoimipaikka = postitoimipaikka;
+    }
+
+    // muita metodeja ym
+
+}
+</code></pre>
+
+<p>
+  Hakiessamme tietoa tietokantataulusta Asiakas voimme muuntaa kyselyn tulokset Asiakas-olioiksi.
+</p>
+
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:<em>tietokanta.db</em>");
+
+PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Asiakas");
+ResultSet rs = stmt.executeQuery();
+
+List&lt;Asiakas&gt; asiakkaat = new ArrayList&lt;&gt;();
+
+while (rs.next()) {
+    Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
+        rs.getString("puhelinnumero"), rs.getString("katuosoite"),
+        rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
+
+    asiakkaat.add(a);
+}
+
+stmt.close();
+rs.close();
+
+connection.close();
+
+// nyt asiakkaat listassa
+</code></pre>
+
+<p>
+  Myös uuden Asiakas-olion tallentaminen tietokantatauluun onnistuu.
+</p>
+
+<pre class="sh_java code-highlight"><code>Connection connection = DriverManager.getConnection("jdbc:sqlite:<em>tietokanta.db</em>");
+
+PreparedStatement stmt = connection.prepareStatement("INSERT INTO Asiakas"
+    + " (nimi, puhelinnumero, katuosoite, postinumero, postitoimipaikka)"
+    + " VALUES (?, ?, ?, ?, ?)");
+stmt.setString(1, asiakas.getNimi());
+stmt.setString(2, asiakas.getPuhelinnumero());
+stmt.setString(3, asiakas.getKatuosoite());
+stmt.setInt(4, asiakas.getPostinumero());
+stmt.setString(5, asiakas.getPostitoimipaikka());
+
+stmt.executeUpdate();
+stmt.close();
+
+
+// voimme halutessamme tehdä myös toisen kyselyn, jonka avulla saadaan selville
+// juuri tallennetun olion tunnus -- alla oletetaan, että asiakkaan voi
+// yksilöidä nimen ja puhelinnumeron perusteella
+stmt = connection.prepareStatement("SELECT * FROM Asiakas"
+    + " WHERE nimi = ? AND puhelinnumero = ?");
+stmt.setString(1, asiakas.getNimi());
+stmt.setString(2, asiakas.getPuhelinnumero());
+
+ResultSet rs = stmt.executeQuery();
+rs.next(); // vain 1 tulos
+
+Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
+    rs.getString("puhelinnumero"), rs.getString("katuosoite"),
+    rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
+
+stmt.close();
+rs.close();
+
+connection.close();
+</code></pre>
+
+
+<h2 class="material-heading">
+    DAO-suunnittelumalli
+
+</h2>
+
+<p>
+  Tähän astisissa simerkeissä tietokantakyselytoiminnallisuus ja muu toiminnallisuudesta on ollut samassa luokassa, mikä johtaa helposti sekavaan koodiin.
+</p>
+
+<p>
+  Tietokantasovelluksia toteuttaessa on hyvin tyypillistä abstrahoida konkreettinen tiedon hakemis- ja tallennustoiminnallisuus siten, että ohjelmoijan ei tarvitse nähdä sitä jatkuvasti.
+</p>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Data Access Object (DAO)
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Wikipedia:
+    <em>
+      In computer software, a data access object (DAO) is an object that provides an abstract interface to some type of database or other persistence mechanism. By mapping application calls to the persistence layer, DAO provide some specific data operations without exposing details of the database. This isolation supports the Single responsibility principle. It separates what data accesses the application needs, in terms of domain-specific objects and data types (the public interface of the DAO), from how these needs can be satisfied with a specific DBMS, database schema, etc. (the implementation of the DAO).
+    </em>
+  </p>
+
+  <p>
+    <em>
+      Although this design pattern is equally applicable to the following: (1- most programming languages; 2- most types of software with persistence needs; and 3- most types of databases) it is traditionally associated with Java EE applications and with relational databases (accessed via the JDBC API because of its origin in Sun Microsystems' best practice guidelines "Core J2EE Patterns" for that platform).
+    </em>
+  </p>
+
+  </div>
+</div>
+
+<p>
+  Hahmotellaan hakemiseen ja poistamiseen liittyvää rajapintaa, joka tarjoaa metodit <code>findOne</code>, <code>findAll</code>, <code>saveOrUpdate</code> ja <code>delete</code>, eli toiminnallisuudet hakemiseen, tallentamiseen ja poistamiseen. Tehdään rajapinnasta <em>geneerinen</em>, eli toteuttava luokka määrittelee palautettavien olioiden tyypin sekä avaimen.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.sql.*;
+import java.util.*;
+
+public interface Dao&lt;T, K&gt; {
+    T findOne(K key) throws SQLException;
+    List&lt;T&gt; findAll() throws SQLException;
+    T saveOrUpdate(T object) throws SQLException;
+    void delete(K key) throws SQLException;
+}
+</code></pre>
+
+<p>
+  Metodi findOne hakee tietyllä avaimella haettavan olion, jonka tyyppi voi olla mikä tahansa, ja metodi saveOrUpdate joko tallentaa olion tai päivittää tietokannassa olevaa oliota riippuen siitä, onko olion id-kentässä arvoa. Alustava hahmotelma konkreettisesta asiakkaiden käsittelyyn tarkoitetusta <code>AsiakasDao</code>-luokasta on seuraavanlainen.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.util.*;
+import java.sql.*;
+
+public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
+
+    @Override
+    public Asiakas findOne(Integer key) throws SQLException {
+        // ei toteutettu
+        return null;
+    }
+
+    @Override
+    public List&lt;Asiakas&gt; findAll() throws SQLException {
+	// ei toteutettu
+	return null;
+    }
+
+    @Override
+    public Asiakas saveOrUpdate(Asiakas object) throws SQLException {
+        // ei toteutettu
+        return null;
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        // ei toteutettu
+    }
+}
+</code></pre>
+
+<p>
+  Käytännössä tyyppiparametrit annetaan rajapinnan toteuttamisesta kertovan avainsanan <code>implements</code>-yhteyteen. Ylläolevassa esimerkissä haettavan olion tyyppi on <code>Asiakas</code>, ja sen pääavain on tyyppiä <code>Integer</code>.
+</p>
+
+<p>
+  Luodaan tietokanta-abstraktio, jolta voidaan pyytää tietokantayhteyttä tarvittaessa.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.sql.*;
+
+public class Database {
+
+    private String databaseAddress;
+
+    public Database(String databaseAddress) throws ClassNotFoundException {
+        this.databaseAddress = databaseAddress;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(databaseAddress);
+    }
+}
+</code></pre>
+
+<p>
+  Jatketaan luokan <code>AsiakasDao</code> toteuttamista. Lisätään luokkaan tietokannan käyttö tietokanta-abstraktion avulla sekä asiakkaan poistaminen avaimen perusteella
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.util.*;
+import java.sql.*;
+
+public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
+
+    private Database database;
+
+    public AsiakasDao(Database database) {
+        this.database = database;
+    }
+
+    @Override
+    public Asiakas findOne(Integer key) throws SQLException {
+        // ei toteutettu
+        return null;
+    }
+
+    @Override
+    public List&lt;Asiakas&gt; findAll() throws SQLException {
+	// ei toteutettu
+	return null;
+    }
+
+    @Override
+    public Asiakas saveOrUpdate(Asiakas object) throws SQLException {
+        // ei toteutettu
+        return null;
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Asiakas WHERE id = ?");
+
+        stmt.setInt(1, key);
+        stmt.executeUpdate();
+
+        stmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+
+<p>
+  Vastaavasti yksittäisen asiakkaan noutaminen onnistuisi findOne-metodilla.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.util.*;
+import java.sql.*;
+
+public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
+
+    private Database database;
+
+    public AsiakasDao(Database database) {
+        this.database = database;
+    }
+
+    @Override
+    public Asiakas findOne(Integer key) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Asiakas WHERE id = ?");
+        stmt.setInt(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
+            rs.getString("puhelinnumero"), rs.getString("katuosoite"),
+            rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
+
+        stmt.close();
+        rs.close();
+
+        conn.close();
+
+        return a;
+    }
+
+    @Override
+    public List&lt;Asiakas&gt; findAll() throws SQLException {
+	// ei toteutettu
+	return null;
+    }
+
+    @Override
+    public Asiakas saveOrUpdate(Asiakas object) throws SQLException {
+        // ei toteutettu
+        return null;
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        Collection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Asiakas WHERE id = ?");
+
+        stmt.setInt(1, key);
+        stmt.executeUpdate();
+
+        stmt.close();
+        conn.close();
+    }
+}
+</code></pre>
+
+<p>
+  Ja niin edelleen. Nyt asiakkaiden muokkaaminen on DAO-rajapintaa käyttävän ohjelman näkökulmasta hieman helpompaa.
+</p>
+
+<pre class="sh_java code-highlight"><code>Database database = new Database("jdbc:sqlite:kanta.db");
+AsiakasDao asiakkaat = new AsiakasDao(database);
+
+Scanner lukija = new Scanner(System.in);
+
+System.out.println("Millä tunnuksella asiakasta haetaan?");
+int tunnus = Integer.parseInt(lukija.nextLine());
+
+Asiakas a = asiakkaat.findOne(tunnus);
+
+System.out.println("Asiakas: " + a);
+</code></pre>
+
+
+
+<h2 class="material-heading">
+    Viitteet olioiden välillä
+
+</h2>
+
+<p>
+  Edellisessä esimerkissä käsittelimme yksittäistä oliota, josta ei ole viitteitä muihin käsitteisiin. Hahmotellaan seuraavaksi Tilaus-käsitteen käsittelyä ohjelmallisesti. Luodaan ensin Tilausta kuvaava luokka ja toteutetaan tämän jälkeen tilausten tallennuksesta ja käsittelystä vastaava DAO-luokka.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>public class Tilaus {
+    Integer id;
+    Asiakas asiakas;
+    Date aika;
+    String kuljetustapa;
+    Boolean vastaanotettu;
+    Boolean toimitettu;
+
+    // konstruktorit sekä getterit ja setterit
+
+}
+</code></pre>
+
+<p>
+  Toteutetaan tilausten käsittelyyn tarkoitettu DAO-luokka siten, että se saa konstruktorissaan sekä viitteen tietokanta-olioon että viitteen asiakkaiden hakemiseen tarkoitettuun Dao-rajapintaan.
+</p>
+
+<pre class="sh_java code-highlight"><code>import java.util.*;
+import java.sql.*;
+
+public class TilausDao implements Dao&lt;Tilaus, Integer&gt; {
+
+
+    private Database database;
+    private Dao&lt;Asiakas, Integer&gt; asiakasDao;
+
+    public TilausDao(Database database, Dao&lt;Asiakas, Integer&gt; asiakasDao) {
+        this.database = database;
+        this.asiakasDao = asiakasDao;
+    }
+
+    @Override
+    public Tilaus findOne(Integer key) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Tilaus WHERE id = ?");
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        Asiakas asiakas = asiakasDao.findOne(rs.getInt("asiakas_id"));
+
+        Tilaus t = new Tilaus(key, asiakas,
+            rs.getDate("aika"), rs.getString("kuljetustapa"),
+            rs.getBoolean("vastaanotettu"), rs.getBoolean("toimitettu"));
+
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return t;
+    }
+
+    @Override
+    public List&lt;Tilaus&gt; findAll() throws SQLException {
+	// ei toteutettu
+	return null;
+    }
+
+
+    @Override
+    public Tilaus saveOrUpdate(Tilaus object) throws SQLException {
+	// ei toteutettu
+	return null;
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        // ei toteutettu
+    }
+}
+</code></pre>
+
+<p>
+  Nyt yksittäisen tilauksen hakemisen yhteydessä palautetaan sekä tilaus, että siihen liittyvä asiakas. Rajapintaa käyttävän toteutuksen näkökulmasta tietokannan käyttäminen toimii seuraavasti:
+</p>
+
+
+<pre class="sh_java code-highlight"><code>Database database = new Database("jdbc:sqlite:kanta.db");
+AsiakasDao asiakkaat = new AsiakasDao(database);
+TilausDao tilaukset = new TilausDao(database, asiakkaat);
+
+Tilaus t = tilaukset.findOne(4);
+System.out.println("Tilauksen teki: " + t.getAsiakas().getNimi());
+</code></pre>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Mitä tietokannasta pitäisi noutaa?
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Kun jatkamme edellistä esimerkkiä, pitäisikö annosta haettaessa hakea aina siihen liittyvä ravintola? Entä pitääkö tilausta haettaessa oikeasti hakea myös tilaukseen liittyvä asiakas?
+  </p>
+
+  <p>
+    Hyvä kysymys. Kun tietokantataulujen välisten yhteyksien perusteella tehdään uusia kyselyitä tietokantaan, olemassa on oleellisesti kaksi vaihtoehtoa sekä niiden seuraukset: (1) haetaan liikaa tietoa, jolloin hakemisoperaatioon menee turhaan aikaa, tai (2) haetaan liian vähän tietoa, jolloin tieto tulee hakea myöhemmin.
+  </p>
+
+  <p>
+    Yksi tapa ratkaista ongelma on toimia siten, että tietoa haetaan vain silloin kun sitä tarvitaan. Tällöin esimerkiksi vasta Tilaus-olioon mahdollisesti liittyvää <code>getAsiakas</code>-metodia kutsuttaessa asiakkaaseen liittyvät tiedot haettaisiin tietokannasta -- getAsiakas-metodi tekisi siis tietokantahaun. Tämäkään ei kuitenkaan ratkaise tilannetta, sillä jos tavoitteenamme olisi vaikkapa tulostaa kaikki tilaukset ja niihin liittyvät asiakkaat -- edellisellä lähestymistavalla kaksi tietokantakyselyä -- saattaisi toteutus lopulta tehdä jokaisen tilauksen ja asiakkaan kohdalla oman erillisen tietokantahaun.
+  </p>
+
+  <p>
+    Tähän ei ole suoraviivaista ratkaisua. Tyypillisesti Dao-rajapinnan määrittelemille metodeille kerrotaan, tuleeko haettaviin olioihin liittyvät viitteet hakea erikseen.
+  </p>
+
+
+  </div>
+</div>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Asiakkaat ja tilaukset</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa on mukana edellisessä esimerkeissä luodut AsiakasDao ja TilausDao sekä niihin liittyvät luokat. Toteuta luokkien AsiakasDao ja TilausDao <code>findAll</code>-metodit siten, että ne hakevat kaikki käsiteltävään tauluun liittyvät rivit. AsiakasDaon metodin findAll tulee siis hakea ja palauttaa kaikki asiakkaat, ja TilausDaon metodin findAll tulee hakea ja palauttaa kaikki tilaukset.
+  </p>
+
+  <p>
+    Toteuta luokan TilausDao metodi findAll siten, että jokaiseen noudettuun tilaukseen liittyy myös tilauksen tehnyt asiakas. Tehtäväpohjassa olevassa kansiossa <code>db</code> on mukana tiedosto <code>tilauskanta.db</code>, johon tietokannan taulut ovat luotuna. Lisää tietokantaan testidataa tarvittaessa.
+  </p>
+
+  <p>
+    Tehtäväpohjassa olevista testeistä saattaa olla hyötyä toteutusta tehdessä..
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Ensimmäinen web-sovellus
+
+</h1>
+
+<p>
+  Selaimen -- ja nykyään kännykän -- kautta käytettävät sovellukset ovat lähes poikkeuksetta syrjäyttäneet perinteiset työpöytäsovellukset. Tietokannan käyttö sovelluksen osana ei kuitenkaan ole muuttunut. Työpöytäsovellusten aikana työpöytäsovellus käytti joko paikallisella koneella olevaa tietokannanhallintajärjestelmää, tai otti etäyhteyden toisella koneella käynnissä olevaan tietokannanhallintajärjestelmään. Selaimessa toimivia sovelluksia käytettäessä tietokannanhallintajärjestelmä toimii palvelinohjelmiston -- eli sovelluksen, johon selain ottaa yhteyttä -- kanssa samalla koneella, tai erillisellä koneella, johon palvelinohjelmisto ottaa yhteyden tarvittaessa.
+</p>
+
+<p>
+  Tutustumme seuraavaksi lyhyesti tietokantaa käyttävän palvelinohjelmiston toimintaan ja toteutukseen.
+</p>
+
+
+<h2 class="material-heading">
+    Projektinhallintatyökalu Maven
+
+</h2>
+
+<p>
+  Jotta Javalla ja NetBeansilla tehtävään projektiin saa tietokannan käyttöön, tulee ohjelmoijan noutaa tietokanta-ajuri. Ajurien noutaminen kannattaa hoitaa ns. riippuvuuksia hallinnoivan projektinhallintatyökalun, kuten Mavenin, avulla.
+</p>
+
+<h3 class="material-heading">
+    Maven-projektin luominen NetBeansissa
+
+</h3>
+
+<p>
+  Uuden Mavenia käyttävän projektin luominen NetBeansissa tapahtuu valitsemalla <em>File</em> -> <em>New Project</em> -> Kategoriaksi <em>Maven</em> ja projektiksi <em>Java Application</em>. Tämän jälkeen valitaan <em>Next</em>, ja täytetään projektin tiedot. Alla on esimerkki projektin tiedoista, projektin sijainti (Project location) on konekohtainen.
+</p>
+
+<figure>
+  <img src="../img/viikko3/nb-maven-b08e1f41.png" alt="Project Name: tikape
+
+					    Project Location: (omasta koneesta riippuva)
+
+					    Group Id: tikape
+
+					    Version: (saa olla kuten on aluksi)
+
+					    Package: tikape"
+  />
+  <figcaption>Maven-projektin asetukset</figcaption>
+</figure>
+
+<p>
+  Tämän jälkeen painetaan Finish, ja projekti ilmestyy NetBeansin vasemmassa laidassa olevalle listalle. Etsi nyt projektin <em>Project Files</em> sisältä <code>pom.xml</code>-tiedosto. Koska käytössämme on Java 8, varmistetaan että sekä <code>maven.compiler.source</code> että <code>maven.compiler.target</code> arvot ovat <code>1.8</code>.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;tikape&lt;/groupId&gt;
+    &lt;artifactId&gt;tikape&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;<strong>1.8</strong>&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;<strong>1.8</strong>&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+
+
+<h3 class="material-heading">
+    Kirjastojen lisääminen projekteihin Mavenin avulla
+
+</h3>
+
+<p>
+  Kirjastot kuten tietokanta-ajurit ja web-sovelluksen luomiseen tarvittavat apukirjastot ladataan Maven-työkalun avulla. Mavenin termein kirjastoja kutsutaan riippuvuuksiksi (dependency). Lisätään esimerkiksi SQLite-ajuri sekä logituskirjasto SLF4J projektin käyttöön.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;tikape&lt;/groupId&gt;
+    &lt;artifactId&gt;tikape&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;<strong>1.8</strong>&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;<strong>1.8</strong>&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+            &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;3.21.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.25&lt;/version&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+
+<p>
+  Kun NetBeans-projektista valitsee oikealla hiirennapilla <em>Dependencies</em> ja klikkaa <em>Download Declared Dependencies</em>, latautuu JDBC-ajuri projektin käyttöön.
+</p>
+
+<h3 class="material-heading">
+    Tietokantaa käyttävä ohjelma
+
+</h3>
+
+<p>
+  Kokeillaan seuraavaksi että sovellukset toimivat myös Mavenilla. Avaa projektiin liittyvä <em>Source Packages</em>, ja klikkaa <em>tikape</em>-pakkausta oikealle hiirennapilla. Valitse tämän jälkeen <em>New</em> -> <em>Java Class</em>, jonka jälkeen avautuu valikko, missä voit antaa luokalle nimen. Anna luokan nimeksi <code>Main</code>.
+</p>
+
+<p>
+  Avaa tiedosto tuplaklikkaamalla sitä. Muokkaa tiedostoa vielä siten, että se on seuraavan näköinen:
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+    }
+}
+</code></pre>
+
+<figure>
+  <img src="../img/viikko3/nb-main-d7a410eb.png" alt="Projektin lähdekooditiedosto Main.java on avattuna."/>
+  <figcaption>Avattu projekti NetBeansissa</figcaption>
+</figure>
+
+<p>
+  Lisää projektiin <em>import</em>-komento <code>import java.sql.*;</code>, joka hakee kaikki SQL-kyselyihin liittyvät Javan kirjastot.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.sql.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+    }
+}
+</code></pre>
+
+<p>
+  Avataan seuraavaksi tietokantayhteys tietokantaan <em>testi.db</em>, ja tehdään siellä kysely "SELECT 1", jolla pyydetään tietokantaa palauttamaan luku 1 -- käytämme tätä yhteyden testaamiseksi. Jos yhteyden luominen onnistuu, tulostetaan "Hei tietokantamaailma!", muulloin "Yhteyden muodostaminen epäonnistui".
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.sql.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:testi.db");
+
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery("SELECT 1");
+
+        if (resultSet.next()) {
+            System.out.println("Hei tietokantamaailma!");
+        } else {
+            System.out.println("Yhteyden muodostaminen epäonnistui.");
+        }
+    }
+}
+</code></pre>
+
+<pre class="sample-output">Hei tietokantamaailma!
+</pre>
+
+
+
+<h2 class="material-heading">
+    Tietokantaa käyttävien web-sovellusten rakentaminen
+
+</h2>
+
+<p>
+  Selain kommunikoi palvelimen kanssa tekemällä pyyntöjä joihin palvelin vastaa. Selain tekee pyynnön esimerkiksi kun käyttäjä kirjoittaa osoitekenttään sivun osoitteen -- esimerkiksi https://materiaalit.github.io/tikape-s17/ -- ja painaa enter. Tällöin tehdään hakupyyntö (<code>GET</code>) osoitteessa <code>materiaalit.github.io</code> olevalle palvelimelle. Palvelin vastaanottaa pyynnön, käsittelee sen -- esimerkiksi hakee haluttavan dokumentin tiedostojärjestelmästä -- ja luo käyttäjälle näytettävän sivun. Sivu palautetaan vastauksena pyynnölle tekstimuodossa. Selain päättelee vastauksen sisällön perusteella miten sivu tulee näyttää käyttäjälle ja näyttää sivun käyttäjälle.
+</p>
+
+<p>
+  Sivun näyttämisen yhteydessä selain hakee myös sisältöä, joihin sivu viittaa. Esimerkiksi jokainen tällä sivulla oleva kuva haetaan erikseen, aivan kuten erilaiset dynaamista toiminnallisuutta lisäävät Javascript -tiedostot sekä sivun ulkoasun tyylittelyyn liittyvät tyylitiedostot.
+</p>
+
+<p>
+  Käyttäjän näkökulmasta selain tekee käytännössä kahdenlaisia pyyntöjä. Hakupyynnöt (<code>GET</code>) liittyvät tietyssä osoitteessa olevan resurssin hakemiseen, kun taas lähestyspyynnöt (<code>POST</code>) liittyvät tiedon lähettämiseen tiettyyn osoitteeseen.
+</p>
+
+<p>
+  Tutustutaan tähän käytännössä Javalla toteutetun <a href="http://sparkjava.com/" target="_blank">Spark</a>-nimisen web-sovelluskehyksen avulla.
+</p>
+
+
+<h2 class="material-heading">
+    Spark ja ensimmäinen web-sovellus
+
+</h2>
+
+<p>
+  <a href="http://sparkjava.com/" target="_blank">Spark</a>-sovelluskehyksen käyttöönotto toimii kuten aliluvussa 4.1. "<em>Maven-projektin luominen NetBeansissa</em>". Toisin kuin oppaassa, Maven-projektin riippuvuudeksi halutaan lisätä useampia kirjastoja, jotka yhdessä tarjoavat sekä tietokanta- että palvelintoiminnallisuuden. Tiedosto <code>pom.xml</code> näyttää lopuksi esimerkiksi seuraavalta:
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;tikape&lt;/groupId&gt;
+    &lt;artifactId&gt;tikape-web-sample&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+            &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;3.21.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+            &lt;artifactId&gt;spark-core&lt;/artifactId&gt;
+            &lt;version&gt;2.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+            &lt;artifactId&gt;gson&lt;/artifactId&gt;
+            &lt;version&gt;2.8.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.25&lt;/version&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>
+  Nyt voimme luoda uuden pääohjelmaluokan. Lisätään <code>Main.java</code>-tiedostoon rivi <code>import spark.Spark;</code>, jolloin käyttöömme tulee oleellisimmat Sparkin tarjoamat toiminnallisuudet. Kutsutaan tämän jälkeen Sparkin get-metodia, ja määritellään sen avulla osoite, jota palvelinohjelmistomme tulee kuuntelemaan, sekä teksti, joka palautetaan, kun selaimella tehdään pyyntö annettuun osoitteeseen.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import spark.Spark;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Spark.get("/hei", (req, res) -&gt; {
+            return "Hei maailma!";
+        });
+
+    }
+}
+</code></pre>
+
+<p>
+  Yllä olevassa esimerkissä palvelimelle määritellään osoite <code>/hei</code>. Jos selaimella tehdään osoitteeseen pyyntö, pyyntöön vastataan tekstillä <code>Hei maailma!</code>.
+</p>
+
+<p>
+  Kun ylläolevan sovelluksen käynnistää, Spark käynnistää web-palvelimen osoitteeseen <code>http://localhost:4567</code>, eli paikallisen koneen porttiin <code>4567</code>. Palvelin on tämän jälkeen käynnissä, ja odottaa siihen tehtäviä pyyntöjä. Kun haemme web-selaimella sivua osoitteesta <code>http://localhost:4567</code>, palauttaa palvelin selaimelle tekstimuotoista tietoa, ja selain näyttää käyttäjälle seuraavanlaisen sivun:
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-localhost-not-found-b173d49d.png" alt="Kun osoitteeseen http://localhost:4567 tehdään pyyntö, sieltä palautuu sivu, jossa näkyy teksti '404 Not found'."/>
+  <figcaption>Kun osoitteeseen http://localhost:4567 tehdään pyyntö, sieltä palautuu sivu, jossa näkyy teksti '404 Not found'.</figcaption>
+</figure>
+
+<p>
+  Kun teemme pyynnön osoitteeseen <code>http://localhost:4567/hei</code>, eli palvelinohjelmiston osoitteeseen <code>/hei</code>, saammekin vastaukseksi ohjelmakoodissa määrittelemämme <code>Hei maailma!</code>-tekstin.
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-localhost-hei-maailma-405f6f10.png" alt="Kun osoitteeseen http://localhost:4567/hei tehdään pyyntö, sieltä palautuu teksti 'Hei maailma!'."/>
+  <figcaption>Kun osoitteeseen http://localhost:4567/hei tehdään pyyntö, sieltä palautuu teksti 'Hei maailma!'.</figcaption>
+</figure>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>NetBeans ja palvelimen sammuttaminen
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Palvelimen sammuttaminen tapahtuu NetBeansissa punaista neliötä klikkaamalla. Joissakin käyttöjärjestelmissä (mac) tämä ei kuitenkaan toimi oikein, jolloin palvelin tulee sammuttaa komentoriviltä.
+  </p>
+
+  <p>
+    Saat portissa <code>4567</code> käynnissä olevan prosessin tunnuksen tietoon terminaalissa komennolla <code>lsof -i :4567</code>. Etsi komennon palauttamasta tulosteesta prosessin tunnus, jonka jälkeen voit sammuttaa prosessin komennolla <code>kill -9 prosessin-tunnus</code>.
+  </p>
+
+  <p>
+    Esimerkiksi:
+  </p>
+
+  <pre>
+> lsof -i :4567
+COMMAND  PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    9916 kayttaja   51u  IPv6 0x65802ef6be5c6f29      0t0  TCP *:tram (LISTEN)
+>
+  </pre>
+
+  <p>
+    Yllä prosessin tunnus (PID) on 9916. Tämän jälkeen prosessi sammutetaan komennolla <code>kill -9 9916</code>.
+  </p>
+
+  <pre>
+> lsof -i :4567
+COMMAND  PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    9916 kayttaja   51u  IPv6 0x65802ef6be5c6f29      0t0  TCP *:tram (LISTEN)
+> kill -9 9916
+  </pre>
+
+
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Tietokannasta haetun tiedon palauttaminen Spark-sovelluksessa
+
+</h2>
+
+<p>
+  Luodaan seuraavaksi sovellus, jonka avulla tietokantaan voi lisätä tietoa ja joka palauttaa tietoa tietokannasta. Tietoa lähetetään selaimen tai muun asiakasohjelmiston tekemällä POST-tyyppisellä pyynnöllä, ja tietoa haetaan GET-tyyppisellä pyynnöllä. Näitä varten Sparkissa on metodit <a href="http://sparkjava.com/documentation#routes" target="_blank">post</a> ja <a href="http://sparkjava.com/documentation#routes" target="_blank">get</a>.
+</p>
+
+<p>
+  Oletamme, että tietokanta käsittelee tehtäviä. Tehtävää kuvaava luokka ja tietokanta on seuraavanlainen.
+</p>
+
+<pre class="sh_java code-highlight"><code>public class Todo {
+    Integer id; // pääavain
+    String tehtava; // tehtävän kuvaus
+    Boolean tehty; // tieto onko tehtävä tehty
+}
+</code></pre>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Todo (
+    id integer PRIMARY KEY,
+    tehtava varchar(255),
+    tehty boolean
+);
+</code></pre>
+
+<p>
+  Käytämme tässä esimerkissä tiedon esitysmuotona JSON-formaattia. <a href="https://stackoverflow.com/questions/383692/what-is-json-and-why-would-i-use-it" target="_blank">JSON</a> (Javascript Object Notation) sisältää oleellisesti kaksi tietirakennetta: avain-arvo -parit sekä listat. JSON-olio aloitetaan aaltosuluilla, jota seuraa muuttujat ja niiden arvot. Alla Todo-olio kuvattuna JSON-muodossa.
+</p>
+
+<pre>
+{
+  "id": 3,
+  "tehtava": "Lue JSON-opas",
+  "tehty": false
+}
+</pre>
+
+<p>
+  Kun käytössämme on aiemmin tutuksi tullut Dao-rajapinta, on Todo-olioiden käsittely suoraviivaista.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>Database db = new Database("jdbc:sqlite:todot.db");
+TodoDao dao = new TodoDao&lt;Todo, Integer&gt;();
+
+Todo todo = new Todo();
+todo.setTehtava("Lue JSON-opas");
+dao.saveOrUpdate(todo);
+
+for(Todo t: dao.findAll()) {
+    System.out.println(t.getId() + "\t" + t.getTehtava());
+}
+</code></pre>
+
+<pre class="sample-output">1    Lue JSON-opas   false
+</pre>
+
+<p>
+  Olioiden kääntäminen JSON-muotoiseksi tiedoksi onnistuu helposti Googlen <a href="https://github.com/google/gson" target="_blank">Gson</a>-kirjaston avulla.
+</p>
+
+<pre class="sh_java code-highlight"><code>Gson gson = new Gson();
+
+Todo t = new Todo();
+t.setId(1);
+t.setTehtava("Tutustu Gson-kirjastoon");
+t.setTehty(false);
+
+System.out.println(gson.toJson(gson));
+</code></pre>
+
+<pre class="sample-output">{"id": 1, "tehtava": "Tutustu Gson-kirjastoon", "tehty": false}
+</pre>
+
+
+<p>
+  Yhdistämällä Sparkin, tietokannan, daon sekä Gson-kirjaston, saamme käyttöömme kevyen web-palvelun, joka tarjoaa JSON-muotoista dataa.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import com.google.gson.Gson;
+import spark.Spark;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Database db = new Database("jdbc:sqlite:todot.db");
+        TodoDao dao = new TodoDao(db);
+
+        Gson gson = new Gson();
+
+        Spark.get("*", (req, res) -&gt; {
+            return gson.toJson(dao.findAll());
+        });
+
+        Spark.post("*", (req, res) -> {
+            Todo todo = gson.fromJson(req.body(), Todo.class);
+            todo = dao.saveOrUpdate(todo);
+
+            return gson.toJson(todo);
+        });
+    }
+}
+</code></pre>
+
+<p>
+  <em>
+    Selvitä <a href="https://sparkjava.com" target="_blank">Sparkin</a> dokumentaatiosta tarkemmin mitä yllä oleva sovellus todellisuudessa tekee.
+  </em>
+</p>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">JSON-dataa</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Toteuta edellistä esimerkkiä noudattaen sovellus, joka mahdollistaa palvelimella sijaitsevien Todo-olioiden lisäämisen ja hakemisen. Luo sovelluksen tietokanta nimellä <code>todot.db</code> tehtäväpohjan kansioon <code>db</code>. Käytä tietokannan rakenteena seuraavaa:
+  </p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Todo (
+    id integer PRIMARY KEY,
+    tehtava varchar(255),
+    tehty boolean
+);
+</code></pre>
+
+  <p>
+    Hyödynnä tehtäväpohjan luokkaa Todo tietokannasta noudettavien tehtävien noutamisessa ja tietokantaan tallentamisessa. Tarvitset sovellukseen myös mahdollisesti erillisen TodoDao-luokan..
+  </p>
+
+  <p>
+    JSON-muotoisen tiedon lähettämistä palvelimelle voi kokeilla komentoriviltä cURL-työvälineen avulla. Tämä löytyy tietojenkäsittelytieteen laitoksen koneilta, mutta sen voi myös ladata osoitteesta <a href="https://curl.haxx.se/download.html" target="_blank">https://curl.haxx.se/download.html</a>.
+  </p>
+
+  <pre>
+curl -d '{"tehtava":"test", "tehty":"true"}' -H "Content-Type: application/json" -X POST http://localhost:4567
+  </pre>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part3.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

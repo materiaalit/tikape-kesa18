@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 4</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Neljännen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Osaa esittää tietoa XML ja HTML-kielellä. Osaa luoda yhtä tietokantataulua käyttävän ja muokkaavan web-sovelluksen, jota voi käyttää selaimella. Tuntee sekvenssikaaviot. Osaa luoda useampaa tietokantataulua käyttävän ja muokkaavan web-sovelluksen.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Neljännen osan tehtävien lataaminen
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Huom! Jos tehtävien lataaminen epäonnistuu, lataa NetBeansiin "Java EE Base" tai "Java Web and EE" -liitännäinen. Tämä onnistuu valitsemalla Tools -> Plugins -> Available Plugins ja etsimällä kyseisen liitännäisen listasta.
+  </p>
+    
+
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    Erilaisia tiedon esitysmuotoja
+
+</h1>
+
+<p>
+  Edellisen osan lopussa tutustuttiin lyhyesti <a href="https://www.json.org/" target="_blank">JavaScript Object Notation</a> (JSON)-formaattiin, joka on eräs tiedon esitysmuoto. Tarkastellaan tässä muutamia muita tiedon esitysmuotoja.
+</p>
+
+<h2 class="material-heading">
+    XML
+
+</h2>
+
+<p>
+  XML (EXtensible Markup Language) on kieli, jolla kuvataan rakenteellista tietoa. Se koostuu kahdesta osasta, otsakkeesta ja rungosta. Otsake on valinnainen, ja sisältää esimerkiksi dokumentin versionumeron, tiedon käsittelyohjeita, sekä mahdollisia tietoja tiedon rakenteesta. XML-dokumentin runko alkaa juurielementistä, joita on vain yksi, jonka alla on yksi tai useampia elementtejä. Elementit voivat sisältää muita elementtejä, tai ne voivat sisältää (esimerkiksi) tekstimuotoisen arvon.
+</p>
+
+
+<p>
+  Elementit erotellaan toisistaan pienempi kuin (&lt;) ja suurempi kuin (&gt;) -merkeillä. Elementti avataan elementin nimen sisältävällä pienempi kuin -merkillä alkavalla ja suurempi kuin -merkkiin loppuvalla merkkijonolla, esim. <code>&lt;opiskelija&gt;</code>, ja suljetaan merkkijonolla jossa elementin pienempi kuin -merkin jälkeen on vinoviiva, esim <code>&lt;/opiskelija&gt;</code>. Yksittäisen elementin sisälle voi laittaa muita elementtejä.
+</p>
+
+<p>
+  Alla on esimerkki XML-dokumentista, jossa on kuvattu opiskelijoiden nimiä. <code>&lt;?xml version="1.0"?&gt;</code> on dokumentin otsake ja <code>&lt;opiskelijat&gt;</code> dokumentin juurielementti. Dokumentti sisältää joukon <code>&lt;opiskelija&gt;</code>-elementtejä, joista jokaiselle on määritelty <code>&lt;nimi&gt;</code>-elementti. Jokaiseen <code>&lt;nimi&gt;</code>-elementtiin liittyy tekstiarvo -- esimerkiksi ensimmäisen opiskelijan nimi on <code>Ada Lovelace</code>.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0"?&gt;
+&lt;opiskelijat&gt;
+  &lt;opiskelija&gt;
+    &lt;nimi&gt;Ada Lovelace&lt;/nimi&gt;
+  &lt;/opiskelija&gt;
+  &lt;opiskelija&gt;
+    &lt;nimi&gt;Edgar F. Codd&lt;/nimi&gt;
+  &lt;/opiskelija&gt;
+  &lt;opiskelija&gt;
+    &lt;nimi&gt;Lixia Zhang&lt;/nimi&gt;
+  &lt;/opiskelija&gt;
+&lt;/opiskelijat&gt;
+</code></pre>
+
+<p>
+  XML-dokumentin elementit voivat sisältää useita elementtejä. Alla on kuvaus kahdesta kurssista sekä niihin liittyvistä opettajista.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0"?&gt;
+&lt;kurssit&gt;
+  &lt;kurssi&gt;
+    &lt;nimi&gt;Ohjelmoinnin perusteet&lt;/nimi&gt;
+    &lt;luento&gt;Ti 10-12&lt;/luento&gt;
+    &lt;opettaja&gt;
+      &lt;nimi&gt;Charles Babbage&lt;/nimi&gt;
+    &lt;/opettaja&gt;
+  &lt;/kurssi&gt;
+  &lt;kurssi&gt;
+    &lt;nimi&gt;Tietokantojen perusteet&lt;/nimi&gt;
+    &lt;luento&gt;Pe 12-14&lt;/luento&gt;
+    &lt;opettaja&gt;
+      &lt;nimi&gt;Edgar F. Codd&lt;/nimi&gt;
+    &lt;/opettaja&gt;
+  &lt;/kurssi&gt;
+&lt;/kurssit&gt;
+</code></pre>
+
+
+<h2 class="material-heading">
+    HTML
+
+</h2>
+
+<p>
+  HTML on hieman XML-kieltä muistuttava kieli web-sivustojen luomiseen. HTML on kuvauskieli, jonka avulla kuvataan sekä web-sivun rakenne että sivun sisältämä teksti. HTML-sivujen rakenne määritellään HTML-kielessä määritellyillä elementeillä. Yksittäinen HTML-dokumentti koostuu sisäkkäin ja peräkkäin olevista elementeistä.
+</p>
+
+<p>
+  Suurin osa HTML-kielen elementeistä tulee sulkea lopuksi. Osa HTML5:n elementeistä &ndash; esimerkiksi <code>&lt;br&gt;</code> &ndash; on kuitenkin ns. tyhjiä ("void"), eikä niille kirjoiteta erillistä lopetusta. Halutessaan tyhjät elementit voi lopettaa X(HT)ML-tyyliseen /-merkkiin, esimerkiksi seuraavasti: <code>&lt;br /&gt;</code>.
+</p>
+
+
+<h3 class="material-heading">
+    HTML-dokumentin runko
+
+</h3>
+
+<p>
+  Tyypillisen HTML-dokumentin runko näyttää seuraavalta. Kun klikkaat allaolevassa upotetussa elementissä -- (tämäkin materiaali on luotu HTML-kielellä) -- <code>Result</code>-tekstiä, näet HTML-sivun, ja kun painat <code>HTML</code>-tekstiä, näet HTML-koodin. Klikkaamalla elementin oikeassa ylälaidassa olevasta <em>Edit in JSFiddle</em>-linkistä, pääset muokkaamaan elementtiä. Käytössä oleva palvelu JSFiddle mahdollistaa HTML-sivujen näppärän kokeilun.
+</p>
+
+<iframe width="100%" height="350" src="https://jsfiddle.net/e3tuhyLz/embedded/html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Yllä olevassa HTML-dokumentissa on dokumentin tyypin kertova otsake <code>&lt;!DOCTYPE html&gt;</code>, joka kertoo dokumentin olevan HTML-sivu. Tätä seuraa juurielementti <code>&lt;html&gt;</code>, joka aloittaa HTML-dokumentin. Elementti <code>&lt;html&gt;</code> sisältää yleensä kaksi elementtiä, elementit <code>&lt;head&gt;</code> ja <code>&lt;body&gt;</code>. Elementti <code>&lt;head&gt;</code> sisältää sivun otsaketiedot, eli esimerkiksi sivun käyttämän merkistön <code>&lt;meta charset="utf-8" /&gt;</code> ja otsikon <code>&lt;title&gt;</code>. Elementti <code>&lt;body&gt;</code> sisältää selaimessa näytettävän sivun rungon. Ylläolevalla sivulla on ensimmäisen tason otsake-elementti <code>h1</code> (header 1, otsikko 1) ja tekstielementti <code>p</code> (paragraph, tekstikappale).
+</p>
+
+<p>
+  Elementit voivat sisältää attribuutteja, joilla voi olla yksi tai useampi arvo. Yllä olevassa HTML-dokumentissa elementille <code>meta</code> on määritelty erillinen attribuutti <code>charset</code>, joka kertoo dokumentissa käytettävän merkistön: "utf-8". Attribuuttien lisäksi elementit voivat sisältää tekstisolmun. Esimerkiksi yllä olevat elementit <code>title</code>, <code>h1</code> ja <code>p</code> kukin sisältävät tekstisolmun eli tekstiä. Tekstisolmulle ei ole erillistä elementtiä tai määrettä, vaan se kirjoitetaan dokumenttiin tekstinä.
+</p>
+
+<p>
+  Puhe tekstisolmuista antaa viitettä jonkinlaisesta puurakenteesta. HTML-dokumentit, aivan kuten XML-dokumentit, ovat rakenteellisia dokumentteja, joiden rakenne on usein helppo ymmärtää puumaisena kaaviona. Ylläolevan web-sivun voi esittää esimerkiksi seuraavanlaisena puuna (attribuutit ja dokumentin tyyppi on jätetty merkitsemättä).
+</p>
+
+<pre>
+                   html
+               /          \
+             /              \
+          head              body
+        /       \         /      \
+     meta       title     h1      p
+                 :        :       :
+              tekstiä  tekstiä tekstiä
+</pre>
+
+<p>
+  Koska HTML-dokumentti on rakenteellinen dokumentti, on elementtien sulkemisjärjestyksellä väliä. Elementit tulee sulkea samassa järjestyksessä kuin ne on avattu. Esimerkiksi, järjestys <code>&lt;body&gt;&lt;p&gt;tekstisolmu!&lt/body&gt;&lt;/p&gt;</code> on väärä, kun taas järjestys <code>&lt;body&gt;&lt;p&gt;tekstisolmu!&lt;/p&gt;&lt/body&gt;</code> on oikea.
+</p>
+
+<p>
+  Kaikki elementit eivät kuitenkaan sisällä tekstisolmua, eikä kaikkia elementtejä suljeta erikseen. Yksi tällainen elementti on <a href="http://www.w3schools.com/tags/tag_link.asp" target="_blank">link</a>-elementti, jota käytetään resurssien hakemiseen sivua varten. 
+</p>
+
+<p>
+  Kun selaimet lataavat HTML-dokumenttia, ne käyvät sen läpi ylhäältä alas, vasemmalta oikealle. Kun selain kohtaa elementin, se luo sille uuden solmun selaimen ylläpitämään puurakenteeseen (DOM, document object model). Seuraavista elementeistä luodut solmut menevät aiemmin luodun solmun alle kunnes aiemmin kohdattu elementti suljetaan. Aina kun elementti suljetaan, puussa palataan ylöspäin edelliselle tasolle.
+</p>
+
+
+
+<h3 class="material-heading">
+    Listaelementit
+
+</h3>
+
+<p>
+  Sivuille voi lisätä listoja mm. <code>ol</code> (ordered list, järjestetty lista) ja <code>ul</code> (unordered list, järjestämätön lista) -elementtien avulla. Elementeillä <code>ol</code> tai <code>ul</code> aloitetaan lista, ja listan sisälle asetettavat yksittäisiin listaelementteihin käytetään <code>li</code> (list item, listaelementti)-elementtiä. Yksittäiset listaelementit voivat taas sisältää esimerkiksi tekstisolmun tai lisää html-elementtejä.
+</p>
+
+<iframe width="100%" height="450" src="https://jsfiddle.net/m5c5g65L/embedded/html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+
+<h3 class="material-heading">
+    Linkit toisille sivuille
+
+</h3>
+
+<p>
+  Elementin <code>a</code> (<em>anchor</em>) avulla voi luoda linkin sivulta toiselle. Sivu, jolle käyttäjä siirtyy, merkitään elementin <code>a</code> attribuutin <code>href</code> arvolla. Jos sovelluksessasi on kaksi sivua, <code>index.html</code> ja <code>oma.html</code>, voi sivulta <code>oma.html</code> luoda linkin sivulle <code>index.html</code> komennolla <code>&lt;a href="index.html"&gt;index.html&lt;/a&gt;</code>.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Lisää HTML-sivujen tekemisestä!
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Lisää tietoa HTML-sivujen tekemisestä löytyy mm. osoitteesta <a href="http://www.w3schools.com/html/" target="_blank" norel>http://www.w3schools.com/html/</a>.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    HTML-kielisen dokumentin palauttavat Web-sovellukset
+
+</h1>
+
+<p>
+  Muistellaan lyhyesti viime osassa tutuksi tullutta Spark-apukirjastoa. Spark on Java-kielellä toteutettu palvelinohjelmistojen luomiseen tarkoitettu kirjasto, joka tarjoaa ohjelmoijalle apuvälineitä pyyntöjä kuuntelevien palvelinten toteutukseen.
+</p>
+
+<p>
+  Sparkille määritellään <code>get</code>-metodin avulla palvelimen kuuntelemia osoitteita. Metodikutsun yhteydessä määritellään palvelimen palauttama data. Palautettava data on tekstiä, mutta selain päättelee palautetun tekstin sisällön perusteella, mitä tekstille tulee tehdä. Alla olevassa ohjelmakoodissa määritellään kaksi osoitetta, joista palautetaan dataa. Toinen palauttaa aiemmin nähdyn tekstin <code>Hei maailma!</code>, ja toinen palauttaa tekstin <code>Moi maailma!</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import spark.Spark;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Spark.get("/hei", (req, res) -&gt; {
+            return "Hei maailma!";
+        });
+
+        Spark.get("/testi", (req, res) -&gt; {
+            return "Moi maailma!";
+        });
+    }
+}
+</code></pre>
+
+<p>
+  Selain näyttää käyttäjälle palvelimelta saamansa tekstimuotoisen vastauksen. Jos vastaus on HTML-muodossa, tulkitsee selain vastauksen, ja luo sen perusteella näkymän käyttäjälle. Periaatteessa palvelimelta voisi palauttaa suoraan HTML-koodia tekstimuodossa esimerkiksi seuraavalla tavalla.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/testi", (req, res) -&gt; {
+    return "&lt;h1&gt;Iso Viesti!&lt;/&gt;";
+});
+</code></pre>
+
+<p>
+  HTML-koodin palauttaminen suoraan palvelinohjelmistosta on kuitenkin hyvin epätyypillistä. Käytännössä html-sivut luodaan lähes aina ensin erilliseen tiedostoon, jonka palvelin palauttaa käyttäjälle. Voimme tehdä näin myös Sparkin kautta. Tutustutaan tähän seuraavaksi.
+</p>
+
+<h2 class="material-heading">
+    Thymeleafin käyttöönotto ja HTML-sivun luominen
+
+</h2>
+
+<p>
+  <a href="http://www.thymeleaf.org/" target="_blank">Thymeleaf</a> on eräs väline HTML-sivujen palauttamiseen suoraan palvelinohjelmistolta. Thymeleaf tarjoaa käyttäjälle lisäksi mahdollisuuden palvelimelta saatavan datan lisäämiseksi suoraan HTML-sivulle. 
+</p>
+
+<p>
+  Tutustutaan tässä Thymeleafin käyttöön Sparkin kanssa.
+</p>
+
+<p>
+  Thymeleafin saa lisättyä Maven-projektiin lisäämällä riippuvuuden <code>spark-template-thymeleaf</code>.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+    &lt;artifactId&gt;spark-template-thymeleaf&lt;/artifactId&gt;
+    &lt;version&gt;2.7.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>
+  Tehdään seuraavaksi resurssikansio (<code>resources</code>) projektin kansioon <code>src/main/</code>, jos sitä ei vielä ole. Uuden kansion saa luotua NetBeansin Files-välilehdellä klikkaamalla kansiota oikealla hiirennapilla, ja valitsemalla <code>New -> Folder</code>. Kun kansio on luotu, pitäisi käytössä olla kansio <code>src/main/resources</code>. Tämän jälkeen <code>resources</code>-kansioon tulee vielä luoda kansio <code>templates</code>, johon HTML-tiedostot tullaan laittamaan.
+</p>
+
+<figure>
+  <img src="../img/viikko6/nb-src-main-resources-templates-7d6acb55.png" alt="Kansio src/main/resources/templates on luotu."/>
+  <figcaption>Projektiin liittyvän kansion <code>src</code> allaolevassa kansiossa <code>main</code> on nyt kansio <code>resources</code>, jossa on taas kansio <code>templates</code>.</figcaption>
+</figure>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Lisätään kansioon <code>templates</code> uusi html-dokumentti (<code>New -&gt; HTML File</code>), ja asetetaan tiedoston nimeksi <code>index.html</code>.
+</p>
+
+<figure>
+  <img src="../img/viikko6/nb-src-main-resources-templates-index-dbb0684f.png" alt="Kansioon src/main/resources/templates on luotu index.html-niminen tiedosto."/>
+  <figcaption>Nyt kansiossa <code>src/main/resources/templates</code> on tiedosto <code>index.html</code>.</figcaption>
+</figure>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Käyttämämme Thymeleaf-kirjasto olettaa, että HTML-tiedostot ovat tietyn muotoisia -- palataan tähän myöhemmin. Tässä välissä riittää, että html-sivun sisällöksi kopioi seuraavan aloitussisällön.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Otsikko&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+
+        &lt;h1&gt;Hei maailma!&lt;/h1&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Huom! Jos näet virheen <code>500 Internal Server Error!</code> sekä NetBeansin lokeihin tulee viestiä "Parse errorista", tarkista, että sivun sisältö on aluksi täsmälleen ylläoleva.
+</p>
+
+
+<h2 class="material-heading">
+    Thymeleafin avulla luodun sivun palauttaminen käyttäjälle
+
+</h2>
+
+<p>
+  Kansiossa <code>src/main/java/resources/templates</code> olevia <code>.html</code>-päätteisiä tiedostoja palautetaan käyttäjälle Sparkin avulla seuraavasti. Allaolevassa metodikutsussa määritellään kuunneltavaksi osoitteeksi <code>/sivu</code>. Kun käyttäjä tekee selaimella pyynnön osoitteeseen <code>/sivu</code>, hänelle palautetaan <code>index</code>-niminen HTML-kielinen dokumentti. Sivun nimen perusteella päätellään palautettava html-tiedosto -- nimi <code>index</code> muunnetaan muotoon <code>src/main/java/resources/templates/</code>index<code>.html</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.util.HashMap;
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Spark.get("/sivu", (req, res) -> {
+            HashMap map = new HashMap<>();
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+    }
+}
+</code></pre>
+
+<p>
+  Kun yllä määritelty sovellus käynnistetään, ja kansiossa <code>src/main/java/resources/templates</code> on tiedosto <code>index.html</code>, näytetään tiedoston sisältö käyttäjälle. Huomaathan, että tiedoston sisällön tulee olla kuten edellisessä kappaleessa näytetty. Näkymä on käyttäjälle esimerkiksi seuraavanlainen:
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-index-0cbfe932.png" alt="Osoite http://localhost:4567/sivu avattuna."/>
+  <figcaption>Osoite http://localhost:4567/sivu avattuna.</figcaption>
+</figure>
+
+
+<p>
+  Mitä tässä oikein tapahtuu? Tutkitaan sivun palauttamista vielä tarkemmin.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/sivu", (req, res) -> {
+    HashMap map = new HashMap&lt;&gt;();
+
+    return new ModelAndView(map, "index");
+}, new ThymeleafTemplateEngine());
+</code></pre>
+
+<p>
+  Metodikutsun ensimmäinen rivi lienee tuttu. Kerromme, että ohjelman tulee kuunnella osoitteeseen <code>/sivu</code> tehtäviä hakupyyntöjä. Tämän jälkeen tulee pyynnön käsittelyyn liittyvä lohko, josta tällä kertaa palautetaan olio, joka sisältää <code>HashMap</code>-olion sekä tiedon näytettävästä html-sivusta. Tämän jälkeen pyynnön käsittelyyn lisätään vielä erillinen olio, <code>ThymeleafTemplateEngine</code>, joka käsittelee html-sivun ennen sen palautusta.
+</p>
+
+
+<h2 class="material-heading">
+    Palvelimelta saadun tiedon näyttäminen käyttäjälle
+
+</h2>
+
+<p>
+  Thymeleaf-komponentin avulla voimme lisätä html-sivulle tietoa. Tämä tapahtuu lisäämällä <code>HashMap</code>-olioon <code>put</code>-metodilla arvo, esimerkiksi <code>map.put("teksti", "Hei mualima!");</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/sivu", (req, res) -> {
+    HashMap map = new HashMap<>();
+    map.put("teksti", "Hei mualima!");
+
+    return new ModelAndView(map, "index");
+}, new ThymeleafTemplateEngine());
+</code></pre>
+
+<p>
+  Tämän jälkeen html-sivua <code>index.html</code> muokataan siten, että sinne lisätään "paikka" tiedolle. Tiedon lisääminen tapahtuu lisäämällä sivulle html-elementti, jossa on attribuutti <code>th:text</code>, jolle annetaan HashMap-olioon lisätyn arvon nimi aaltosulkujen sisällä siten, että aaltosulkuja edeltää dollarimerkki -- eli <code>th:text="${teksti}"</code>. Elementti voi olla vaikka <code>h2</code>-elementti, jolloin kokonaisuus voisi olla vaikkapa seuraava <code>&lt;h2 th:text="${teksti}"&gt;testi&lt;/h2&gt;</code>.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Otsikko&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Hei maailma!&lt;/h1&gt;
+
+        &lt;h2 th:text="${teksti}"&gt;testi&lt;/h2&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Kun käynnistämme palvelimen, ja avaamme osoitteen <code>http://localhost:4567/sivu</code>, näemme seuraavanlaisen näkymän.
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-index-ja-thyme-cc639bc2.png" alt="Osoite http://localhost:4567/sivu avattuna."/>
+  <figcaption>Osoite http://localhost:4567/sivu avattuna.</figcaption>
+</figure>
+
+
+<p>
+  Kuten ohjelmointikursseilta todennäköisesti muistetaan, HashMap> on ohjelmoinnissa käytettävä lokerikko, missä jokaisella lokerolla on nimi, mihin arvon voi asettaa. Alla olevassa esimerkissä luomme ensin HashMap-olion, jonka jälkeen asetamme lokeroon nimeltä <code>teksti</code> arvon <code>"Hei mualima!"</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>HashMap map = new HashMap&lt;&gt;();
+map.put("teksti", "Hei mualima!");
+</code></pre>
+
+<p>
+  Kun HashMap-olio <em>palautetaan</em> pyynnön käsittelyn jälkeen -- <code>return new ModelAndView(map, "index");</code> -- annetaan lokerikko Thymeleafin käyttöön.
+</p>
+
+<p>
+  Thymeleaf etsii annetusta HashMap-oliosta lokeroita <code>th:text</code>-attribuutille annetulla nimellä. Esimerkiksi kun Thymeleaf käsittelee edellä näkemämme <code>&lt;h2 th:text="${teksti}"&gt;testi&lt;/h2&gt;</code>-rivin, etsii se HashMap-oliosta lokeron nimeltä <code>teksti</code>, ja asettaa siinä olevan arvon elementin sisälle tekstisolmuksi. Tässä tapauksessa HTML-dokumentissa olevan <code>h2</code>-elementin sisältämä tekstisolmu "testi" korvataan HashMap-olion lokerosta teksti löytyvällä arvolla, eli tekstillä "Hei mualima!".
+</p>
+
+<h2 class="material-heading">
+    Listojen ja olioiden käsittely
+
+</h2>
+
+<p>
+  Tutustutaan seuraavaksi olioiden ja listojen käsittelyyn Thymeleafin avulla. Oletetaan, että käytössämme on seuraava opiskelijaa kuvaava luokka.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+public class Opiskelija {
+
+    private Integer id;
+    private String nimi;
+
+    public Opiskelija() {
+    }
+
+    public Opiskelija(Integer id, String nimi) {
+        this.id = id;
+        this.nimi = nimi;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNimi() {
+        return nimi;
+    }
+
+    public void setNimi(String nimi) {
+        this.nimi = nimi;
+    }
+}
+</code></pre>
+
+<p>
+  Jokaisella opiskelijalla on siis tunnus sekä nimi. Tämän lisäksi, jokaiselle opiskelijalle kuuluu <code>get</code>- ja <code>set</code>-metodit, joiden avulla opiskelijaan liittyviä tietoja voidaan hakea ja muokata.
+</p>
+
+<p>
+  Muokataan aiempaa ohjelmaamme siten, että käytössämme on listallinen opiskelijoita, jotka palautetaan sivun mukana thymeleafin käsiteltäväksi.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
+
+public class Main {
+
+    public static void main(String[] args) {
+        ArrayList&lt;Opiskelija&gt; opiskelijat = new ArrayList&lt;&gt;();
+        opiskelijat.add(new Opiskelija(1, "Ada Lovelace"));
+        opiskelijat.add(new Opiskelija(2, "Charles Babbage"));
+
+        Spark.get("/opiskelijat", (req, res) -> {
+            HashMap map = new HashMap&lt;&gt;();
+            map.put("teksti", "Hei mualima!");
+            map.put("opiskelijat", opiskelijat);
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+    }
+}
+</code></pre>
+
+<p>
+  Lisätään vielä opiskelijat html-sivulle.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Otsikko&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Hei maailma!&lt;/h1&gt;
+
+        &lt;h2 th:text="${teksti}"&gt;testi&lt;/h2&gt;
+
+        &lt;h2 th:text="${opiskelijat}"&gt;opiskelijatesti&lt;/h2&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Kun nyt haemme sivua, saamme (esimerkiksi) seuraavanlaisen näkymän.
+</p>
+
+
+<figure>
+  <img src="../img/viikko6/spark-index-opiskelijat-c5158e68.png" alt="Osoite http://localhost:4567/opiskelijat avattuna. Sivulla näkyy teksti Hei maailma!
+
+							   Hei mualima!
+
+							   [tikape.Opiskelija@4f4a43a5, tikape.Opiskelija@41ce9964]"/>
+  <figcaption>Osoite http://localhost:4567/sivu avattuna. Opiskelijat näkyvät, mutta eivät toivotussa muodossa.</figcaption>
+</figure>
+
+
+<h2 class="material-heading">
+    Listan läpikäynti Thymeleafin avulla
+
+</h2>
+
+<p>
+  Ohjelmointikursseilla listan läpikäymiseen käytetään muunmuassa <code>while</code> ja <code>for</code>-lausetta. Edellä nähdyt opiskelijoiden tiedot voitaisiin tulostaa Java-koodissa seuraavasti:
+</p>
+
+<pre class="sh_java code-highlight"><code>ArrayList&lt;Opiskelija&gt; opiskelijat = new ArrayList&lt;&gt;();
+opiskelijat.add(new Opiskelija(1, "Ada Lovelace"));
+opiskelijat.add(new Opiskelija(2, "Charles Babbage"));
+
+for (Opiskelija opiskelija: opiskelijat) {
+    System.out.println("id: " + opiskelija.getId());
+    System.out.println("nimi: " + opiskelija.getNimi());
+    System.out.println();
+}
+</code></pre>
+
+<pre class="sample-output">id: 1
+nimi: Ada Lovelace
+
+id: 2
+nimi: Charles Babbage
+</pre>
+
+<p>
+  Vastaavanlainen toiminnallisuus löytyy myös Thymeleafista. Listan läpikäynti tapahtuu attribuutilla <code>th:each</code>, jolle annetaan sekä läpikäytävän listan nimi -- taas aaltosulkujen sisällä siten, että aaltosulkuja ennen on dollarimerkki -- että yksittäisen listaelementin nimi, jota käytetään listaa läpikäydessä. Alla olevassa esimerkissä aloitetaan lista <code>ul</code>-elementin avulla. Jokaiselle opiskelijalle luodaan oma <code>li</code>-elementti (<code>&lt;li th:each="opiskelija: ${opiskelijat}"&gt;...&lt;/li&gt;</code>), jonka sisälle haetaan käsiteltävään opiskelijaan liittyvät tiedot.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Otsikko&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Hei maailma!&lt;/h1&gt;
+
+        &lt;h2 th:text="${teksti}"&gt;testi&lt;/h2&gt;
+
+        &lt;ul&gt;
+            &lt;li th:each="opiskelija: ${opiskelijat}"&gt;
+                &lt;span th:text="${opiskelija.id}"&gt;1&lt;/span&gt;
+                &lt;span th:text="${opiskelija.nimi}"&gt;Essi esimerkki&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Kun sivua tarkastelee selaimesta, näyttää se seuraavalta:
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-index-opiskelijat-listana-8ff2e8f8.png" alt="Osoite http://localhost:4567/opiskelijat avattuna. Sivulla näkyy teksti
+								   Hei maailma!
+
+								   Hei mualima!
+
+								   1 Ada Lovelace
+								   2 Charles Babbage"/>
+  <figcaption>Osoite http://localhost:4567/sivu avattuna. Opiskelijat näkyvät listattuna.</figcaption>
+</figure>
+
+<p>
+  &nbsp;
+</p>
+
+<p>
+  Edellä olevassa esimerkissä käydään listalla olevat opiskelijat läpi, ja luodaan niiden perusteella sivulle dataa. Mielenkiintoista esimerkissä on se, että yksittäisen opiskelijan id-kenttään pääsee käsiksi sanomalla (esimerkiksi) <code>&lt;span th:text="${opiskelija.id}"&gt;1&lt;/span&gt;</code>. Tässä Thymeleaf päättelee <code>opiskelija.id</code>-kohdassa, että sen tulee etsiä opiskelija-oliolta <code>getId()</code>-metodia, kutsua sitä, ja asettaa tähän metodin palauttama arvo.
+</p>
+
+
+
+<h2 class="material-heading">
+    Tiedon lähettäminen palvelimelle
+
+</h2>
+
+<p>
+  Tiedon lähettäminen (<code>POST</code>) palvelimelle tapahtuu HTML-sivuilla lomakkeen avulla.
+</p>
+
+<h3 class="material-heading">
+    Lomakkeen määrittely
+
+</h3>
+
+<p>
+  Lomakkeelle (<code>form</code>) määritellään metodiksi (<code>method</code>) lähetys, eli POST, sekä osoite, johon lomakkeella oleva tieto tulee lähettää. Lomakkeen määrittely alkaa muodossa <code>&lt;form method="POST" action="/osoite"&gt;</code>, missä <code>/osoite</code> on palvelimelle määritelty osoite. Tätä seuraa erilaiset lomakkeen kentät, esimerkiksi tekstikenttä (<code>&lt;input type="text" name="nimi"/&gt;</code>), johon syötettävälle arvolle tulee <code>name</code>-kentässä määritelty nimi. Lomakkeeseen tulee lisätä myös nappi (<code>&lt;input type="submit" value="Lähetä!"/&gt;</code>), jota painamalla lomake lähetetään. Lomake voi olla kokonaisuudessaan esimerkiksi seuraava:
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;form method="POST" action="/opiskelijat"&gt;
+    &lt;span&gt;Nimi:&lt;/span&gt;&lt;br/&gt;
+    &lt;input type="text" name="nimi"/&gt;&lt;br/&gt;
+    &lt;input type="submit" value="Lisää opiskelija"/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>
+  Yllä määritelty lomake näyttää selaimessa (esimerkiksi) seuraavalta:
+</p>
+
+<pre>
+  <div>
+    <form method="POST" action="/opiskelijat">
+      Nimi:<br/>
+      <input type="text" name="nimi"/><br/>
+      <input type="submit" value="Lisää opiskelija"/>
+    </form>
+  </div>
+</pre>
+
+<p>
+  Nappia painamalla lomakkeeseen kirjoitettu tieto yritetään tämän materiaalin osoitteessa olevaan polkuun <code>/opiskelijat</code>. Ei taida onnistua..
+</p>
+
+
+<h3 class="material-heading">
+    Tiedon lähetyksen vastaanotto
+
+</h3>
+
+<p>
+  Palvelimelle määritellään tietoa vastaanottava osoite metodilla <code>post</code>, jolle annetaan parametrina kuunneltava osoite, sekä koodi, joka suoritetaan kun osoitteeseen lähetetään tietoa. Pyynnön mukana lähetettävään tietoon -- esimerkiksi ylläolevalla lomakkeella voidaan lähettää nimi-niminen arvo palvelimelle -- pääsee käsiksi <code>req</code>-nimisen parametrin metodilla <code>queryParams</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.post("/opiskelijat", (req, res) -&gt; {
+    String nimi = req.queryParams("nimi");
+    System.out.println("Vastaanotettiin " + nimi);
+
+    return "Kerrotaan siitä tiedon lähettäjälle: " + nimi;
+});
+</code></pre>
+
+<p>
+  Samaa osoitetta voi käsitellä sekä <code>get</code>, että <code>post</code>-metodilla. Palvelin voi siis palauttaa selaimen tekemiin hakupyyntöihin tiettyä dataa -- esimerkiksi vaikkapa lomakkeen -- ja käsitellä lähetetyn tiedon erikseen. Alla on määritelty kaksi <code>/opiskelijat</code>-osoitetta kuuntelevaa toiminnallisuutta. Toinen palauttaa merkkijonona muotoillun lomakkeen (tämä kannattaisi tehdä erilliselle HTML-sivulle!), toinen taas palauttaa tekstin, jonka osana on lomakkeella lähetetty nimi.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import spark.Spark;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ArrayList&lt;Opiskelija&gt; opiskelijat = new ArrayList&lt;&gt;();
+        opiskelijat.add(new Opiskelija(1, "Ada Lovelace"));
+        opiskelijat.add(new Opiskelija(2, "Charles Babbage"));
+  
+        Spark.get("/opiskelijat", (req, res) -> {
+            HashMap map = new HashMap&lt;&gt;();
+            map.put("teksti", "Hei mualima!");
+            map.put("opiskelijat", opiskelijat);
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.post("/opiskelijat", (req, res) -&gt; {
+            String nimi = req.queryParams("nimi");
+            return "Kerrotaan siitä tiedon lähettäjälle: " + nimi;
+        });
+
+    }
+}
+</code></pre>
+
+<p>
+  Kun palvelin käynnistetään ylläolevalla ohjelmalla, löytyy osoitteesta <code>http://localhost:4567/opiskelijat</code> seuraavanlainen sivu:
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-lomake-cd47fbe5.png" alt="Kun osoitteeseen http://localhost:4567/opiskelijat tehdään pyyntö, nähdään aiemmin määritelty lomake."/>
+  <figcaption>Kun osoitteeseen http://localhost:4567/opiskelijat tehdään pyyntö, nähdään aiemmin määritelty lomake.</figcaption>
+</figure>
+
+<p>
+  Täytetään lomake -- vaikkapa nimellä <a href="https://en.wikipedia.org/wiki/Edgar_F._Codd" target="_blank">Edgar F. Codd</a>.
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-lomake-taytetty-b5766757.png" alt="Lomakkeen nimi-kenttään asetettu arvo 'Edgar F. Codd'."/>
+  <figcaption>Lomakkeen nimi-kenttään asetettu arvo 'Edgar F. Codd'.</figcaption>
+</figure>
+
+<p>
+  Kun painamme nyt nappia <code>Lisää opiskelija</code>, tekstikentän sisältö lähetetään palvelimelle lomakkeen <code>action</code>-kentän määrittelemään osoitteeseen. Jos lomakkeessa määritelty metodiksi (<code>method</code>) post, tehdään lähetyspyyntö. Jos action kenttä on <code>/opiskelijat</code> ja metodi <code>POST</code>, lähetettävä tieto vastaanotetaan ja suoritetaan rivillä <code>post("/opiskelijat", (req, res) -&gt; {</code> alkavalla ohjelmakoodilla. Aiemmin määritellyllä ohjelmalla käyttäjälle näytetään seuraavanlainen sivu:
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-lomake-lahetetty-e8b46705.png" alt="Lomake on lähetetty ja palvelin palauttaa tekstin 'Kerrotaan siitä tiedon lähettäjälle: Edgar F. Codd'."/>
+  <figcaption>Lomake on lähetetty ja palvelin palauttaa tekstin 'Kerrotaan siitä tiedon lähettäjälle: Edgar F. Codd'.</figcaption>
+</figure>
+
+
+<h3 class="material-heading">
+    Tiedon säilöminen palvelimelle hetkellisesti
+
+</h3>
+
+<p>
+  Voimme tallentaa vastaanotetun tiedon palvelimelle palvelimen käynnissäoloajaksi säilömällä sen esimerkiksi <code>ArrayList</code>-tyyppiseen listaan. Muokataan ylläolevaa aiempaa koodia siten, että hakupyyntö osoitteeseen <code>/opiskelijat</code> palauttaa sekä lomakkeen että tallennetut opiskelijat. Tämän lisäksi, lisätään osoitteeseen <code>/opiskelijat</code> tehtävän lähetyspyynnön käsittelyyn lomakkeelta saatavan nimi-kentän lisääminen ohjelmassa olevaan listaan.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.util.ArrayList;
+import spark.Spark;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ArrayList&lt;Opiskelija&gt; opiskelijat = new ArrayList&lt;&gt;();
+        opiskelijat.add(new Opiskelija(1, "Ada Lovelace"));
+        opiskelijat.add(new Opiskelija(2, "Charles Babbage"));
+  
+        Spark.get("/opiskelijat", (req, res) -> {
+            HashMap map = new HashMap&lt;&gt;();
+            map.put("teksti", "Hei mualima!");
+            map.put("opiskelijat", opiskelijat);
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.post("/opiskelijat", (req, res) -&gt; {
+            String nimi = req.queryParams("nimi");
+
+            opiskelijat.add(new Opiskelija(opiskelijat.size() + 1, nimi));
+            return "Kerrotaan siitä tiedon lähettäjälle: " + nimi;
+        });
+
+    }
+}
+</code></pre>
+
+<p>
+  Nyt kun osoitteessa <code>/opiskelijat</code> olevalla lomakkeella tehdään useampia pyyntöjä, tulee lomakesivulle lisää näytettäviä opiskelijoita.
+</p>
+
+<figure>
+  <img src="../img/viikko6/spark-lomake-lahetetty-monesti-ca7c0011.png" alt="Lomakkeella lähetetty arvot 'Edgar F. Codd' ja 'Ada Lovelace' ja lomake-sivu avattu uudestaan."/>
+  <figcaption>Lomakkeella lähetetty arvot 'Edgar F. Codd' ja 'Ada Lovelace' ja lomake-sivu avattu uudestaan.</figcaption>
+</figure>
+
+
+<p>
+  Tiedon lisääminen edellisellä tavalla johtaa tilanteeseen, missä käyttäjä näkee lisäyksen yhteydessä vain listasivun. Hyvä käytäntö on lisätä lisäystoiminnallisuuden loppuun uudelleenohjauskutsu, jonka perusteella selain pyydetään tekemään uusi kutsu osoitteeseen, joka sisältää tietojen listaamisen. Tämä onnistuu seuraavasti.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.post("/opiskelijat", (req, res) -&gt; {
+    String nimi = req.queryParams("nimi");
+
+    System.out.println("Lisätään " + nimi);
+    opiskelijat.add(new Opiskelija(opiskelijat.size() + 1, nimi));
+
+    res.redirect("/opiskelijat");
+    return "";
+});
+</code></pre>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>POST/Redirect/GET
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Edellä kuvattu esimerkki luo tilanteen, missä tiedon lähettäminen palvelimelle POST-pyynnöllä aiheuttaa uudelleenohjauksen, mikä aiheuttaa uuden GET-pyynnön selaimen toimesta. Käytännössä kun käyttäjä lähettää tietoa palvelimelle, hänen selaimensa hakee tiedon lähettämisen jälkeen uuden päivittyneen sivun automaattisesti. Sivun uudelleen lataaminen (f5 tai refresh) ei myöskään lähetä lomakkeen tietoja automatttisesti uudelleen.
+  </p>
+
+
+  </div>
+</div>
+  
+
+
+<h3 class="material-heading">
+    Useamman kentän lähettäminen
+
+</h3>
+
+<p>
+  HTML-lomakkeelle voidaan määritellä useampia kenttiä. Jokaisella kentällä tulee olla eri nimi, jotta palvelimella voidaan ottaa lomakkeen tiedon vastaan. Esimerkiksi nimeä ja osoitetta voisi kerätä vaikkapa seuraavanlaisella lomakkeella.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;form method="POST" action="/opiskelijat"&gt;
+    Nimi:&lt;br/&gt;
+    &lt;input type="text" name="nimi"/&gt;&lt;br/&gt;
+    Osoite:&lt;br/&gt;
+    &lt;input type="text" name="osoite"/&gt;&lt;br/&gt;
+    &lt;input type="submit" value="Lisää opiskelija"/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>
+  Lomake näyttää selaimessa (esimerkiksi) seuraavalta:
+</p>
+
+<pre>
+  <div>
+    <form method="POST" action="/opiskelijat">
+      Nimi:<br/>
+      <input type="text" name="nimi"/><br/>
+      Osoite:<br/>
+      <input type="text" name="osoite"/><br/>
+      <input type="submit" value="Lisää opiskelija"/>
+    </form>
+  </div>
+</pre>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Työlista</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa on valmiina web-sovellus, joka näyttää käyttäjälle tehtäviä. Tässä tehtävänäsi on lisätä sovellukseen toiminnallisuus, jonka avulla käyttäjälle voi lisätä tehtäviä.
+  </p>
+
+  <p>
+    Toteuta toiminnallisuus seuraavia askeleita noudattaen:
+  </p>
+
+  <ul>
+    <li>
+      Lisää tehtäväpohjassa olevaan index.html-tiedostoon lomake, joka sisältää tekstikentän tehtävän nimen syöttämiseksi. Lomake tulee lähettää palvelimelle POST-tyyppisenä pyyntönä.
+    </li>
+    <li>
+      Lisää sovellukseen (tiedosto <code>Tyolista.java</code>) osoite, joka kuuntelee lomakkeen lähetystä. Lisää tallennustoiminnallisuuden loppuun uudelleenohjaus, joka vie käyttäjän sivulle, joka näyttää kaikki tehtävät.
+    </li>
+    <li>
+      Tallenna lähetetty tieto listalle. 
+    </li>
+  </ul>
+  
+  <p>
+    Huomaa, että joudut sammuttamaan palvelimen aina muutosten yhteydessä. Toisin sanoen, ohjelmointiympäristö ei automaattisesti päivitä muutoksia palvelimelle. Muistathan myös sammuttaa palvelimen kun tehtävä on valmis -- näin palvelin ei jää estämään muiden palvelinten käynnistymistä.
+  </p>
+
+  <p>
+    Kun sovellus toimii, palauta se TMC:lle.
+  </p>
+  
+
+    </div>
+  </div>
+</div>
+
+
+<h2 class="material-heading">
+    Tietokannan käyttöönotto
+
+</h2>
+
+<p>
+  Tietokannan käyttöönotto onnistuu kuten Java-ohjelmissa yleensä. Tällä kertaa tosin hyödynnämme tietokantaa osana web-sovellusta. Tietokannassa olevien opiskelijoiden käsittely tapahtuisi esimerkiksi seuraavasti:
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape;
+
+import java.util.HashMap;
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.database.Database;
+import tikape.database.OpiskelijaDao;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Database database = new Database("jdbc:sqlite:opiskelijat.db");
+
+        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
+
+        Spark.get("/opiskelijat", (req, res) -> {
+            HashMap map = new HashMap&lt;&gt;();
+            map.put("opiskelijat", opiskelijaDao.findAll());
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+
+        Spark.post("/opiskelijat", (req, res) -> {
+            opiskelijaDao.saveOrUpdate(new Opiskelija(null, req.queryParams("nimi")));
+            res.redirect("/opiskelijat");
+            return "";
+        });
+
+    }
+}
+</code></pre>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Työlista tietokannalla</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa on valmiina sama web-sovellus kuin edellisessä tehtävässä, eli sovellus joka näyttää käyttäjälle tehtäviä. Tässä tehtävässä laajennetaan sovellusta siten, että se käyttää sovellus tallentaa tehtävät tietokantaan (sekä hakee tehtävät tietokannasta). Kopioi edellisessä osassa toteuttamasi sovellus tänne lähtökohdaksi.
+  </p>
+
+  <p>
+    Luo tehtäväpohjassa olevaan kansioon <code>db</code> SQLite-tietokanta <code>tasks.db</code>. Tietokannassa tulee olla yksi taulu nimeltä <code>Tehtava</code>, jossa on ainakin sarake <code>nimi</code>.
+  </p>
+
+  <p>
+    Muokkaa sovellusta siten, että tehtävät tallennetaan ja haetaan kansiossa <code>db</code> olevasta tietokannasta <code>tasks.db</code>. 
+  </p>
+
+  <p>
+    Huomaa, että joudut sammuttamaan palvelimen aina muutosten yhteydessä. Toisin sanoen, ohjelmointiympäristö ei automaattisesti päivitä muutoksia palvelimelle. Muistathan myös sammuttaa palvelimen kun tehtävä on valmis -- näin palvelin ei jää estämään muiden palvelinten käynnistymistä.
+  </p>
+  
+  <p>
+    Kun sovellus toimii, palauta se TMC:lle.
+  </p>
+    
+
+    </div>
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    Sekvenssikaaviot
+
+</h1>
+
+<p>
+  Sekvenssikaaviot ovat järjestelmien (ja olioiden) vuorovaikutuksen visualisointiin käytettävä menetelmä. Sekvenssikaaviossa järjestelmät kuvataan pystysuorina viivoina ja järjestelmien väliset kutsut vaakasuorina viivoina. Aika kulkee ylhäältä alas. Järjestelmät kuvataan laatikoina sekvenssikaavion ylälaidassa, joista pystysuorat viivat lähtevät. Järjestelmien kutsuihin merkitään oleellinen kuvaustieto, esimerkiksi olioiden yhteydessä metodin nimi tai korkeammalla tasolla järjestelmän toimintaa kuvattavaessa haluttu toiminto. Kutsun palauttama tieto piirretään palaavana katkoviivana.
+</p>
+
+<p>
+  Alla on kuvattuna tilanne, missä käyttäjä haluaa hakea palvelimelta kaikki opiskelijat (vastaa edellisen luvun lopussa olevan sovellusken tarjoamaa toiminnallisuutta.
+</p>
+
+<figure>
+  <img src="../img/sekvenssikaavio-fdf047d0.png" alt="Selaimen, palvelimen sekä tietokannan välistä kommunikaatiota kuvaava sekvenssikaavio."/>
+  <figcaption>Käyttäjä tekee selaimella pyynnön palvelimelle menemällä osoitteeseen "/opiskelijat". Palvelimella oleva koodi tekee ensin pyynnön tietokantaan, missä haetaan kaikki tietokannassa olevat opiskelijat. Tämän jälkeen palvelin antaa opiskelijalistan sekä html-sivun nimen Thymeleafille, joka luo sivusta HTML-sivun. Lopulta luotu HTML-sivu palautetaan käyttäjälle.</figcaption>
+</figure>
+
+
+<h1 class="material-heading">
+    Useampaa tietokantataulua käyttävä web-sovellus
+
+</h1>
+
+<p>
+  Rakennetaan seuraavaksi useampaa tietokantataulua käyttävä web-sovellus. Tarve on seuraava:
+</p>
+
+<p>
+  <em>
+    Haluaisin käyttööni tehtävien hallintaan tarkoitetun englanninkielisen sovelluksen. Jokaisella tehtävällä on nimi sekä tieto siitä, että onko tehtävä tehty. Tehtäviin voi määritellä aihepiirejä, joiden perusteella tehtäviä pitäisi myös pystyä hakemaan. Tämän lisäksi sovelluksessa tulee olla käyttäjiä, joiden tulee pystyä ottamaan tehtäviä työn alle. Vain työn alle otettu tehtävä voidaan merkitä tehdyksi.
+  </em>
+</p>
+
+<p>
+  Kuvauksesta tunnistetaan käsitteet <em>tehtävä</em>, <em>aihepiiri</em> ja <em>käyttäjä</em>. Tämän lisäksi tehtävä voi kuulua yhteen tai useampaan aihepiiriin, ja jokaiseen aihepiiriin voi liittyä useampi tehtävä. Käyttäjällä voi olla useampia tehtäviä työn alla. Aihealueen kuvaus ei ota kantaa siihen, voiko sama tehtävä olla useammalla käyttäjällä samaan aikaan työn alla -- suunnitellaan tietokanta siten, että samaa tehtävää voi periaatteessa tehdä useampi käyttäjä.
+</p>
+
+<p>
+  Tekstimuodossa kuvattuna tietokantataulut ovat seuraavat. Koska sovellus haluttiin englanninkielisenä, myös tietokannan termistö on englanniksi.
+</p>
+
+<pre class="sh_sql code-highlight"><code>Task((pk) id, name)
+User((pk) id, name)
+TaskAssignment((pk) id, (fk) task_id -&gt; Task, (fk) user_id -&gt; User, boolean completed)
+Category((pk) id, name)
+TaskCategory((pk) id, (fk) task_id -&gt; Task, (fk) category_id -&gt; Category)
+</code></pre>
+
+<p>
+  Sovellus rakennetaan askeleittain. Toteutetaan ensin tehtävien lisääminen ja listaaminen. Tämän jälkeen lisätään mahdollisuus käyttäjien lisäämiseen ja listaamiseen. Tätä seuraa tehtävien lisääminen käyttäjälle, jonka jälkeen toteutetaan tehtävien suorittaminen.
+</p>
+
+<p>
+  Alustava sovelluksen kansiorakenne eriyttää aihealuetta kuvaavat käsitteet, tietokannan käsittelyyn tarvittavat luokat sekä html-sivut. Alla kansiorakenne puuna kuvattuna.
+</p>
+
+<pre>
+kayttaja@kone:~/kansio$ tree
+.
+├── pom.xml
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── tikape
+│   │   │       └── tasks
+│   │   │           ├── dao
+│   │   │           │   ├── Dao.java
+│   │   │           │   └── TaskDao.java
+│   │   │           ├── database
+│   │   │           │   └── Database.java
+│   │   │           ├── domain
+│   │   │           │   └── Task.java
+│   │   │           └── TaskApplication.java
+│   │   └── resources
+│   │       └── templates
+│   │           └── tasks.html
+│   └── test
+│       └── java
+└── tasks.db
+</pre>
+
+<p>
+  Sovelluksen pom.xml-tiedoston sisältö on seuraava. 
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+    http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;tikape&lt;/groupId&gt;
+    &lt;artifactId&gt;tasks&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+  
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+            &lt;artifactId&gt;spark-core&lt;/artifactId&gt;
+            &lt;version&gt;2.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.sparkjava&lt;/groupId&gt;
+            &lt;artifactId&gt;spark-template-thymeleaf&lt;/artifactId&gt;
+            &lt;version&gt;2.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+            &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+            &lt;version&gt;3.21.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+            &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;
+            &lt;version&gt;1.7.25&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h2 class="material-heading">
+    Tehtävän lisääminen sovellukseen
+
+</h2>
+
+<p>
+  Toteutetaan ensin tehtävien listaaminen ja lisääminen.
+</p>
+
+<p>
+  Yleisesti ottaen, laajempaa sovellusta rakennettaessa sovelluksen polut kannattaa toteuttaa kuvaamaan käsiteltäviä asioita. Luodaan tehtäviä varten web-sovellukseen polku <code>/tasks</code>, mistä tehtävät löytyvät. Sovelluksen tehtävien käsittelyyn liittyvä "rajapinta" tulee olemaan seuraavanlainen.
+</p>
+
+<ul>
+  <li>Tiedon hakeminen palvelimen osoitteesta <code>/tasks</code> listaa kaikki tehtävät.</li>
+  <li>Tiedon lähettäminen palvelimen osoitteeseen <code>/tasks</code> luo uuden tehtävän.</li>
+</ul>
+
+<p>
+  Luodaan näkymää varten sivu <code>tasks.html</code>, jonka avulla käyttäjälle listataan tehtävät sekä mahdollistetaan tehtävien lisääminen. Sivu tulee projektin kansioon <code>src/main/resources/templates</code>. Sivulla on sekä lista tehtäviä että lomake. 
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Tasks&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Tasks&lt;/h1&gt;
+
+        &lt;ul&gt;
+            &lt;li th:each="task : ${tasks}"&gt;
+                &lt;span th:text="${task.name}"&gt;Task&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2&gt;Add new task&lt;/h2&gt;
+
+        &lt;form method="POST" action="/tasks"&gt;
+            &lt;input type="text" name="name"/&gt;&lt;br/&gt;
+            &lt;input type="submit" value="Add!"/&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Luodaan tämän jälkeen ongelma-aluetta kuvaava luokka Task. Ongelma-aluetta tai aihealuetta (domain) kuvaavat luokat kannattaa sovelluksen rakenteen asetetaan pakkaukseen <code>domain</code>. Esimerkissämme sovellus rakentuu pakkaukseen <code>tikape.tasks</code>, jolloin käsitteistöä kuvaavat luokat asetetaan pakkaukseen <code>tikape.tasks.domain</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.domain;
+
+public class Task {
+
+    private Integer id;
+    private String name;
+
+    public Task(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+</code></pre>
+
+<p>
+  Materiaalin kolmannessa osassa loimme tietokanta-abstraktion sekä harjoittelimme data access object-luokkien toteuttamista. Luodaan käyttöömme tarvittavat luokat tietokannassa olevien tehtävien käsittelyyn.
+</p>
+
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Database {
+
+    private String databaseAddress;
+
+    public Database(String databaseAddress) throws ClassNotFoundException {
+        this.databaseAddress = databaseAddress;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(databaseAddress);
+    }
+}
+</code></pre>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import tikape.tasks.database.Database;
+import tikape.tasks.domain.Task;
+
+public class TaskDao implements Dao&lt;Task, Integer&gt; {
+
+    private Database database;
+
+    public TaskDao(Database database) {
+        this.database = database;
+    }
+
+    @Override
+    public Task findOne(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List&lt;Task&gt; findAll() throws SQLException {
+        List&lt;Task&gt; tasks = new ArrayList&lt;&gt;();
+
+        try (Connection conn = database.getConnection();
+            ResultSet result = conn.prepareStatement("SELECT id, name FROM Task").executeQuery()) {
+
+            while (result.next()) {
+                tasks.add(new Task(result.getInt("id"), result.getString("name")));
+            }
+        }
+
+        return tasks;
+    }
+
+    @Override
+    public Task saveOrUpdate(Task object) throws SQLException {
+        // simply support saving -- disallow saving if task with 
+        // same name exists
+        Task byName = findByName(object.getName());
+
+        if (byName != null) {
+            return byName;
+        } 
+
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO TASK (name) VALUES (?)");
+            stmt.setString(1, object.getName());
+            stmt.executeUpdate();
+        }
+
+        return findByName(object.getName());
+    }
+
+    private Task findByName(String name) throws SQLException {
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM Task WHERE name = ?");
+            stmt.setString(1, name);
+
+            ResultSet result = stmt.executeQuery();
+            if (!result.next()) {
+                return null;
+            }
+
+            return new Task(result.getInt("id"), result.getString("name"));
+        }
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}
+</code></pre>
+
+
+<p>
+  Luodaan vielä tietokanta sekä tietokantaan tehtävää kuvaava taulu. Luodaan nämä sovelluksen juureen tiedostoon nimeltä <code>tasks.db</code>. 
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Task (
+    id integer PRIMARY KEY,
+    name varchar(255)
+);
+</code></pre>
+
+<p>
+  Nyt palat ovat paikallaan. Käytössämme ovat (1) html-sivu, (2) käsitettä kuvaava luokka, (3) tietokanta-abstraktio ja dao-toteutus, ja (4) tietokantataulu. Luodaan lopulta web-sovelluksen käynnistävä luokka <code>TaskApplication</code>. Sovellus käsittelee pyyntöjä osoitteeseen <code>/tasks</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks;
+
+import java.util.HashMap;
+import spark.ModelAndView;
+import spark.Spark;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.tasks.dao.TaskDao;
+import tikape.tasks.database.Database;
+import tikape.tasks.domain.Task;
+
+public class TaskApplication {
+
+    public static void main(String[] args) throws Exception {
+        Database database = new Database("jdbc:sqlite:tasks.db");
+        TaskDao tasks = new TaskDao(database);
+
+        Spark.get("/tasks", (req, res) -> {
+            HashMap map = new HashMap&lt;&gt;();
+            map.put("tasks", tasks.findAll());
+
+            return new ModelAndView(map, "tasks");
+        }, new ThymeleafTemplateEngine());
+
+        Spark.post("/tasks", (req, res) -> {
+            Task task = new Task(-1, req.queryParams("name"));
+            tasks.saveOrUpdate(task);
+
+            res.redirect("/tasks");
+            return "";
+        });
+    }
+}
+</code></pre>
+
+<p>
+  Sovellus tukee nyt tehtävien lisäämistä ja listaamista. 
+</p>
+
+<h2 class="material-heading">
+    Käyttäjien lisääminen sovellukseen
+
+</h2>
+
+<p>
+  Lisätään seuraavaksi käyttäjät sovellukseen. Käyttäjien käsittelyyn liittyvä rajapinta tulee olemaan seuraavanlainen web-sovelluksen käyttäjän näkökulmasta.
+</p>
+
+<ul>
+  <li>Tiedon hakeminen palvelimen osoitteesta <code>/users</code> listaa kaikki käyttäjät.</li>
+  <li>Tiedon lähettäminen palvelimen osoitteeseen <code>/users</code> luo uuden käyttäjän.</li>
+</ul>
+
+<p>
+  Käyttäjien toiminnallisuus ja niihin liittyvä ohjelmakoodi vastaa hyvin pitkälti tehtävien lisäämiseen ja listaamiseen liittyvää ohjelmakoodia. Voimme käytännössä copy-pasteta edellisen osan askeleet -- noudatetaan tässä <a href="http://wiki.c2.com/?ThreeStrikesAndYouRefactor" target="_blank" norel>Three Strikes And You Refactor</a>-periaatetta. Kopioimme siis seuraavat tiedostot sekä muokkaamme niitä sopivasti:
+</p>
+
+<ul>
+  <li>
+    tasks.html sivun muotoon users.html
+  </li>
+  <li>
+    Task.java-luokan luokaksi User.java
+  </li>
+  <li>
+    TaskDao.java-luokan luokaksi UserDao.java
+  </li>
+</ul>
+
+<p>
+  Käyttäjää kuvaavan tietokantataulun nimeksi tulee <code>User</code> -- tietokantataulun luomiskomento on seuraava. <em>Jotkut tietokannanhallintajärjestelmät ovat tosin varanneet kyseisen sanan käyttöönsä -- taulun User luominen ei siis onnistu kaikissa tietokannanhallintajärjestelmissä..</em>
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE User (
+    id integer PRIMARY KEY,
+    name varchar(255)
+);
+</code></pre>
+
+<p>
+  Lisätään tämän jälkeen luokan <code>TaskApplication</code> main-metodiin käyttäjien käsittelyyn tarvittavat rivit.
+</p>
+
+<pre class="sh_java code-highlight"><code>public static void main(String[] args) throws Exception {
+
+    Database database = new Database("jdbc:sqlite:tasks.db");
+    TaskDao tasks = new TaskDao(database);
+    UserDao users = new UserDao(database);
+
+    Spark.get("/tasks", (req, res) -&gt; {
+        HashMap map = new HashMap&lt;&gt;();
+        map.put("tasks", tasks.findAll());
+
+        return new ModelAndView(map, "tasks");
+    }, new ThymeleafTemplateEngine());
+
+    Spark.post("/tasks", (req, res) -&gt; {
+        Task task = new Task(-1, req.queryParams("name"));
+        tasks.saveOrUpdate(task);
+
+        res.redirect("/tasks");
+        return "";
+    });
+
+    Spark.get("/users", (req, res) -&gt; {
+        HashMap map = new HashMap&lt;&gt;();
+        map.put("users", users.findAll());
+
+        return new ModelAndView(map, "users");
+    }, new ThymeleafTemplateEngine());
+
+    Spark.post("/users", (req, res) -&gt; {
+        User user = new User(-1, req.queryParams("name"));
+        users.saveOrUpdate(user);
+
+        res.redirect("/users");
+        return "";
+    });
+}
+</code></pre>
+
+
+<h2 class="material-heading">
+    Tehtävien lisääminen käyttäjille
+
+</h2>
+
+<p>
+  Lisätään seuraavaksi sovellukseen mahdollisuus tehtävien lisäämiseen käyttäjille. Toteutetaan toiminnallisuus siten, että tehtävä näkyy tehtävälistauksessa vain jos tehtävää ei ole lisätty käyttäjälle. Lisätään tämän jälkeen käyttäjille henkilökohtainen sivu, missä näkyy käyttäjälle määritellyt tehtävät. 
+</p>
+
+<p>
+  Luodaan erillinen taulu <code>TaskAssignment</code> tehtävien käyttäjille lisäämistä varten. Taulu TaskAssignment on liitostaulu tehtävän ja käyttäjän välillä, jonka lisäksi taulu pitää kirjaa siitä, onko tehtävä tehty.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE TaskAssignment (
+    id integer PRIMARY KEY,
+    task_id integer,
+    user_id integer,
+    completed boolean,
+    FOREIGN KEY (task_id) REFERENCES Task(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
+</code></pre>
+
+<p>
+  Tietokannan koko rakenne on tällä hetkellä seuraava:
+</p>
+
+<pre class="sample-output">sqlite> .schema
+CREATE TABLE Task (
+    id integer PRIMARY KEY,
+    name varchar(255)
+);
+CREATE TABLE User (
+    id integer PRIMARY KEY,
+    name varchar (255)
+);
+CREATE TABLE TaskAssignment (
+    id integer PRIMARY KEY,
+    task_id integer,
+    user_id integer,
+    completed boolean,
+    FOREIGN KEY (task_id) REFERENCES Task(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
+</pre>
+
+<p>
+  Määritellään polku tehtävän lisäämiseen käyttäjälle muotoon <code>/tasks/<em>taskId</em></code>, missä taskId viittaa tietyn tehtävän avaimeen. Polkuun tulee lähettää kenttä <code>userId</code>, jonka arvon tulee olla tehtävään määrättävän käyttäjän tunnus.
+</p>
+
+<p>
+  Luodaan ensin luokat <code>TaskAssignment</code> ja <code>TaskAssignmentDao</code>. Jälkimmäinen mahdollistaa vain yksittäisen TaskAssignment-olion tallentamisen.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.domain;
+
+public class TaskAssignment {
+
+    private Integer id;
+    private Integer taskId;
+    private Integer userId;
+    private Boolean completed;
+
+    public TaskAssignment(Integer id, Integer taskId, Integer userId, Boolean completed) {
+        this.id = id;
+        this.taskId = taskId;
+        this.userId = userId;
+        this.completed = completed;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+  
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+}
+</code></pre>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import tikape.tasks.database.Database;
+import tikape.tasks.domain.TaskAssignment;
+
+public class TaskAssignmentDao implements Dao&lt;TaskAssignment, Integer&gt; {
+
+    private Database database;
+
+    public TaskAssignmentDao(Database database) {
+        this.database = database;
+    }
+
+    @Override
+    public TaskAssignment findOne(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List&lt;TaskAssignment&gt; findAll() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TaskAssignment saveOrUpdate(TaskAssignment object) throws SQLException {
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO TaskAssignment (task_id, user_id, completed) VALUES (?, ?, 0)");
+            stmt.setInt(1, object.getTaskId());
+            stmt.setInt(2, object.getUserId());
+            stmt.executeUpdate();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}
+</code></pre>
+
+<p>
+  Toteutetaan näkymä muokkaamalla sivua <code>tasks.html</code> siten, että jokaisen listattavan tehtävän kohdalla on lista käyttäjistä. Jos listasta valitsee käyttäjän ja valitsee "Assign task!", tehtävä tulee lisätä kyseiselle käyttäjälle. 
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Tasks&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Tasks&lt;/h1&gt;
+
+        &lt;ul&gt;
+            &lt;li th:each="task : ${tasks}"&gt;
+                &lt;span th:text="${task.name}"&gt;Task&lt;/span&gt;
+                &lt;form th:action="@{~/tasks/{id}(id=${task.id})}" method="post"&gt;
+                    &lt;select name="userId"&gt;
+                        &lt;option th:each="user: ${users}" th:value="${user.id}" th:text="${user.name}"&gt;
+                            user
+                        &lt;/option&gt;
+                    &lt;/select&gt;
+                    &lt;input type="submit" value="Assign task!"/&gt;
+                &lt;/form&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2&gt;Add new task&lt;/h2&gt;
+
+        &lt;form method="POST" action="/tasks"&gt;
+            &lt;input type="text" name="name"/&gt;&lt;br/&gt;
+            &lt;input type="submit" value="Add!"/&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Lomakkeen määrittely siten, että jokaisella tehtävällä on oma tunnuksensa ja lomakkeensa onnistuu Thymeleafin syntaksin avulla. Syntaksista lisää Thymeleafin dokumentaatiossa osoitteessa <a href="http://www.thymeleaf.org/doc/articles/standardurlsyntax.html"  target="_blank" norel>http://www.thymeleaf.org/doc/articles/standardurlsyntax.html</a>.
+</p>
+
+<p>
+  Tehtävien listaamiseen käytettävää metodia tulee nyt muokata siten, että se antaa käyttäjät Thymeleafin käyttöön.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/tasks", (req, res) -> {
+    HashMap map = new HashMap<>();
+    map.put("tasks", tasks.findAll());
+    map.put("users", users.findAll());
+
+    return new ModelAndView(map, "tasks");
+}, new ThymeleafTemplateEngine());
+</code></pre>
+
+<p>
+  Luodaan seuraavaksi uusi metodi käyttäjien lisäämiseen. Metodi käsittelee pyyntöjä polkuun, jossa on muuttuva osa. Muuttuvan osan arvoon pääsee käsiksi Sparkin avulla. Metodissa otetaan käyttöön sekä muuttuva polun osa (eli tehtävän pääavain) että pyynnössä tuleva käyttäjän tunnus. Näiden perusteella luodaan uusi rivi tietokantatauluun TaskAssignment.
+</p>
+
+<pre class="sh_java code-highlight"><code>// polkuun määriteltävä parametri merkitään kaksoispisteellä ja 
+// parametrin nimellä. Parametrin arvoon pääsee käsiksi kutsulla
+// req.params
+Spark.post("/tasks/:id", (req, res) -> {
+    Integer taskId = Integer.parseInt(req.params(":id"));
+    Integer userId = Integer.parseInt(req.queryParams("userId"));
+  
+    TaskAssignment ta = new TaskAssignment(-1, taskId, userId, Boolean.FALSE);
+    taskAssignments.saveOrUpdate(ta);
+
+    res.redirect("/tasks");
+    return "";
+});
+</code></pre>
+
+<p>
+  Muokataan lopulta vielä tehtävien listaamiseen käytettävää metodia siten, että se näyttää listauksessa vain ne tehtävät, joita ei ole vielä asetettu kenenkään käyttöön. Luodaan tätä varten luokkaan TaskDao uusi metodi, joka hakee ne tehtävät, joiden pääavain ei esiinny taulussa TaskAssignment.
+</p>
+
+<pre class="sh_java code-highlight"><code>public List&lt;Task&gt; findAllNotAssigned() throws SQLException {
+    List&lt;Task&gt; tasks = new ArrayList&lt;&gt;();
+
+    try (Connection conn = database.getConnection();
+        ResultSet result = conn.prepareStatement(
+            "SELECT id, name FROM Task WHERE id NOT IN (SELECT task_id FROM TaskAssignment)"
+        ).executeQuery()) {
+
+         while (result.next()) {
+            tasks.add(new Task(result.getInt("id"), result.getString("name")));
+        }
+    }
+
+    return tasks;
+}
+</code></pre>
+
+<p>
+  Polkuun /tasks tehtävän pyynnön käsittelyä muokataan siten, että kaikki tehtävät hakevan metodin sijaan kutsutaan yllä kuvattua metodia.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/tasks", (req, res) -> {
+    HashMap map = new HashMap&lt;&gt;();
+    map.put("tasks", tasks.findAllNotAssigned());
+    map.put("users", users.findAll());
+
+    return new ModelAndView(map, "tasks");
+}, new ThymeleafTemplateEngine());
+</code></pre>
+
+<p>
+  Nyt tehtävät poistuvat tehtävälistauksesta sitä mukaa kun niitä määrätään käyttäjälle.
+</p>
+
+
+<h2 class="material-heading">
+    Henkilökohtainen tehtäväsivu
+
+</h2>
+
+<p>
+  Toteutetaan seuraavaksi käyttäjille henkilökohtaiset tehtävät listaava sivu. Sivu tulee toimimaan osoitteessa <code>/users/<em>id</em></code>, missä id on käyttäjän pääavain. Tehdään tätä varten ensin sivu, mikä sisältää käyttäjän nimen sekä käyttäjälle määrätyt tehtävät.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;User's tasks&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1 th:text="${user.name}"&gt;Name of the user&lt;/h1&gt;
+
+        &lt;h2&gt;Current tasks&lt;/h2&gt;
+  
+        &lt;ul&gt;
+            &lt;li th:each="task : ${tasks}"&gt;
+                &lt;span th:text="${task.name}"&gt;Task&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Luodaan TaskDao-luokalle metodi, joka hakee käyttäjään liittyvät tehtävät. Haetaan vain ne käyttäjälle kuuluvat tehtävät, joita ei ole vielä tehty. Kyselyä kannattaa hahmotella ensin komentorivin kautta -- alla kuvattu mahdollinen kyselyn rakennusprosessi.
+</p>
+
+<pre class="sample-output">sqlite> SELECT name FROM Task, TaskAssignment
+            WHERE Task.id = TaskAssignment.task_id AND TaskAssignment.user_id = 1;
+Write
+sqlite> SELECT id, name FROM Task, TaskAssignment
+            WHERE Task.id = TaskAssignment.task_id AND TaskAssignment.user_id = 1;
+Error: ambiguous column name: id
+sqlite> SELECT Task.id, Task.name FROM Task, TaskAssignment
+            WHERE Task.id = TaskAssignment.task_id AND TaskAssignment.user_id = 1;
+1|Write
+sqlite> SELECT Task.id, Task.name FROM Task, TaskAssignment
+            WHERE Task.id = TaskAssignment.task_id AND TaskAssignment.user_id = 1
+            AND TaskAssignment.completed = false;
+Error: no such column: false
+sqlite> SELECT Task.id, Task.name FROM Task, TaskAssignment
+            WHERE Task.id = TaskAssignment.task_id AND TaskAssignment.user_id = 1
+            AND TaskAssignment.completed = 0;
+1|Write
+sqlite> 
+</pre>
+
+
+<p>
+  TaskDao-luokalle luotava uusi metodi on seuraavanlainen.
+</p>
+
+<pre class="sh_java code-highlight"><code>public List&lt;Task&gt; findNonCompletedForUser(Integer userId) throws SQLException {
+    String query = "SELECT Task.id, Task.name FROM Task, TaskAssignment\n"
+        + "              WHERE Task.id = TaskAssignment.task_id "
+        + "                  AND TaskAssignment.user_id = ?\n"
+        + "                  AND TaskAssignment.completed = 0";
+
+    List&lt;Task&gt; tasks = new ArrayList&lt;&gt;();
+
+    try (Connection conn = database.getConnection()) {
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, userId);
+        ResultSet result = stmt.executeQuery();
+
+        while (result.next()) {
+            tasks.add(new Task(result.getInt("id"), result.getString("name")));
+        }
+    }
+
+    return tasks;
+}
+</code></pre>
+
+<p>
+  Käyttäjäkohtaiseen osoitteeseen tulevat pyynnöt käsittelevä metodi ottaa pyynnön polusta tarkasteltavan käyttäjän tunnuksen. Tämän jälkeen käyttäjän tiedot haetaan tietokannasta, mitä seuraa yllä kuvatun metodin kutsuminen. Lopulta käyttäjän tiedot annetaan Thymeleafille sekä yllä kuvatulle <code>user.html</code>-sivulle.
+</p>
+
+<pre class="sh_java code-highlight"><code>Spark.get("/users/:id", (req, res) -> {
+    HashMap map = new HashMap&lt;&gt;();
+    Integer userId = Integer.parseInt(req.params(":id"));
+    map.put("user", users.findOne(userId));
+    map.put("tasks", tasks.findNonCompletedForUser(userId));
+
+    return new ModelAndView(map, "user");
+}, new ThymeleafTemplateEngine());
+</code></pre>
+
+<p>
+  Luokan UserDao metodi <code>findOne</code> tulee täydentää sopivasti. Alkuperäisessä versiossamme jätimme metodin toteuttamatta.
+</p>
+
+<p>
+  Tällä hetkellä käyttäjäkohtaiseen sivuun ei pääse vielä käsiksi. Muokataan käyttäjien listaussivua <code>users.html</code> siten, että jokainen sivulla esiintyvä käyttäjän nimi on samalla linkki käyttäjän sivuun.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"&gt;
+
+    &lt;head&gt;
+        &lt;title&gt;Users&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;h1&gt;Users&lt;/h1&gt;
+
+        &lt;ul&gt;
+            &lt;li th:each="user : ${users}"&gt;
+                &lt;a th:href="@{~/users/{id}(id=${user.id})}"&gt;
+                    &lt;span th:text="${user.name}"&gt;User&lt;/span&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;h2&gt;Add new user&lt;/h2&gt;
+
+        &lt;form method="POST" action="/users"&gt;
+            &lt;input type="text" name="name"/&gt;&lt;br/&gt;
+            &lt;input type="submit" value="Add!"/&gt;
+        &lt;/form&gt;
+     &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>
+  Nyt sovelluksessa näkyvästä käyttäjien listauksesta pääsee käsiksi yksittäisen käyttäjän näkymään sekä hänelle määrättyihin tehtäviin.
+</p>
+
+
+<h2 class="material-heading">
+    Kategorioiden lisääminen
+
+</h2>
+
+
+<p>
+  Lisätään seuraavaksi mahdollisuus kategorioiden lisäämiseen ja listaamiseen. Luodaan kategorioita varten ensin tietokantataulu <code>Category</code>.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Category (
+    id integer PRIMARY KEY,
+    name varchar(255)
+);
+</code></pre>
+
+<p>
+  Kategorioiden lisäämiseen ja listaamiseen tarvittava toiminnallisuus vastaa lähes täysin aiemmin toteutettuja tehtävien ja käyttäjien toiminnallisuuksia. Three Strikes And You Refactor -periaatteen mukaan kahdesti toistuva ohjelmakoodi ei ole ongelma, mutta jos sama koodi toistuu kolmessa eri paikassa tulee ohjelmaa refaktoroida selkeämmäksi. Otetaan tässä askeleita ohjelman selkeyttämiseksi.
+</p>
+
+<h3 class="material-heading">
+    Toisteisuuden vähentäminen samankaltaisista domain-luokista
+
+</h3>
+
+<p>
+  Tarkastellaan ensin kategoriaa kuvaavan luokan luomista. Sekä kategorialla, tehtävällä että käyttäjällä on tunnus ja nimi. Luodaan abstrakti yliluokka <code>AbstractNamedObject</code>, joka sisältää nimen ja tunnuksen sekä niihin liittyvät getterit.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.domain;
+
+public abstract class AbstractNamedObject {
+
+    private Integer id;
+    private String name;
+
+    public AbstractNamedObject(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+</code></pre>
+
+<p>
+  Nyt luokat kategoria, tehtävä ja käyttäjä voi toteuttaa perimällä luokan AbstractNamedObject. Alla kategoriaa kuvaava luokka.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.domain;
+
+public class Category extends AbstractNamedObject {
+
+    public Category(Integer id, String name) {
+        super(id, name);
+    }
+}
+</code></pre>
+
+<p>
+  Käyttäjien ja tehtävien kuvaamiseen käytettävät luokat muutetaan vastaavaan muotoon.
+</p>
+
+
+<h3 class="material-heading">
+    Toisteisuuden vähentäminen samankaltaisista DAO-luokista
+
+</h3>
+
+<p>
+  Toteutetaan seuraavaksi kategorioiden käsittelyyn tarvittava tietokanta-abstraktio <code>CategoryDao</code>. Tämäkin luokka olisi vahvasti copy-pastea edellisistä luokista.
+</p>
+
+<p>
+  Toteutetaan ensin luokka <code>AbstractNamedObjectDao</code>, joka toteuttaa rajapinnan Dao. Luokka kapseloi niiden tietokantataulujen käsittelyyn liittyvää toiminnallisuutta, joissa on id ja nimi. Toteutus tehdään niin, että abstrakti luokka saa konstruktorin parametrina tietokannan lisäksi käsiteltävän tietokantataulun nimen, jota voi käyttää kyselyiden muodostamisessa.
+</p>
+
+<pre class="sh_java code-highlight"><code>protected Database database;
+protected String tableName;
+
+public AbstractNamedObjectDao(Database database, String tableName) {
+    this.database = database;
+    this.tableName = tableName;
+}
+</code></pre>
+
+<p>
+  Tehdään luokasta sellainen, että sen voi toteuttaa vain niille luokille, jotka perivät luokan <code>AbstractNamedObject</code>. Luokan "otsake" on tällöin seuraavaa muotoa:
+</p>
+
+<pre class="sh_java code-highlight"><code>public abstract class AbstractNamedObjectDao&lt;T extends AbstractNamedObject&gt;
+        implements Dao&lt;T, Integer&gt; {
+</code></pre>
+
+<p>
+  Luokka käsittelee geneeristä tyyppiä olevia olioita, joilla on id ja nimi. Tarvitsemme tavan olioiden luomiseen tietokannalta saaduista riveistä. Luodaan abstraktille luokalle abstrakti metodi <code>createFromRow</code>, joka palauttaa geneeristä tyyppiä olevan olion, ja joka saa parametrinaan resultSet-olion. Jokaisen luokan, joka perii luokan <code>AbstractNamedObject</code> tulee periä ja toteuttaa tämä metodi.
+</p>
+
+<pre class="sh_java code-highlight"><code>public abstract T createFromRow(ResultSet resultSet) throws SQLException;
+</code></pre>
+
+<p>
+  Voimme nyt tehdä muista luokan metodeista yleiskäyttöisiä. Metodi findAll kysyy tietoa tietokantataulusta, jonka perivä luokka määrittelee. Kun tietokantakyselyn tuloksia käydään läpi, konkreettisten tulosten luomiseen käytetään luokkakohtaista metodia <code>createFromRow</code>. Metodin <code>findAll</code> rakenne on seuraavanlainen.
+</p>
+
+<pre class="sh_java code-highlight"><code>@Override
+public List&lt;T&gt; findAll() throws SQLException {
+    List&lt;T&gt; tasks = new ArrayList&lt;&gt;();
+
+    try (Connection conn = database.getConnection();
+        ResultSet result = conn.prepareStatement("SELECT id, name FROM " + tableName).executeQuery()) {
+
+        while (result.next()) {
+            tasks.add(createFromRow(result));
+        }
+    }
+
+    return tasks;
+}
+</code></pre>
+
+<p>
+  Koko luokan AbstractNamedObjectDao toteutus on seuraava.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import tikape.tasks.database.Database;
+import tikape.tasks.domain.AbstractNamedObject;
+
+public abstract class AbstractNamedObjectDao&lt;T extends AbstractNamedObject&gt;
+        implements Dao&lt;T, Integer&gt; {
+
+    protected Database database;
+    protected String tableName;
+
+    public AbstractNamedObjectDao(Database database, String tableName) {
+        this.database = database;
+        this.tableName = tableName;
+    }
+
+    @Override
+    public T findOne(Integer key) throws SQLException {
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM " + tableName + " WHERE id = ?");
+            stmt.setInt(1, key);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return createFromRow(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error when looking for a row in " + tableName + " with id " + key);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List&lt;T&gt; findAll() throws SQLException {
+        List&lt;T&gt; tasks = new ArrayList&lt;&gt;();
+
+        try (Connection conn = database.getConnection();
+            ResultSet result = conn.prepareStatement("SELECT id, name FROM " + tableName).executeQuery()) {
+
+            while (result.next()) {
+                tasks.add(createFromRow(result));
+            }
+        }
+
+        return tasks;
+    }
+
+    @Override
+    public T saveOrUpdate(T object) throws SQLException {
+        // simply support saving -- disallow saving if task with 
+        // same name exists
+        T byName = findByName(object.getName());
+
+        if (byName != null) {
+            return byName;
+        }
+
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + tableName + " (name) VALUES (?)");
+            stmt.setString(1, object.getName());
+            stmt.executeUpdate();
+        }
+
+        return findByName(object.getName());
+    }
+
+    private T findByName(String name) throws SQLException {
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM " + tableName + " WHERE name = ?");
+            stmt.setString(1, name);
+
+            try (ResultSet result = stmt.executeQuery()) {
+                if (!result.next()) {
+                    return null;
+                }
+
+                return createFromRow(result);
+            }
+        }
+    }
+
+    @Override
+    public void delete(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public abstract T createFromRow(ResultSet resultSet) throws SQLException;
+}
+</code></pre>
+
+<p>
+  Nyt omien Dao-luokkiemme toteutukset ovat hieman suoraviivaisempia. Alla on kuvattuna luokka liittyvä tietokanta-abstraktio <code>CategoryDao</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>package tikape.tasks.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import tikape.tasks.database.Database;
+import tikape.tasks.domain.Category;
+
+public class CategoryDao extends AbstractNamedObjectDao&lt;Category&gt; {
+
+    public CategoryDao(Database database, String tableName) {
+        super(database, tableName);
+    }
+
+    @Override
+    public Category createFromRow(ResultSet resultSet) throws SQLException {
+        return new Category(resultSet.getInt("id"), resultSet.getString("name"));
+    }
+}
+</code></pre>
+
+<p>
+  Esimerkin jatkaminen jätetään omalle vastuulle. Seuraavana olisi näkymän kopiointi sekä TaskApplication-luokan muokkaaminen siten, että sovelluksessa pääsee käsiksi kategorioihin.
+</p>
+
+
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part4.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

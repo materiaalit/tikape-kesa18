@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part7/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Toisen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Osaa luoda luokkakaaviosta relaatiokaavion ja osaa muuntaa luokkakaavion assosiaatiot tarvittaessa tietokannalle sopivampaan muotoon. Tuntee käsitteen oliokaavio. Tuntee käsitteet relaatio, relaatiomalli, pääavain ja viiteavain. Osaa luoda SQL-kielellä useampia tietokantatauluja sisältävän tietokannan, lisätä tietokantaan tietoa ja hakea tietokannasta tietoa. Tekee kyselyitä yhteen tietokantatauluun.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+
+<h1 class="material-heading">
+    Luokkakaavio ja olioiden väliset yhteydet
+
+</h1>
+
+<p>
+  Tässä luvussa kerrataan hieman edellisen osan luokkakaavioihin liittyvää materiaalia. <strong>Luokkakaavio</strong> on kuvaus tarkasteltavan ongelman käsitteistä sekä käsitteiden välisistä yhteyksistä. Luokkakaavio voi sisältää myös käsitteisiin liittyvät attribuutit. Ohjelmistokehityksessä luokkakaavio kuvaa järjestelmän luokkarakennetta, eli mitä luokkia ohjelmassa on, minkälaisia luokat ovat ja miten luokat liittyvät toisiinsa.
+</p>
+
+<p>
+  Alla on kuvattuna erään tilausjärjestelmän luokkakaavio. Tilausjärjestelmässä on asiakkaita, jotka voivat tehdä tilauksia. Tilauksiin liittyy joukko annoksia, joihin taas liittyy raaka-aineet sekä ravintola. Sama annos voi olla useammassa tilauksessa, ja useampi tilaus voi sisältää saman annoksen -- annos on toisaalta aina tietyn ravintolan tarjoama. Jokaisen annoksen kohdalla listataan annokseen kuuluvat raaka-aineet -- sama raaka-aine voi esiintyä useammassa annoksessa, ja yhdessä annoksessa voi olla useampia raaka-aineita.
+</p>
+
+<figure>
+  <img src="../img/ravintola/luokkakaavio-e1567efc.png" alt="[Asiakas|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						  [Ravintola|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						  [Annos|nimi:String;koko:String;hinta:double]
+						  [Tilaus|aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+						  [RaakaAine|nimi:String]
+						  
+						  [Asiakas]1-*[Tilaus]
+						  [Tilaus]*-*[Annos]
+						  [Annos]*-*[RaakaAine]
+						  [Ravintola]1-*[Annos]"/>
+  <figcaption>
+    Tilausjärjestelmän luokkakaavio
+  </figcaption>
+</figure>
+
+<p>
+  Jokaisen luokkakaaviossa olevan käsitteen kohdalle on merkitty käsitteeseen kuuluvat attribuutit sekä niiden tietotyypit. Esimerkiksi asiakkaalla on nimi, puhelinnumero, katuosoite, postinumero sekä postitoimipaikka. Edellisistä postinumero tallennetaan numerona, muut tallennetaan merkkijonona. Tilaukseen liittyy aika, kuljetustapa, tieto tilauksen vastaanottamisesta sekä tieto tilauksen toimittamisesta. Aika tallennetaan Date-tyyppisenä tietona, kuljetustapa on merkkijono (esim. "kuljetus" tai "nouto"), ja tieto tilauksen vastaanottamisesta sekä toimittamisesta on tallennettu totuusavoisena muuttujana.
+</p>
+
+<p>
+  Tarkastellaan yllä olevassa luokkakaaviossa olevia yhteystyyppejä eli käsitteiden välisiä suhteita hieman tarkemmin.
+</p>
+
+
+
+<h2 class="material-heading">
+    Yhden suhde moneen
+
+</h2>
+
+<p>
+  Kahden käsitteen välillä on yhden suhde moneen (<code>1-N</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä monta toisen käsitteen ilmentymää, mutta yhteen toisen käsitteen ilmentymään voi liittyä vain yksi ensimmäisen käsitteen ilmentymä.
+</p>
+
+
+<p>
+  Yllä olevassa esimerkissä tällainen suhde on esimerkiksi asiakkaan ja tilauksen välillä. Käytännössä yksittäinen asiakas -- esimerkiksi <em>Anna Asiakas</em> -- voi tehdä monta tilausta, mutta jokainen tehty tilaus liittyy täsmälleen yhteen asiakkaaseen. Sama tilaus ei voi liittyä samaan aikaan <em>Anna Asiakkaaseen</em> sekä <em>Essi Esimerkkiin</em>.
+</p>
+
+
+<figure>
+  <img src="../img/ravintola/asiakas-tilaus-896626b8.png" alt="[Asiakas|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						    [Tilaus|aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+						    [Asiakas]1-*[Tilaus]"/>
+  <figcaption>
+    Yhden suhde moneen. Yllä yhteen asiakkaaseen voi liittyä monta tilausta, mutta yksi tilaus liittyy aina täsmälleen yhteen asiakkaaseen. Yhden suhde moneen merkitään luokkakaavioon piirrettyyn viivaan tähdellä ja numerolla 1. Tähti tulee yhteyden siihen päähän, joita voi olla monta, ja ykkönen siihen päähän, joita voi olla vain yksi. 
+  </figcaption>
+</figure>
+
+
+<p>
+  Yhdestä moneen yhteystyyppi edellyttää sen käsitteen ilmentymän olemassaoloa, johon liittyy monta toisen käsitteen ilmentymää. Käytännössä  tilauksen luominen edellyttää tilaukseen liittyvän asiakkaan olemassaoloa. Toisin sanoen, tilausta ei voi luoda ilman, että sille olisi asiakas.
+</p>
+
+<p>
+  Java-lähdekoodina luokka asiakas kuvattaisiin (esimerkiksi) seuraavasti.
+</p>
+
+<pre class="sh_java code-highlight"><code>public class Asiakas {
+    String nimi;
+    String puhelinnumero;
+    String katuosoite;
+    Integer postinumero;
+    String postitoimipaikka;
+
+    List&lt;Tilaus&gt; tilaukset;
+
+    public Asiakas(String nimi, String puh, String katu, Integer postiNro, String paikka) {
+        this.nimi = nimi;
+        this.puhelinnumero = puh;
+        this.katuosoite = katu;
+        this.postinumero = postiNro;
+        this.postitoimipaikka = paikka;
+        this.tilaukset = new ArrayList&lt;&gt;();
+    }
+}    
+</code></pre>
+
+<p>
+  Luokalla olisi lisäksi tarvittavat importit sekä metodeja mm. tilausten lisäämiseen.
+</p>
+
+<p>
+  Vastaavasti luokka tilaus kuvattaisiin lähdekoodina (esimerkiksi) seuraavasti. Alla tilaukseen on lisätty alkuperäisessä laajemmassa luokkakaaviossa näkyneet tuotteet.
+</p>
+
+<pre class="sh_java code-highlight"><code>public class Tilaus {
+    Asiakas asiakas;
+    Date aika;
+    String kuljetustapa;
+    Boolean vastaanotettu;
+    Boolean toimitettu;
+  
+    List&lt;Annos&gt; annokset;
+  
+    public Tilaus(Asiakas asiakas, String kuljetustapa) {
+        this.asiakas = asiakas;
+        this.kuljetustapa = kuljetustapa;
+        this.aika = new Date();
+        this.vastaanotettu = false;
+        this.toimitettu = false;
+    }
+}
+</code></pre>
+
+<p>
+  Luokalla olisi -- taas -- lisäksi tarvittavat importit sekä metodeja tilauksen tilan muokkaamiseen. Jonkun vastuulla olisi esimerkiksi merkitä tilaus vastaanotetuksi kun tilauksen tekeminen aloitetaan, jonka lisäksi tilauksen toimituksen (tai noudon) yhteydessä tilaus tulisi merkitä toimitetuksi.
+</p>
+
+<p>
+  Yleisemmin ottaen voi todeta, että jos käsitteen ilmentymään liittyy monta toista käsitettä, merkitään se Java-luokassa listalla tai muulla tietorakenteella. Jos käsitteen ilmentymään liittyy taas vain yksi toinen käsite, merkitään se Java-luokassa yksittäisenä muuttujana joka viittaa toiseen luokkaan (käsitteeseen).
+</p>
+
+
+<h2 class="material-heading">
+    Monen suhde moneen
+
+</h2>
+
+<p>
+  Kahden käsitteen välillä on monen suhde moneen (<code>N-N</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä monta toisen käsitteen ilmentymää, ja toisen käsitteen ilmentymään voi liittyä monta ensimmäisen käsitteen ilmentymää.
+</p>
+
+<p>
+  Yllä olevassa esimerkissä tällainen suhde on esimerkiksi annoksen ja raaka-aineen välillä. Käytännössä yksittäinen annos -- esimerkiksi <em>Poronkäristys</em> -- voi sisältää montaa eri raaka-ainetta kuten <em>perunaa</em>, <em>puolukkaa</em> ja <em>poroa</em>. Toisaalta, yksittäinen raaka-aine kuten <em>peruna</em> voi sisältyä moneen eri annokseen.
+</p>
+
+
+
+<figure>
+  <img src="../img/ravintola/annos-raaka_aine-e4132f53.png" alt="[Annos|nimi:String;koko:String;hinta:double]
+						      [RaakaAine|nimi:String]
+						      [Annos]*-*[RaakaAine]"/>
+  <figcaption>
+    Monen suhde moneen. Yllä annokseen voi liittyä montaa eri raaka-ainetta, ja yksi raaka-aine voi esiintyä useammassa eri annoksessa. Monen suhde moneen merkitään luokkakaavioon piirrettyyn viivaan kahdella tähdellä, missä viivan kummassakin päässä on tähti. 
+  </figcaption>
+</figure>
+
+
+
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Yhden suhde yhteen
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Yhteystyyppien yhden suhde moneen ja monen suhde moneen lisäksi on myös yhteystyyppi yhden suhde yhteen. Kahden käsitteen välillä on yhden suhde yhteen (<code>1-1</code>) -yhteys, jos ensimmäisen käsitteen ilmentymään voi liittyä vain yksi toisen käsitteen ilmentymä, ja toisen käsitteen ilmentymään voi liittyä vain yksi ensimmäisen käsitteen ilmentymä.
+  </p>
+  
+  <p>
+    Edellisessä tilausjärjestelmän luokkakaaviossa tätä yhteystyyppiä ei näkynyt. Eräs esimerkki tällaisesta yhteystyypistä voisi olla kuljettajien ja kuljetusvälineiden välinen -- ehkäpä hieman teennäinen -- yhteys. Yhdellä kuljettajalla voi olla käytössään vain yksi kuljetusväline, ja yksi kuljetusväline voi olla vain yhden kuljettajan käytössä. Vastaavan esimerkin voisi rakentaa myös lainaesineiden kautta -- esimerkiksi yhdellä opiskelijalla voi olla vain yksi laite lainassa ylläpidolta, ja ylläpito voi lainata tietyn laitteen vain yhdelle opiskelijalle.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Yhteysrajoitteet ja oliot
+
+</h2>
+
+<p>
+  Tarkastellaan edellä kuvattuja yhteystyyppejä yhdestä moneen ja monesta moneen olioiden näkökulmasta. <strong>oliokaavio</strong>na. Oliokaavioita käytetään ohjelmien tilan muutosten tarkasteluun ohjelman suorituksen aikana. Keskiössä ovat ohjelman käsittelemät oliot, olioiden muuttujien arvot sekä viitteet olioiden välillä. Valmiit kokoelmaluokat (esim. ArrayList) sivuutetaan siten, että viitteet piirretään olioiden välille.
+</p>
+
+<p>
+  Oletetaan, että käytössämme on edellä kuvatut luokat <code>Annos</code> ja <code>RaakaAine</code>.
+</p>
+
+<pre class="sh_java code-highlight"><code>RaakaAine kk = new RaakaAine("Kesäkurpitsa");
+RaakaAine jl = new RaakaAine("Jauheliha");
+RaakaAine juusto = new RaakaAine("Emmentaljuusto");
+
+Annos vuoka = new Annos("Jauheliha-kesäkurpitsavuoka", "iso", 3);
+Annos paistos = new Annos("Jauheliha-kesäkurpitsapaistos", "sopiva", 4);
+
+vuoka.lisaaRaakaAineet(kk, jl, juusto);
+paistos.lisaaRaakaAine(kk, jl, juusto);
+</code></pre>
+
+<p>
+  Ohjelman tila suorituksen lopussa piirretään oliokaaviona seuraavasti. Jokainen olio merkitään omana laatikkonaan, mikä sisältää sekä olion nimen ja tyypin että oliomuuttujat. Oliomuuttujien arvot merkitään myös oliokaavioon. Alla olevasta oliokaaviosta näkee, että annoksen ja raaka-aineen välillä on monesta moneen yhteys -- annoksella voi olla monta raaka-ainetta ja raaka-aine voi liittyä useampaan annokseen.
+</p>
+
+<figure>
+  <img src="../img/oliokaavio-1-6d9599d8.png" alt="[kk:RaakaAine|nimi=Kesäkurpitsa], [jl:RaakaAine|nimi=Jauheliha], [juusto:RaakaAine|nimi=Emmentaljuusto], [vuoka:Annos|nimi=Jauheliha-kesäkurpitsavuoka;koko=iso;hinta=3], [paistos:Annos|nimi=Jauheliha-kesäkurpitsapaistos;koko=sopiva;hinta=4], [vuoka:annos]-[kk:RaakaAine], [vuoka:annos]-[jl:RaakaAine], [vuoka:annos]-[juusto:RaakaAine], [paistos:annos]-[kk:RaakaAine], [paistos:annos]-[jl:RaakaAine], [paistos:annos]-[juusto:RaakaAine]"/>
+  <figcaption>
+    <p>
+      Edellä kuvatun raaka-aineita ja annoksia käsittelevän ohjelman tila suorituksen lopussa.
+  </figcaption>
+</figure>
+
+<p>
+  Tarkastellaan seuraavaksi Asiakkaan ja Tilauksen välistä yhteyttä oliokaaviona. Oletetaan, että oliokaaviona piirretään alla kuvatun ohjelman lopputilanne.
+</p>
+
+<pre class="sh_java code-highlight"><code>Asiakas kusti = new Asiakas("Kusti", "...", "...", 33100, "Tampere");
+Asiakas pukki = new Asiakas("JP", "...", "...", 99999, "Korvatunturi");
+
+Tilaus t1 = new Tilaus(kusti, "polkupyörä");
+Tilaus t2 = new Tilaus(pukki, "helikopteri");
+Tilaus t3 = new Tilaus(pukki, "helikopteri");
+
+t1.vastaanotettu = true;
+t3.vastaanotettu = true;
+</code></pre>
+
+<figure>
+  <img src="../img/oliokaavio-2-84501c6d.png" alt="[kusti:Asiakas|nimi=Kusti;puhelinnumero=...;katuosoite=...;postinumero=33100;postitoimipaikka=Tampere]
+					[pukki:Asiakas|nimi=JP;puhelinnumero=...;katuosoite=...;postinumero=99999;postitoimipaikka=Korvatunturi]
+					[t1:Tilaus|aika=1516562032;kuljetustapa=polkupyörä;vastaanotettu=true;toimitettu=false]
+					[t2:Tilaus|aika=1516563032;kuljetustapa=helikopteri;vastaanotettu=false;toimitettu=false]
+					[t3:Tilaus|aika=1516564032;kuljetustapa=helikopteri;vastaanotettu=true;toimitettu=false]
+					[kusti:Asiakas]-[t1:Tilaus]
+					[pukki:Asiakas]-[t2:Tilaus]
+					[pukki:Asiakas]-[t3:Tilaus]"/>
+  <figcaption>
+    <p>
+      Edellä kuvatun asiakkaiden ja tilausten yhteyksiä käsittelevän ohjelman tila suorituksen lopussa.
+  </figcaption>
+</figure>
+
+<p>
+  Yllä olevaa oliokaaviota tarkasteltaessa huomaamme, ettei jokaiseen tilaukseen liittyy vain yksi asiakas, mutta asiakkaalla voi olla useampia tilauksia.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Miten oliokaaviot liittyvät tietokantoihin?
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Oliokaavioiden avulla näytetään ohjelman suorituksen aikainen olioiden tila, joka kertoo olioiden muuttujien arvoista. Tietokannanhallintajärjestelmien tehtävänä on tallentaa ja ylläpitää tietoa -- esimerkiksi olioiden tilaa. Ymmärtämällä miten olioiden tila voidaan esittää, löydämme ehkäpä selkeän kytköksen tietokantojen sisältämän tiedon esittämiselle.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+
+<h1 class="material-heading">
+    Luokkakaaviosta relaatiokaavioksi (eli tietokantakaavioksi)
+
+</h1>
+
+<p>
+  <strong>Tietokantakaavio</strong> (myös relaatiokaavio) on kuvaus tietokantatauluista sekä tietokantatauluihin liittyvistä tiedoista. Relaatiokaavion perusteella luodaan tietokantataulujen luomiseen tarvittavat kyselyt. Tutustutaan ensin termiin <em>relaatio</em> ja harjoitellaan sen jälkeen luokkakaavion muuntamista relaatiokaavioksi. 
+</p>
+
+<h2 class="material-heading">
+    Relaatiomalli
+
+</h2>
+
+<p>
+  Relaatiomallin perusajatus on tallennettavan tiedon jakaminen käsitteisiin sekä käsitteiden välisiin yhteyksiin. Jokaista käsitettä vastaa relaatiotietokannassa taulu, ja jokaiselle käsitteen ominaisuudelle eli attribuutille on taulussa oma sarake. Jokainen taulun rivi vastaa yhtä käsitteen ilmentymää, ja tietokantatauluja määriteltäessä taululle määritellään tyypillisesti myös <em>avain</em>, jonka perusteella kukin rivi -- eli käsitteen ilmentymä -- voidaan yksilöidä.
+</p>
+
+<p>
+  Relaatiomallille on myös hieman formaalimpi määritelmä, johon tutustutaan seuraavaksi. Noudatamme tässä Edgar Coddin vuonna 1970 julkaistun artikkelin <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.5286&rep=rep1&type=pdf" target="_blank" norel>"A Relational Model of Data for Large Shared Data Banks"</a> esitysasua.
+</p>
+
+<h3 class="material-heading">
+    Relaatio
+
+</h3>
+
+<p>
+  Olkoon <em>S<sub>1</sub>, S<sub>2</sub>, ..., S<sub>n</sub></em> arvojoukkoja, joiden sisältämät arvot eivät ole välttämättä täysin erillisiä. Relaatio <em>R</em> on joukko <em>n</em> alkion kokoisia monikkoja. Jokaisen relaatiossa R olevan monikon ensimmäisen arvon tulee kuulua joukkoon <em>S<sub>1</sub></em>, toisen arvon kuulua joukkoon <em>S<sub>2</sub></em> jne.
+</p>
+
+<p>
+  Relaatio <em>R</em> on siis osajoukko joukkojen <em>S<sub>1</sub>, S<sub>2</sub>, ..., S<sub>n</sub></em> välisestä karteesisesta tulosta <em>S<sub>1</sub> &#10799; S<sub>2</sub> &#10799; ... &#10799; S<sub>n</sub></em>.
+</p>
+
+<p>
+  Relaatio esitetään tyypillisesti taulukkona, jolla on seuraavat ominaisuudet:
+</p>
+
+<ul>
+  <li>Jokainen taulukon rivi kuvaa yhtä relaation R monikkoa.</li>
+  <li>Taulukon rivien järjestyksellä ei ole väliä.</li>
+  <li>Jokainen taulukon rivi on erilainen.</li>
+  <li>Sarakkeiden järjestyksellä kuvataan relaation arvojoukkoja; ensimmäisen sarakkeen arvot tulevat arvojoukosta S<sub>1</sub>, toisen sarakkeen arvojoukosta S<sub>2</sub> jne..</li>
+  <li>Jokaiselle sarakkeelle annetaan nimi, joka kuvaa kunkin arvojoukon mahdollisia arvoja.</li> 
+</ul>
+
+<h3 class="material-heading">
+    Pääavain, viittaaminen ja viiteavain
+
+</h3>
+
+<p>
+  Jokaisella relaatiolla on tyypillisesti yksi arvojoukko tai arvojoukkojen yhdistelmä, joiden arvojen perusteella voidaan yksilöidä relaation monikko (eli taulukon rivi). Tällaista arvojoukkoa tai arvojoukkojen yhdistelmää kutsutaan <em>pääavaimeksi</em>. Oleellinen ominaisuus relaatioissa on myös saman tai toisen relaation arvoihin <em>viittaaminen</em>. Tämä tapahtuu <em>viiteavaimen</em> avulla. Relaatiossa R oleva arvojoukko tai arvojoukkojen yhdistelmä, joka ei ole relaation R pääavain, mutta sisältää jonkun relaation pääavaimia, on viiteavain.
+</p>
+
+
+<h3 class="material-heading">
+    Joukko-operaatiot ja kyselyt
+
+</h3>
+
+<p>
+  Relaatiot ovat joukkoja, joten niitä voi käsitellä joukko-opin operaatioiden avulla. Tällä kurssilla näihin ei syvennytä tarkemmin, mutta teemasta kiinnostuneiden kannattanee lukea klassikkoteos <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.5286&rep=rep1&type=pdf" target="_blank">"A Relational Model of Data for Large Shared Data Banks"</a>.
+</p>
+
+
+
+<h2 class="material-heading">
+    Muunnos luokkakaaviosta relaatiokaavioksi
+
+</h2>
+
+<p>
+  Muunnos luokkakaaviosta relaatiokaavioksi tapahtuu seuraavia askeleita noudattaen:
+</p>
+
+<ul>
+  <li>
+    Askel 1: määrittele jokaiselle luokkakaavion käsitteelle käsitteen ilmentymän yksilöivä pääavain.
+  </li>
+  <li>
+    Askel 2: monen suhden moneen -yhteyksien käsittely lisäämällä yhteyteen liitostaulu, mikä muuntaa yhteydet yhden suhde moneen -muotoisiksi
+  </li>
+  <li>
+    Askel 3: yhden suhde moneen -yhteyksien käsittely lisäämällä "moneen"-yhteyden päädyssä olevaan tauluun viiteavain
+  </li>
+</ul>
+
+<p>
+  Tarkastellaan edellä kuvattuja askeleita ja muunnetaan aiemmin käsitelty tilausjärjestelmän luokkakaavio tietokantakaavioksi.
+</p>
+
+
+<figure>
+  <img src="../img/ravintola/luokkakaavio-e1567efc.png" alt="[Asiakas|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						  [Ravintola|nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+						  [Annos|nimi:String;koko:String;hinta:double]
+						  [Tilaus|aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+						  [RaakaAine|nimi:String]
+						  
+						  [Asiakas]1-*[Tilaus]
+						  [Tilaus]*-*[Annos]
+						  [Annos]*-*[RaakaAine]
+						  [Ravintola]1-*[Annos]"/>
+  <figcaption>
+    Tietokantakaavioksi muunnettava tilausjärjestelmän luokkakaavio.
+  </figcaption>
+</figure>
+
+
+<h3 class="material-heading">
+    Käsitteen yksilöivän pääavaimen määrittely
+
+</h3>
+
+<p>
+  Ensimmäisessä askeleessa määrittelemme jokaiselle käsitteelle pääavaimen (primary key). <strong>Pääavain</strong> yksilöi käsitteen ilmentymän. Pääavaimella on muutamia ominaisuuksia: sen täytyy olla uniikki (sama arvo ei saa esiintyä samassa taulussa useampaan kertaan) ja se ei saa olla tyhjä. Pääavaimeksi valitaan (nykyään) tyypillisesti juokseva numero. Käytössämme olevissa relaatiokaaviossa pääavain merkitään merkinnällä (pk). 
+</p>
+
+<p>
+  Alla tilausjärjestelmän luokkakaavioon on merkitty pääavaimet.
+</p>
+
+
+<figure>
+  <img src="../img/ravintola/luokkakaavio-paaavaimilla-3284629b.png" alt="[Asiakas|(pk) id:Integer; nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+							       [Ravintola|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+							       [Annos|(pk) id:Integer;nimi:String;koko:String;hinta:double]
+							       [Tilaus|(pk) id:Integer;aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+							       [RaakaAine|(pk) id:Integer;nimi:String]
+							       
+							       [Asiakas]1-*[Tilaus]
+							       [Tilaus]*-*[Annos]
+							       [Annos]*-*[RaakaAine]
+							       [Ravintola]1-*[Annos]"/>
+  <figcaption>
+    Tilausjärjestelmän luokkakaavion muunnos relaatiokaavioksi, askel 1. Ensimmäisessä askeleessa jokaiseen käsitteeseen määritellään pääavain, jonka perusteella kukin käsitteen ilmentymä voidaan yksilöidä. Tässä käytetään numeerista tunnusta, eli esimerkiksi uutta asiakasta luodessa asiakkaan tunnus on numero, joka ei ole vielä yhdenkään muun asiakkaan käytössä (numerot merkitään tyypillisesti juoksevasti 1...n).
+  </figcaption>
+</figure>
+
+
+<h3 class="material-heading">
+    Monen suhde moneen -yhteyksien käsittely 
+
+</h3>
+
+<p>
+  Askeleessa kaksi käsitellään monen suhde moneen -yhteydet.
+</p>
+
+<p>
+  Monen suhde moneen -yhteydet muunnetaan yhden suhde moneen -tyyppisiksi lisäämällä monen suhde moneen -yhteyksille niin kutsuttu liitostaulu. Liitostaulun avulla saadaan selville mikä käsitteen ilmentymä liittyy mihinkin toisen käsitteen ilmentymään.
+</p>
+
+<p>
+  Käytännössä muunnos tapahtuu seuraavasti. Alla olevassa kuvassa on monen suhde moneen -yhteys käsitteiden Annos ja Raaka-aine välillä. Käsitteille annos ja raaka-aine on jo määritelty pääavaimet.
+</p>
+
+<figure>
+  <img src="../img/ravintola/annos-raaka_aine-paaavaimilla-90e73f4c.png" alt="[Annos|(pk) id:Integer;nimi:String;koko:String;hinta:double]
+								   [RaakaAine|(pk) id:Integer;nimi:String]
+								   [Annos]*-*[RaakaAine]"/>
+  <figcaption>
+    Monen suhde moneen -yhteys annoksen ja raaka-aineen välillä. Käsitteille annos ja raaka-aine on määritelty pääavaimet askeleessa yksi. 
+  </figcaption>
+</figure>
+
+<p>
+  Luodaan käsitteiden välille liitostaulu AnnosRaakaAine. Liitostaulusta AnnosRaakaAine on yhden suhde moneen -yhteys käsitteisiin Annos ja Raaka-aine. Käytännössä yksi AnnosRaakaAine-käsitteen ilmentymä yksilöi aina yksittäisen annos - raaka-aine -parin.
+</p>
+
+
+<figure>
+  <img src="../img/ravintola/annos-raaka_aine-paaavaimilla-liitostaulu-bfb68b7a.png" alt="[Annos|(pk) id:Integer;nimi:String;koko:String;hinta:double]
+									       [RaakaAine|(pk) id:Integer;nimi:String]
+									       [AnnosRaakaAine]
+									       [Annos]1-*[AnnosRaakaAine]
+									       [AnnosRaakaAine]*-1[RaakaAine]"/>
+  <figcaption>
+    Monen suhde moneen -yhteys annoksen ja raaka-aineen välillä muunnettu liitostaulun avulla kahdeksi yhden suhde moneen -yhteydeksi. Taulu (tai käsite) AnnosRaakaAine pitää kirjaa kuhunkin annokseen liittyvistä raaka-aineista.
+  </figcaption>
+</figure>
+
+
+
+<p>
+  Jokainen monesta moneen suhde käsitellään yksitellen. Kun kaikki monen suhde moneen -yhteydet on käsitelty, kaavio on seuraavanlainen.  
+</p>
+
+
+
+<figure>
+  <img src="../img/ravintola/luokkakaavio-paaavaimilla-monesta-moneen-poistettu-26127b0d.png" alt="[Asiakas|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+											[Ravintola|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+											[Annos|(pk) id:Integer;nimi:String;koko:String;hinta:double]
+											[Tilaus|(pk) id:Integer;aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+											[RaakaAine|(pk) id:Integer;nimi:String]
+											[AnnosRaakaAine]
+											[TilausAnnos]
+											
+											[Asiakas]1-*[Tilaus]
+											[Tilaus]1-*[TilausAnnos]
+											[TilausAnnos]*-1[Annos]
+											[Annos]1-*[AnnosRaakaAine]
+											[AnnosRaakaAine]*-1[RaakaAine]
+											[Ravintola]1-*[Annos]"/>
+  <figcaption>
+    Tilausjärjestelmän muunnos relaatiokaavioksi, askel 2. Toisessa askeleessa jokainen monesta moneen -yhteys on pilkottu osiin lisäämällä yhteyteen liitostaulu. Liitostaulut yhdistävät monesta moneen -yhteyden käsitteet yhdestä moneen -yhteydellä.
+  </figcaption>
+</figure>
+
+
+
+
+
+
+
+<h3 class="material-heading">
+    Yhden suhde moneen -yhteyksien käsittely 
+
+</h3>
+
+<p>
+  Yhden suhde moneen -yhteydet käsitellään lisäämällä yhteyden tähdellä merkittyyn käsitteeseen <em>viiteavain</em>, joka viittaa käsitteeseen, joka on merkitty yhteydessä ykkösellä. <strong>Viiteavain</strong> viittaa toisen käsitteen pääavaimeen. Viiteavain siis yksilöi (toisen) käsitteen ilmentymän, johon nykyinen käsite viittaa. Käytössämme olevissa relaatiokaaviossa viiteavain merkitään merkinnällä (fk), jonka lisäksi viiteavaimen nimi ja tyyppi kertoo minkä käsitteen pääavaimeen viiteavain viittaa.
+</p>
+
+
+
+
+<figure>
+  <img src="../img/ravintola/asiakas-tilaus-paaavaimilla-a49ae3b8.png" alt="[Asiakas|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+								 [Tilaus|(pk) id:Integer;aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+								 [Asiakas]1-*[Tilaus]"/>
+  <figcaption>
+    Yhden suhde moneen. Yllä yhteen asiakkaaseen voi liittyä monta tilausta, mutta yksi tilaus liittyy aina täsmälleen yhteen asiakkaaseen.
+  </figcaption>
+</figure>
+
+
+<p>
+  Yllä oleva yhden suhde moneen yhteys käsitellään lisäämällä Tilaus-käsitteeseen viiteavain, joka viittaa asiakkaaseen. Tämän viiteavaimen perusteella jokaisesta tilauksesta saa selville tilaukseen liittyvän asiakkaan.
+</p>
+
+
+
+<figure>
+  <img src="../img/ravintola/asiakas-tilaus-paaavaimilla-ja-viiteavaimilla-65936b18.png" alt="[Asiakas|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+										   [Tilaus|(pk) id:Integer;(fk) asiakas_id:Asiakas;aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+										   [Asiakas]1-*[Tilaus]"/>
+  <figcaption>
+    Yhden suhde moneen. Yllä yhteen asiakkaaseen voi liittyä monta tilausta, mutta yksi tilaus liittyy aina täsmälleen yhteen asiakkaaseen.
+  </figcaption>
+</figure>
+
+
+<p>
+  Jokainen yhdestä moneen suhde käsitellään yksitellen. Kun kaikki yhdestä moneen -yhteydet on käsitelty, kaavio on seuraavanlainen.  
+</p>
+
+
+
+<figure>
+  <img src="../img/ravintola/luokkakaavio-paaavaimilla-ja-viiteavaimilla-85b30499.png" alt="[Asiakas|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+										 [Ravintola|(pk) id:Integer;nimi:String;puhelinnumero:String;katuosoite:String;postinumero:Integer;postitoimipaikka:String]
+										 [Annos|(pk) id:Integer;(fk) ravintola_id:Ravintola;nimi:String;koko:String;hinta:double]
+										 [Tilaus|(pk) id:Integer;(fk) asiakas_id:Asiakas;aika:Date;kuljetustapa:String;vastaanotettu:Boolean;toimitettu:Boolean]
+										 [RaakaAine|(pk) id:Integer;nimi:String]
+										 [AnnosRaakaAine|(fk) annos_id:Annos;(fk) raaka_aine_id:RaakaAine]
+										 [TilausAnnos|(fk) tilaus_id:Tilaus;(fk) annos_id:Annos]
+										 
+										 [Asiakas]1-*[Tilaus]
+										 [Tilaus]1-*[TilausAnnos]
+										 [TilausAnnos]*-1[Annos]
+										 [Annos]1-*[AnnosRaakaAine]
+										 [AnnosRaakaAine]*-1[RaakaAine]
+										 [Ravintola]1-*[Annos]"/>
+  <figcaption>
+    Tilausjärjestelmän muunnos relaatiokaavioksi, askel 3. Kolmannessa askeleessa jokaiseen yhdestä moneen -yhteyteen on lisätty viiteavain. Viiteavain lisätään päätyyn, jossa on yhteyden tähti.
+  </figcaption>
+</figure>
+
+
+<p>
+  Edellä kuvatun tietokantakaavion voi kuvata myös tekstimuodossa seuraavasti. Pääavaimet merkitään etuliitteellä <code>(pk)</code>, jonka lisäksi niille kerrotaan tyyppi. Viiteavaimet merkitään etuliitteellä <code>(fk)</code>, jonka lisäksi niihin merkitään viitatun tietokantakaavion nimi, esim <code>(fk) tilaus_id -&gt; Tilaus</code>.
+</p>
+
+<ul>
+  <li>Asiakas((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Ravintola((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Annos((pk) id:Integer, (fk) ravintola_id -&gt; Ravintola, nimi:String, koko:String, hinta:double)</li>
+  <li>Tilaus((pk) id:Integer, (fk) asiakas_id -&gt; Asiakas, aika:Date, kuljetustapa:String, vastaanotettu:Boolean, toimitettu:Boolean)</li>
+  <li>RaakaAine((pk) id:Integer, nimi:String)</li>
+  <li>AnnosRaakaAine((fk) annos_id - &gt; Annos, (fk) raaka_aine_id -&gt; RaakaAine)</li>
+  <li>TilausAnnos((fk) tilaus_id - &gt; Tilaus, (fk) annos_id -&gt; Annos)</li>
+</ul>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Menikö oikein?
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Luokkakaavion muunnos relaatiokaavioksi tapahtuu kolmen askeleen kautta. Voit tarkastella relaatiokaavion toimivuutta poistamalla kaikki yhteyksiä kuvaavat viivat.
+  </p>
+  
+  <p>
+    Piirrä tämän jälkeen viivat takaisin viiteavainten perusteella. Viiteavaimen sisältävän käsitteen päätyyn päätyyn tulee aina tähti ja viivan toiseen päätyyn numero 1. Jos viiteavaimia seuraamalla tapahtunut piirtäminen tuottaa saman kaavion kuin mikä askelia seuraamalla saatu lopputulos oli, on kaavio melko suurella todennäköisyydellä kunnossa.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Perintä ja luokkakaaviosta tietokantakaavioksi
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Perintä käsitellään tietokantakaaviossa yhden suhde yhteen -tyyppisenä yhteytenä. Kun perintänä merkittyä yhteyttä muunnetaan tietokantakaavioksi, lisätään perivään käsitteeseen viiteavain, joka viittaa perittävään käsitteeseen. Edellinen opiskelija-henkilö -esimerkki muuntuu seuraavanlaiseksi tietokantakaavioksi.
+  </p>
+  
+  
+  <figure>
+    <img src="../img/opiskelija-perii-henkilon-tietokantakaavio-30b568e4.png" alt="[Henkilo|(pk) id: Integer; nimi:String;syntymäaika:Date;email:String], [Opiskelija|(pk) id: Integer; (fk) henkilo_id: Henkilo; opiskelijanumero:String], [Henkilo]-[Opiskelija]"/>
+    <p>&nbsp;</p>
+  </figure>
+  
+
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Structured Query Language (SQL)
+
+</h1>
+
+<p>
+  Materiaalin ensimmäisen osan esimerkeissä tarkasteltiin tietokoneen kiintolevyllä sijaitsevan tiedon käsittelyä ohjelmallisesti -- käytännössä esimerkki käsitteli <strong>fyysistä näkymää tiedon tallennukseen</strong>. Esimerkeissä määritettiin tiedon rakenne sekä muuttujien maksimipituus: jos muuttujan todellinen arvo ei vastaa maksimipituutta, tyhjä tila täytetään esimerkiksi välilyönneillä. Tällä tavoin ohjelmoija voi olettaa, että tiettyyn muuttujaan liittyvä arvo alkaa aina samasta kohtaa. Laajemmin ajatellen, ohjelmoija tietää myös, että samaisen muuttujan arvo on samassa kohdassa jokaiselle tallennetulle tietueelle (tai oliolle).
+</p>
+
+<p>
+  Ensimmäisen osan esimerkeissä tiedon käsittelijän tai tiedon hakijan tulee tuntea käsite indeksi sekä osata hyödyntää indeksiä tiedon hakemisessa. Samalla, jos tiedon hakija haluaa vaikkapa useamman muuttujan arvon, tulee ohjelmaa sekä siinä käytettyjä indeksejä päivittää sopivasti. <em>Ohjelmallisessa tiedon käsittelyssä tulee siis osata ohjelmointia.</em>
+</p>
+
+<p>
+  Kun tietokantoja käytetään osana jokapäiväistä työtä, ei oletus "jokaisen tietokantaa käyttävän tulee osata ohjelmoida" ole kovin mielekäs. Tämä käytännössä vaatisi jokaiselta ohjelmointiosaamista sekä ymmärrystä tallennetusta tiedosta ja tiedon fyysisestä esitysmuodosta. Tiedon fyysinen esitysmuoto vaihtelee tallennettavan tiedon mukaan, joten tiedon käsittelyyn tarvitaan parempi ratkaisu. Tätä ongelmaa ja työläyttä ratkaisemaan on luotu useampia korkeamman abstraktiotason esitystapoja, joita käytetään tietokannassa olevan tiedon hakemiseen ja tiedon muokkaamiseen.
+</p>
+
+<p>
+  Tällä kurssilla keskitytään Structured Query Language (<strong>SQL</strong>) -kieleen. Structured Query Language (jatkossa SQL) on 1980-luvulla standardoitu kieli tietokantakyselyiden tekemiseen. SQL-kielen avulla voidaan määritellä tallennettavan tiedon muoto, luoda ja muokata tietokantatauluja, lisätä tietoa tietokantatauluihin, muokata tietokantatauluissa olevaa tietoa sekä hakea tietoa tietokannoista. Merkittävä osa tällä hetkellä käytössä olevista tietokannanhallintajärjestelmistä mahdollistaa SQL-kielellä tehtyjen kyselyiden käyttämisen tietokannanhallintajärjestelmässä olevien tietokantojen ja tietokantataulujen käsittelyyn. Voidaan ajatella, että SQL-kielellä tehdyt kyselyt ovat kuvattu <em>rakenteellisella abstraktiotasolla</em>, eli SQL-kieltä käytettäessä tiedon lopulliseen esitysmuotoon kiintolevyllä ei oteta kantaa.
+</p>
+
+<p>
+  Vuosien mittaan standardista on julkaistu useita versioita, joista viimeisin on vuodelta <a href="https://en.wikipedia.org/wiki/SQL:2016" target="_blank" norel>2016</a>. Tietokannanhallintajärjestelmät ja niiden eri versiot noudattavat SQL-kielen standardeja vaihtelevasti. Yhtä tietokannanhallintajärjestelmää varten luodut kyselyt eivät ole aina suoraan siirrettävissä toiseen tietokannanhallintajärjestelmään. On siis syytä huomioida että tietokannanhallintajärjestelmästä toiseen siirryttäessä joudutaan usein myös tekemään SQL-kyselyihin (pieniä) muutoksia. Tyypillisimpiä tietotyyppejä, joiden käsittelytapa vaihtelee eri tietokannanhallintajärjestelmien välillä ovat päivämäärät. 
+</p>
+
+<p>
+  Kurssin toisessa osassa tutustutaan yhden tietokantataulun käsittelyyn SQL-kielellä. Opettelemme luomaan tietokantataulun, lisäämään tietokantatauluun tietoa, hakemaan tietokantataulusta tietoa sekä päivittämään ja poistamaan tietokantataulussa olevaa tietoa.
+</p>
+
+<p>
+  Käytämme tässä osassa SQLite-nimistä tietokannanhallintajärjestelmää.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>SQLiten lataaminen ja käyttöönotto
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    SQLiten saa ladattua osoitteesta <a href="https://www.sqlite.org/download.html" target="_blank" norel>https://www.sqlite.org/download.html</a>. Kun olet tallentanut (ja asentanut) SQLiten, käynnistä käyttöjärjestelmässä terminaali, ja kirjoita komento <code>sqlite3 tietokanta.db</code>.
+  </p>
+  
+  <p>
+    Kyseinen komento luo tietokanta.db-nimisen tiedoston, joka sisältää käsittelemäsi tietokannan, ja avaa yhteyden kyseiseen tietokantaan.
+  </p>
+
+  <p>
+    Suorittamalla kyselyn "SELECT 1" sqlite tulostaa arvon 1.
+  </p>
+
+<pre class="sample-output">kayttaja@kone:~/kansio/$ sqlite3 tietokanta.db
+SQLite version 3.11.0 2016-02-15 17:29:24
+Enter ".help" for usage hints.
+sqlite> SELECT 1;
+1
+sqlite>
+</pre>
+
+  <p>
+    Voit käyttää kyseistä tietokantaa esimerkkien testaamiseen.
+  </p>
+  
+
+  </div>
+</div>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>SQLiten konfigurointi
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    SQLite:n voi myös konfiguroida oman mieleseksi määrittelemällä <code>.sqliterc</code>-tiedoston kotihakemistoon. Tällöin samoja asetuksia ei tarvitse määritellä jokaisen käynnistyksen yhteydessä.
+  </p>
+
+  <p>
+    <code>.sqliterc</code>-pikaohje (macOS/Linux):
+  </p>
+
+  <ol>
+    <li>Siirry kotihakemistoosi: <code>cd ~</code> tai <code>cd $HOME</code>.</li>
+    <li>Luo tiedosto nimeltä <code>.sqliterc</code> (jos sitä ei jo ole olemassa): <code>touch .sqliterc</code>.</li>
+    <li>Avaa tiedosto mieleisellä tekstieditorilla, esim. <code>nano .sqliterc</code>.</li>
+    <li>Lisää haluamasi asetukset erillisille riveille, tallenna muutokset ja poistu tekstieditorista. Useimmat järjestelmät vaativat terminaalin uudelleen käynnistämistä (tai ainakin uuden session avaamista) niin että SQLite lukee <code>.sqliterc</code>:n.</li>
+  </ol>
+
+  <p>
+    Esimerkiksi seuraavat asetukset voivat olla hyödyllisiä <code>.sqliterc</code>-tiedostossa:
+  </p>
+
+  <ul>
+    <li><code>.mode column</code> – tulostaa kyselyn tuloksen sarakkeissa.</li>
+    <li><code>.headers on</code> – näyttää sarakkeiden otsikot.</li>
+    <li><code>.timer on</code> – tulostaa kyselyn tuloksen jälkeen kyselyyn kuluneen ajan.</li>
+    <li><code>.prompt "# "</code> – käyttää merkkijonoa <code># </code> rivin alussa normaalin <code>sqlite> </code> sijaan.</li>
+  </ul>
+
+  <p>
+    Tiedostoon voi myös lisätä <code>PRAGMA</code>-lauseita, kuten esimerkiksi <code>PRAGMA FOREIGN_KEYS = ON;</code>P jolloin SQLite tottelee viiteavainten rajoitteita.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>SQL-kyselyiden muodosta
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    SQL-kieli on "case insensitive", eli sillä, että onko kysely kirjoitettu isoilla vai pienillä kirjaimilla kei ole kyselyn suorituksen kannalta merkitystä. Voimme kirjoittaa komennon <code>SELECT</code> yhtä hyvin muodossa <code>select</code> tai <code>Select</code> -- sama pätee myös taulujen ja sarakkeiden nimille.
+  </p>
+  
+  <p>
+    Noudatamme tällä kurssilla seuraavaa käytäntöä:
+  </p>
+  
+  <ol>
+    <li>Kaikki SQL-kielen komennot, kuten <code>SELECT</code>, <code>FROM</code> ja <code>WHERE</code>, kirjoitetaan isolla.</li>
+    <li>Taulujen nimet kirjoitetaan isolla alkukirjaimella. Esimerkiksi <code>Henkilo</code> ja <code>Opiskelija</code>.</li>
+    <li>Taulujen sarakkeet eli attribuutit kirjoitetaan pienellä. Esimerkiksi <code>nimi</code> ja <code>syntymavuosi</code>.</li>
+  </ol>
+
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tietokantataulun luominen: CREATE TABLE
+
+</h2>
+
+<p>
+  Tietokantataulu luodaan SQL-kielen <strong>CREATE TABLE</strong> lauseella, jota seuraa luotavan taulun nimi, ja suluissa tietokantataulun sarakkeiden tiedot pilkulla eroteltuna. 
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE <em>TAULUN_NIMI</em> (
+    <em>sarakkeen 1 tiedot</em>,
+    <em>sarakkeen 2 tiedot</em>,
+    <em>sarakkeen 3 tiedot</em>
+)
+</code></pre>
+
+<h3 class="material-heading">
+    Tietotyypit
+
+</h3>
+
+<p>
+  Tietokantaan säilöttävä tieto voi olla montaa eri muotoa, esimerkiksi merkkijonoja, numeroita, binäärimuodossa olevia tiedostoja sekä päivämääriä. Tietokannan suunnittelijan tehtävänä on päättää kunkin sarakkeen tiedon tyyppi.
+</p>
+
+<p>
+  Sarakkeen tiedon tyyppi määrää minkämuotoista tietoa sarakkeen arvoksi voi tallentaa. Käytännössä tietokantataulua luotaessa sarakkeen määrittelyssä annettavat tiedot kertovat tietokannanhallintajärjestelmälle siitä, että minkälaista tietoa sarakkeeseen voidaan lisätä, ja toisaalta samalla minkälaista tietoa sarakkeeseen ei voida lisätä. Sarakkeen tyyppi vaikuttaa myös asioihin, joita sarakkeen arvoilla voi tehdä -- esimerkiksi keskiarvon laskeminen merkkijonotyyppisiä arvoja sisältävästä sarakkeesta ei ole kovin järkevää.
+</p>
+
+<p>
+  Tyypillisesti käytetyn tietotyypit ovat seuraavat:
+</p>
+
+<ul>
+  <li><strong>varchar(n)</strong> korkeintaan <em>n</em> merkin pituinen merkkijono.</li>
+  <li><strong>integer</strong> kokonaisluku</li>
+  <li><strong>float</strong> liukuluku eli desimaaliluku</li>
+  <li><strong>date</strong> päivämäärä, tallentaa vuoden, kuukauden ja päivän</li>
+  <li><strong>timestamp</strong> aikaleima, tallentaa vuoden, kuukauden, päivän, tunnit, minuutit ja sekunnit -- mahdollisesti myös tarkempia arvoja</li>
+</ul>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Lisää tietotyyppejä
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Eri tietokannanhallintajärjestelmät kuten <code>SQLite</code>, <code>MySQL</code> ja <code>PostgreSQL</code> tarjoavat hieman erilaisia tietotyyppejä ohjelmoijan käyttöön. Seuraavissa dokumenteissa kerrotaan näistä enemmän.
+  </p>
+
+  <ul>
+    <li><a href="https://www.sqlite.org/datatype3.html" target="_blank" norel>https://www.sqlite.org/datatype3.html</a></li>
+    <li><a href="http://www.postgresql.org/docs/9.4/static/datatype.html" target="_blank" norel>http://www.postgresql.org/docs/9.4/static/datatype.html</a></li>
+    <li><a href="http://www.w3schools.com/sql/sql_datatypes.asp" target="_blank" norel>http://www.w3schools.com/sql/sql_datatypes.asp</a></li>
+  </ul>
+  
+
+  </div>
+</div>
+
+
+<h3 class="material-heading">
+    Sarakkeen tietojen määrittely
+
+</h3>
+
+<p>
+  Jokaisesta sarakkeesta kerrotaan sarakkeen nimi, sarakkeeseen tulevan tiedon tyyppi sekä tarvittaessa tietotyypille varattavan tilan koko -- esimerkiksi merkkijonoja tallennettaessa kerrotaan tallennettavan merkkijonon maksimipituus. Jokaisella sarakkeella tulee olla nimi sekä tyyppi. Jos sarakkeen tyyppiä ei määritellä tietokantataulua luotaessa, jotkut tietokannanhallintajärjestelmät määrittelevät sen automaattisesti, toiset taas näyttävät virheilmoituksen. 
+</p>
+
+<p>
+  Sarakkeen tiedot ovat muotoa <em>sarakkeen_nimi sarakkeen_tietotyyppi</em>. Esimerkiksi syntymävuosi määritellään seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>syntymavuosi integer
+</code></pre>
+
+<p>
+  Korkeintaan 200 merkkiä pitkä nimi määriteltäisiin taas seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>nimi varchar(200)
+</code></pre>
+
+<p>
+  Henkilön syntymävuoden ja nimen tallentamiseen tarkoitettu taulu määriteltäisiin seuraavasti. Alla on oletettu, että nimi ei ole koskaan yli 200 merkkiä pitkä.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Henkilo (
+    syntymavuosi integer,
+    nimi varchar(200)
+)
+</code></pre>
+
+<p>
+  Yllä luodun esimerkkitaulun sisältö voisi olla esimerkiksi seuraavanlainen.
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>syntymävuosi</th>
+      <th>nimi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1997</td>
+      <td>Pihla</td>
+    </tr>
+    <tr>
+      <td>1993</td>
+      <td>Joni</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h2 class="material-heading">
+    Pää- ja viiteavaimet
+
+</h2>
+
+<p>
+  Edellisessä luvussa muunnettiin luokkakaavio relaatiokaavioksi kolmea askelta seuraamalla. Relaatiokaavio kuvaa tietokannan tauluja, ja taulut voidaan luoda SQL-kielisillä lauseilla. Relaatiokaavion voi kuvata tekstimuodossa seuraavasti.
+</p>
+
+<p>
+  Taulu ((pk) paaavaimen_nimi: PaaavaimenTyyppi, (fk) viiteavaimen_nimi: ViitattuTaulu, sarake:SarakeTyyppi, sarake:SarakeTyyppi, ...)
+</p>
+
+<p>
+  Tilausjärjestelmän relaatiokaavion voi kuvata tekstimuodossa seuraavasti.
+</p>
+
+<ul>
+  <li>Asiakas((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Ravintola((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Annos((pk) id:Integer, (fk) ravintola_id -&gt; Ravintola, nimi:String, koko:String, hinta:double)</li>
+  <li>Tilaus((pk) id:Integer, (fk) asiakas_id -&gt; Asiakas, aika:Date, kuljetustapa:String, vastaanotettu:Boolean, toimitettu:Boolean)</li>
+  <li>RaakaAine((pk) id:Integer, nimi:String)</li>
+  <li>AnnosRaakaAine((fk) annos_id - &gt; Annos, (fk) raaka_aine_id -&gt; RaakaAine)</li>
+  <li>TilausAnnos((fk) tilaus_id - &gt; Tilaus, (fk) annos_id -&gt; Annos)</li>
+</ul>
+
+
+<p>
+  Kun relaatiokaavion perusteella luodaan tietokantataulut, tulee taulut luoda järjestyksessä joka varmistaa viitattavien taulujen olemassaolon. Ensin luodaan taulut, joissa on vain pääavaimia (ei viiteavaimia), ja vasta sitten taulut, joissa on viiteavaimia. Eräs sopiva luontijärjestys edellisille tauluille on seuraava.
+</p>
+
+
+<ul>
+  <li>Asiakas((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>Ravintola((pk) id:Integer, nimi:String, puhelinnumero:String, katuosoite:String, postinumero:Integer, postitoimipaikka:String)</li>
+  <li>RaakaAine((pk) id:Integer, nimi:String)</li>
+  <li>Annos((pk) id:Integer, (fk) ravintola_id -&gt; Ravintola, nimi:String, koko:String, hinta:double)</li>
+  <li>Tilaus((pk) id:Integer, (fk) asiakas_id -&gt; Asiakas, aika:Date, kuljetustapa:String, vastaanotettu:Boolean, toimitettu:Boolean)</li>
+  <li>AnnosRaakaAine((fk) annos_id - &gt; Annos, (fk) raaka_aine_id -&gt; RaakaAine)</li>
+  <li>TilausAnnos((fk) tilaus_id - &gt; Tilaus, (fk) annos_id -&gt; Annos)</li>
+</ul>
+
+
+
+
+<h3 class="material-heading">
+    Pääavaimen määrittely CREATE TABLE -lauseessa
+
+</h3>
+
+<p>
+  Pääavain on taulukohtainen tunniste, joka on uniikki jokaiselle taulun riville. Tämän lisäksi sen arvo ei saa olla tyhjä (<em>null</em>) millään rivillä. Pääavaimeksi valitaan joko olemassaoleva attribuutti (tällöin attribuutin tulee olla muuttumaton), tai sitä varten luodaan uusi attribuutti.
+</p>
+
+<p>
+  Pääavain määritellään tietokantataulun luonnin yhteydessä lisäämällä sarakkeen tyypin perään rajoite <code>PRIMARY KEY</code>. Tämä tarkoittaa sitä, että rivin arvon tulee olla on uniikki, ja että se ei saa koskaan olla tyhjä. Luodaan tietokantataulut Asiakas ja RaakaAine siten, että niissä on määriteltynä pääavain.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Asiakas (
+    id integer PRIMARY KEY,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varcar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+)
+</code></pre>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE RaakaAine (
+    id integer PRIMARY KEY,
+    nimi varchar(200)
+)
+</code></pre>
+
+
+
+<h3 class="material-heading">
+    Viiteavaimen määrittely CREATE TABLE -lauseessa
+
+</h3>
+
+
+<p>
+  Viiteavaimet ovat tietokantatauluissa sarakkeita, joissa olevat arvot viittaavat toisissa tauluissa oleviin pääavaimiin. Tietokantataulua määriteltäessä viiteavaimet listataan sarakkeiden määrittelyn jälkeen. Jokaisen viiteavaimen yhteydessä kerrotaan sekä luotavan taulun sarake -- eli sarake, joka on viiteavain -- että taulu ja sarake, johon viiteavaimella viitataan.
+</p>
+
+<p>
+  Viiteavaimen määrittely tapahtuu CREATE TABLE -lauseen loppuun asetettavan määreen <code>FOREIGN KEY(<em>sarake</em>) REFERENCES <em>ViitattavaTaulu(viitattavaSarake)</em></code> avulla. Viiteavaimia voidaan määritellä useampia.
+</p>
+
+<p>
+  Oletetaan, että käytössämme on edellisessä alikuvussa määriteltytietokantataulu Asiakas. Nyt voimme luoda taulun Tilaus, jossa on viittaus tauluun Asiakas.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Tilaus (
+    id integer PRIMARY KEY,
+    asiakas_id integer,
+    aika date,
+    kuljetustapa varchar(40),
+    vastaanotettu boolean,
+    toimitettu boolean,
+    FOREIGN KEY (asiakas_id) REFERENCES Asiakas(id)
+);
+</code></pre>
+
+<p>
+  Viiteavaimet ovat siis sarakkeita siinä missä muutkin sarakkeet, mutta niille määritellään erikseen tieto siitä, ette ne ovat viiteavaimia sekä tieto siitä, että mihin tauluun ja sarakkeeseen kukin viiteavain viittaa. Taulussa käytettävien viiteavainten määrä ei ole rajattu -- voi olla, että niitä ei ole yhtäkään, tai niitä voi olla useita.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>SQLite ja viiteavaimet
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Toistaiseksi käytössämme olevan SQLiten versiossa viiteavaimiin liittyvät tarkistukset -- eli tietokannanhallintajärjestelmän tekemä varmistus viitattavan rivin olemassaolosta -- ovat oletuksena poissa päältä. Tarkastukset saadaan päälle seuraavalla komennolla.
+  </p>
+
+  <pre class="sh_sql">PRAGMA foreign_keys = ON;</pre>
+
+
+  </div>
+</div>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Useampi arvo pääavaimena
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Jokaisella taululla voi olla vain yksi määritelty pääavain. Joskus haluamme, että pääavain liittyy useampaan sarakkeeseen, jolloin sarakkeiden yhdistelmän tulee olla uniikki. Voimme esimerkiksi haluta rajoittaa annokseen määriteltäviä raaka-aineita siten, että kukin raaka-aine saa esiintyä kussakin annoksessa korkeintaan kerran. Tämä onnistuu määrittelemällä taululle AnnosRaakaAine pääavain, joka sisältää sekä annostunnuksen että raaka-aineen
+  </p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE AnnosRaakaAine (
+    annos_id integer,
+    raaka_aine_id integer,
+    FOREIGN KEY (annos_id) REFERENCES Annos(id),
+    FOREIGN KEY (raaka_aine_id) REFERENCES RaakaAine(id),
+    PRIMARY KEY (annos_id, raaka_aine_id)
+)
+</code></pre>
+
+
+  </div>
+</div>
+
+
+<p>
+  Tilausjärjestelmämme tietokannan CREATE TABLE -lauseet kokonaisuudessaan.
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Asiakas (
+    id integer PRIMARY KEY,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varcar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+);
+
+CREATE TABLE Ravintola (
+    id integer PRIMARY KEY,
+    nimi varchar(200),
+    puhelinnumero varchar(20),
+    katuosoite varcar(50),
+    postinumero integer,
+    postitoimipaikka varchar(20)
+);
+
+CREATE TABLE RaakaAine (
+    id integer PRIMARY KEY,
+    nimi varchar(200)
+);
+
+CREATE TABLE Annos (
+    id integer PRIMARY KEY,
+    ravintola_id integer,
+    nimi varchar(200),
+    koko varchar(30),
+    hinta double,
+    FOREIGN KEY (ravintola_id) REFERENCES Ravintola(id)
+);
+
+CREATE TABLE Tilaus (
+    id integer PRIMARY KEY,
+    asiakas_id integer,
+    aika date,
+    kuljetustapa varchar(40),
+    vastaanotettu boolean,
+    toimitettu boolean,
+    FOREIGN KEY (asiakas_id) REFERENCES Asiakas(id)
+);
+
+CREATE TABLE AnnosRaakaAine (
+    annos_id integer,
+    raaka_aine_id integer,
+    FOREIGN KEY (annos_id) REFERENCES Annos(id),
+    FOREIGN KEY (raaka_aine_id) REFERENCES RaakaAine(id)
+);
+
+CREATE TABLE TilausAnnos (
+    tilaus_id integer,
+    annos_id integer,
+    FOREIGN KEY (tilaus_id) REFERENCES Tilaus(id),
+    FOREIGN KEY (annos_id) REFERENCES Annos(id)
+);
+</code></pre>
+
+
+
+
+<h2 class="material-heading">
+    Tietokantataulun poistaminen: DROP TABLE
+
+</h2>
+
+<p>
+  Tietokantataulun poistaminen onnistuu <strong>DROP TABLE</strong> <em>TAULUN_NIMI</em> -lauseella, missä taulun nimi on poistettavan taulun nimi. Esimerkiksi edellä luodun Henkilo-taulun poistaminen onnistuisi seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>DROP TABLE Henkilo
+</code></pre>
+
+<p>
+  Huomaathan, että tietokantataulun poistaminen poistaa myös kaiken tietokantataulussa olevan datan. Komennosta löytyy myös versio, joka poistaa tietokantataulun vain jos kyseinen taulu on olemassa. 
+</p>
+
+<pre class="sh_sql code-highlight"><code>DROP TABLE IF EXISTS Henkilo
+</code></pre>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Olemassaolevien tietokantataulujen listaaminen
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Olemassaolevien tietokantataulujen listaamiseen ei ole yhtä kaikissa tietokannanhallintajärjestelmissä toimivaa tapaa. Osoitteessa <a href="http://onewebsql.com/blog/list-all-tables" target="_blank" norel>http://onewebsql.com/blog/list-all-tables</a> oleva sivu listaa muutamien tietokannanhallintajärjestelmien syntaksit tietokantataulujen listaamiseen.
+  </p>
+
+  <p>
+    SQLiten tietokantataulut saadaan selville komennolla <code>SELECT * FROM sqlite_master</code>.
+  </p>
+
+<pre class="sh_sql code-highlight"><code>SELECT * FROM sqlite_master
+</code></pre>
+  
+
+  </div>
+</div>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Sarakkeiden tietotyypin selvittäminen
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Attribuutin -- tai sarakkeen -- tietotyypin kysymiseen <a href="http://stackoverflow.com/questions/13405572/sql-statement-to-get-column-type" target="_blank">ei myöskään ole yhtä tapaa</a>, vaan tapa liittyy käytettävään tietokannanhallintajärjestelmään. Käyttämässämme SQLite-versiossa sarakkeen tyypin saa selville kyselyllä <code>PRAGMA TABLE_INFO(<em>TAULUN_NIMI</em>)</code>, missä <em>TAULUN_NIMI</em> on tarkasteltavan taulun nimi.
+  </p>
+
+  <p>
+    Esimerkiksi
+  </p>
+
+<pre class="sh_sql code-highlight"><code>PRAGMA TABLE_INFO(Henkilo)
+</code></pre>
+  
+  
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tiedon lisääminen tietokantatauluun: INSERT INTO
+
+</h2>
+
+<p>
+  Tiedon lisääminen tietokantatauluun tapahtuu <strong>INSERT INTO</strong> -lauseella. Lausetta <code>INSERT INTO</code> seuraa kohdetaulun nimi, jonka jälkeen määritellään sarakkeet, joihin arvot asetetaan. Näitä seuraa vielä konreettiset arvot.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO <em>TAULUN_NIMI</em> (<em>sarake1</em>, <em>sarake2</em>, <em>sarake3</em>)
+    VALUES (<em>'merkkijono hipsuissa'</em>,<em>'numero ei'</em>, 123)
+</code></pre>
+
+
+<p>
+  Oletetaan, että käytössämme on edellisessä aliluvussa luotu taulu Henkilo, jossa on sarakkeet syntymavuosi ja nimi. Uuden henkilon lisääminen tapahtuu seuraavasti.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO Henkilo (syntymavuosi, nimi)
+    VALUES (1923, 'Edgar Frank Codd')
+</code></pre>
+
+<p>
+  Yllä olevassa esimerkissä tietokantatauluun Henkilo lisätään uusi rivi. Sarakkeeseen syntymävuosi tulee arvo 1923 ja sarakkeeseen nimi tulee merkkijono 'Edgar Frank Codd'.
+</p>
+
+<p>
+  Vastaavasti vuonna 1947 syntyneen Raymond Boycen lisääminen tietokantatauluun Henkilo onnistuu seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO Henkilo (syntymavuosi, nimi)
+    VALUES (1947, 'Raymond Boyce')
+</code></pre>
+
+
+
+<h3 class="material-heading">
+    Pää- ja viiteavaimet tietoa lisättäessä
+
+</h3>
+
+
+<p>
+  Tietyt tietokannanhallintajärjestelmät tarjoavat tuen automaattiselle pääavaimen arvojen luomiselle. Esimerkiksi SQLite luo automaattisesti kokonaislukutyyppiselle sarakkeelle arvoja, jos sarake on määritelty pääavaimeksi, ja ohjelmoija ei tauluun tietoa lisätessään arvoja erikseen määrittele. Vastaava toiminnallisuus löytyy myös useista muista tietokannanhallintajärjestelmistä -- tutustu esimerkiksi <a href="https://mariadb.com/kb/en/mariadb/auto_increment/" target="_blank">MariaDB:n dokumentaatioon asiasta</a>.
+</p>
+
+<p>
+  Automaattista pääavaimen arvojen luomista hyödynnetään SQLitessä automaattisesti, jos INSERT-kyselyissä ei määritellä pääavaimelle arvoa. Seuraavilla lisäyskyselyillä tauluun RaakaAine lisättäviin riveihin lisätään automaattisesti lisättävät rivit yksilöivät pääavaimet.
+</p>
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO RaakaAine (nimi) VALUES ('Banaani');
+INSERT INTO RaakaAine (nimi) VALUES ('Bataatti');
+INSERT INTO RaakaAine (nimi) VALUES ('Peruna');
+INSERT INTO RaakaAine (nimi) VALUES ('Porkkana');
+</code></pre>
+
+
+<p>
+  Tiedon lisääminen tauluun Tilaus tapahtuu INSERT INTO -lauseen avulla. Nyt, koska taulussa Tilaus on viiteavain, tulee viitattavan asiakkaan tunnus olla tiedossa ennalta. Jos oletamme, että tilauksen tehnyt asiakkaan pääavaimen arvo on 7, onnistuu tilauksen lisääminen tietokantaan seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO Tilaus (asiakas_id, aika, kuljetustapa, vastaanotettu, toimitettu) VALUES (7, now(), 'nouto', false, false);
+</code></pre>
+
+<p>
+  Yllä käytetty kutsu <code>now()</code> hakee järjestelmän ajan ja asetttaa sen lisättävän rivin sarakkeen aika arvoksi.
+</p>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Miten tiedän lisätyn rivin pääavaimen?
+  </div>
+
+  <div class="hint__body">
+      
+  <p>
+    Lisätyn rivin pääavaimen saa selville SQL-kyselyllä. Kun lisäämme uuden rivin, saa lisätyn rivin pääavaimen selville SELECT -lauseella, johon tutustumme kohta tarkemmin. Alla esimerkki RaakaAine-tauluun liittyen.
+  </p>
+
+<pre class="sh_sql code-highlight"><code>INSERT INTO RaakaAine (nimi) VALUES ('Banaani');
+SELECT id FROM RaakaAine WHERE nimi = 'Banaani';
+</code></pre>
+
+  <p>
+    Ensimmäinen lause lisää raaka-aineen, ja toisella selvitetään raaka-aineen tunnus.
+  </p>
+
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tiedon hakeminen tietokantataulusta: SELECT
+
+</h2>
+
+<p>
+  Tiedon hakeminen tietokantataulusta onnistuu <strong>SELECT</strong>-lauseella. Avainsanaa <code>SELECT</code> seuraa haettavat sarakkeet, tietokantataulun nimi sekä mahdollisesti rajausehto tai rajausehtoja.
+</p>
+
+<p>
+  Ilman rajausehtoa kyselyn rakenne on seuraava.
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT <em>sarake1</em>, <em>sarake2</em> FROM <em>TAULUN_NIMI</em>
+</code></pre>
+
+<p>
+  Rajausehdon kanssa kyselyn rakenne on seuraava.
+
+<pre class="sh_sql code-highlight"><code>SELECT <em>sarake1</em>, <em>sarake2</em> FROM <em>TAULUN_NIMI</em>
+    WHERE <em>rajausehto</em>
+</code></pre>
+
+
+<p>
+  Oletetaan, että käytössämme on seuraava taulu, jonka nimi on Henkilo.
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>syntymavuosi</th>
+      <th>nimi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1997</td>
+      <td>Pihla</td>
+    </tr>
+    <tr>
+      <td>1993</td>
+      <td>Joni</td>
+    </tr>
+    <tr>
+      <td>1947</td>
+      <td>Raymond</td>
+    </tr>
+    <tr>
+      <td>1923</td>
+      <td>Edgar</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+  Jos haluamme listata kaikki taulun henkilöt, kysely olisi muotoa.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>SELECT syntymavuosi, nimi FROM Henkilo
+</code></pre>
+
+<p>
+  Valinta henkilöihin, jotka ovat syntyneet ennen vuotta 1950 onnistuu seuraavasti. 
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT syntymavuosi, nimi FROM Henkilo WHERE syntymavuosi &lt; 1950
+</code></pre>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Kaikki sarakkeet
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Hakukyselyn <code>SELECT</code>-komentoa seuraava sarakelistaus voidaan korvata tähtimerkillä * jos halutaan hakea kaikki tietokantataulun sarakkeet. Olettaen, että taulussa Henkilo on vain sarakkeet syntymavuosi ja nimi, kysely:
+  </p>
+  
+<pre class="sh_sql code-highlight"><code>SELECT syntymavuosi, nimi FROM Henkilo WHERE syntymavuosi &lt; 1950
+</code></pre>
+
+  <p>
+    Voidaan korvata kyselyllä
+  </p>
+  
+<pre class="sh_sql code-highlight"><code>SELECT * FROM Henkilo WHERE syntymavuosi &lt; 1950
+</code></pre>
+
+
+  </div>
+</div>
+
+
+
+<p>
+  Jos sarakkeen arvot ovat merkkijonoja, kuten nimi, voi hakuehdossa käyttää <code>LIKE</code>-operaatiota. Tämän avulla hakutuloksia voi rajata osittaisen merkkijonon avulla. Esimerkiksi kysely <code>SELECT * FROM Henkilo WHERE nimi LIKE '%a%'</code> hakee kaikki henkilöt, joiden nimessä esiintyy a-kirjain.
+</p>
+
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Loogiset operaatiot
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Rajausehtoihin voi lisätä loogisia operaatioita kyselyjen tulosten rajaamiseksi. Operaatio 'ja', eli kahden rajausehdon yhdistäminen, toimii avainsanalla <code>AND</code>. Esimerkiksi kysely <code>SELECT * FROM Henkilo WHERE nimi = 'Ted' AND syntymavuosi = 1920</code> listaa vain ne henkilöt, joiden nimi on 'Ted' ja joiden syntymävuosi on 1920.
+  </p>
+  
+  <p>
+    Operaation 'tai' lisääminen on myös mahdollista. Esimerkiksi kysely <code>SELECT * FROM Henkilo WHERE nimi = 'Matti' OR nimi = 'Maija'</code> listaisi kaikki ne henkilöt, joiden nimi on Matti tai Maija.
+  </p>
+
+  
+  <p>
+    Kyselyissä toimivat myös suurempi kuin <code>&gt;</code> ja pienempi kuin <code>&lt;</code> -operaatiot.
+  </p>
+
+  
+  <p>
+    Ehtoja voi myös yhdistää, jonka lisäksi suluilla voi rajata suoritusjärjestystä. Tutki kyselyä  <code>SELECT * FROM Kurssisuoritus WHERE (kurssi = 'Ohjelmoinnin perusteet' OR kurssi = 'Ohjelmoinnin jatkokurssi') AND arvosana = 3</code> ja mieti mitä se tekee.
+  </p>
+  
+  
+
+  </div>
+</div>
+
+
+
+<h2 class="material-heading">
+    Tiedon päivittäminen: UPDATE
+
+</h2>
+
+
+<p>
+  Tietokantataulussa olevan tiedon päivittäminen onnistuu <strong>UPDATE</strong>-lauseella. Komentoa <cude>UPDATE</cude> seuraa tietokantataulun nimi, avainsana <code>SET</code>, jota seuraa sarakekohtaiset uudet arvot. Lopuksi kyselyyn lisätään rajausehto, jonka perusteella rajataan muutettavia rivejä.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>UPDATE <em>TAULUN_NIMI</em>
+    SET <em>sarake1='uusiarvo'</em>, <em>sarake2=1234</em>
+    WHERE <em>sarake3='rajausarvo'</em>
+</code></pre>
+
+<p>
+  Esimerkiksi 'Joni'-nimisen henkilön nimen päivittäminen muotoon 'Joni S' onnistuu seuraavasti.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>UPDATE Henkilo
+    SET nimi='Joni S'
+    WHERE nimi='Joni'
+</code></pre>
+
+
+<h2 class="material-heading">
+    Tiedon poistaminen tietokantataulusta: DELETE FROM
+
+</h2>
+
+<p>
+  Tiedon poistaminen tietokantataulusta onnistuu <strong>DELETE FROM</strong> -lauseella. Lauseeseen määritellään lisäksi tietokantataulu, mistä tietoa poistetaan, ja mahdollisesti ehtoja, jotka rajaavat poistettavia rivejä. Yksinkertaisimmillaan komennolla poistetaan kaikki rivit annetusta taulusta seuraavasti.
+</p>
+
+<pre class="sh_sql code-highlight"><code>DELETE FROM <em>TAULUN_NIMI</em>
+</code></pre>
+
+<p>
+  Poistettavien rivien rajaaminen tapahtuu WHERE-ehdolla, jota seuraa poistettavien arvojen rajaus. Esimerkiksi kaikki vuonna 1920 syntyneet henkilöt poistettaisiin tietokantataulusta Henkilo seuraavalla komennolla.
+</p>
+
+
+<pre class="sh_sql code-highlight"><code>DELETE FROM Henkilo WHERE syntymavuosi = 1920
+</code></pre>
+
+<p>
+  Poistoehtoon voi rakentaa loogisen lauseen, joka sisältää <code>AND</code> ja <code>OR</code> -määreitä. Näiden avulla poistorajausta voi tehdä laajemmin. Alla olevassa esimerkissä poistetaan henkilö (tai henkilöt), joiden syntymävuosi on 1947 ja joiden nimi on 'Raymond Boyce'.
+</p>
+
+<pre class="sh_sql code-highlight"><code>DELETE FROM Henkilo WHERE syntymavuosi = 1947 AND nimi = 'Raymond Boyce'
+</code></pre>
+
+<p>
+  Pienempi kuin ja suurempi kuin -vertailuoperaatiot sekä erisuuri kuin vertailuoperaatiot ovat myös mahdollisia. Alla olevassa esimerkissä poistetaan kaikki henkilöt, joiden syntymävuosi on pienempi kuin 2000 ja joiden nimi ei ole 'Boyce-Codd'.
+</p>
+
+<pre class="sh_sql code-highlight"><code>DELETE FROM Henkilo WHERE syntymavuosi &lt; 2000 AND nimi != 'Boyce-Codd'
+</code></pre>
+
+
+<h2 class="material-heading">
+    Yhteenveto
+
+</h2>
+
+<table class="table">
+
+  <tr>
+    <th>
+      Operaatio
+    </th>
+    <th>
+      Avainsana
+    </th>
+    <th>
+      Esimerkki
+    </th>
+  </tr>
+
+  <tr>
+    <td>
+      Tietokantataulun luominen
+    </td>
+    <td>
+      CREATE
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Opiskelija (
+    opiskelijanumero integer,
+    nimi varchar(60),
+    sahkopostiosoite varchar(40)
+)
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Tietokantataulun poistaminen
+    </td>
+    <td>
+      DROP
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>DROP TABLE Opiskelija
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Tiedon lisääminen
+    </td>
+    <td>
+      INSERT
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>INSERT INTO
+    Opiskelija (opiskelijanumero, nimi, sahkopostiosoite)
+    VALUES (1008286, 'Ari', 'posti@osoite.net');
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Tiedon hakeminen
+    </td>
+    <td>
+      SELECT
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>SELECT nimi FROM Opiskelija
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Tiedon päivittäminen
+    </td>
+    <td>
+      UPDATE
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>UPDATE Opiskelija
+    SET nimi='Ari V'
+    WHERE opiskelijanumero=1008286
+</code></pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      Tiedon (rivien) poistaminen
+    </td>
+    <td>
+      DELETE
+    </td>
+    <td>
+<pre class="sh_sql code-highlight"><code>DELETE FROM Opiskelija
+    WHERE opiskelijanumero=1008286
+</code></pre>
+    </td>
+  </tr>
+  
+</table>
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Kappaleet</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Etsi tehtäväpohjan sisältävä kansio ja mene sen alikansioon <code>db</code>. Kyseisessä kansiossa on valmiina tiedosto <code>esimerkki.db</code>.
+  </p>
+
+  <p>
+    Luo kansioon <code>db</code> tietokanta <code>levy.db</code>. Avaa tietokanta sqliten avulla, ja luo tietokantaan tietokantataulu nimeltä <code>Kappale</code>, joka sisältää seuraavat sarakkeet:
+  </p>
+
+  <ul>
+    <li>nimi (merkkijono, maksimipituus 100 merkkiä)</li>
+    <li>artisti (merkkijono, maksimipituus 80 merkkiä)</li>
+    <li>levytysvuosi (kokonaisluku)</li>
+    <li>pituus (kokonaisluku)</li>
+  </ul>
+
+  <p>
+    Lisää tämän jälkeen tietokantatauluun <code>Kappale</code> seuraavat kappaleet.
+  </p>
+
+  <table class="table">
+    <tr>
+      <th>Nimi</th>
+      <th>Artisti</th>
+      <th>Levytysvuosi</th>
+      <th>Pituus</th>
+    </tr>
+    <tr>
+      <td>Capito Tutto</td>
+      <td>Kummeli</td>
+      <td>1994</td>
+      <td>124</td>
+    </tr>
+    <tr>
+      <td>Kanada</td>
+      <td>Kummeli</td>
+      <td>1994</td>
+      <td>119</td>
+    </tr>
+    <tr>
+      <td>Tango Vibrato</td>
+      <td>Kummeli</td>
+      <td>1994</td>
+      <td>117</td>
+    </tr>
+  </table>
+
+  <p>
+    Voit testata tehtävän edistymistä TMC:n kautta. Jos tehtäväpohja näyttää punaista, klikkaa tehtäväpohjan Dependencies-kansiota hiiren oikealla napilla ja valitse "Download declared dependencies". Tämä lataa tehtäväpohjassa olevissa testeissä käytetyn SQLite-ajurin.
+  </p>
+  
+
+    </div>
+  </div>
+</div>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Tilastot</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Etsi tehtäväpohjan sisältävä kansio ja mene sen alikansioon <code>db</code>. Kyseisessä kansiossa on valmiina tiedosto <code>palkkatilastot.db</code>. Kyseisessä tiedostossa on yksityisen sektorin mediaanipalkat. Palkkatilastot on noudettu tilastokeskuksen sivuilta osoitteesta <a href="http://www.stat.fi/til/yskp/2014/yskp_2014_2015-08-20_tie_001_fi.html" target="_blank" norel">http://www.stat.fi/til/yskp/2014/yskp_2014_2015-08-20_tie_001_fi.html</a>.
+  </p>
+
+  <p>
+    Tietokannassa on käytetty seuraavanlaista CREATE TABLE -lausetta. Työtehtävät löytyvät sarakkeesta <code>NAME</code>, mediaaniansio sarakkeesta <code>SALARY</code>.
+  </p>
+
+  <pre>
+CREATE TABLE EMPLOYEE (
+  ID INTEGER PRIMARY KEY NOT NULL,
+  NAME TEXT NOT NULL,
+  AGE INT NOT NULL,
+  ADDRESS CHAR(50),
+  SALARY REAL
+);
+  </pre>
+
+  <p>
+    Selvitä SQLite-ohjelman avulla tiedostosta seuraavat tiedot:
+  </p>
+
+  <ul>
+    <li>Mikä on ohutlevyseppien ("Ohutlevysepät") kuukausittainen mediaaniansio?</li>
+    <li>Kuinka monen työtehtävän mediaaniansio on alle 1900 euroa kuussa?</li>
+    <li>Kuinka monen työtehtävän mediaaniansio on yli 7000 euroa kuussa?</li>
+    <li>Minkä työtehtävän mediaaniansio on tasan 3300 euroa kuussa?</li>
+  </ul>
+
+  <p>
+    TMC:n tehtäväpohjassa on valmiit kohdat vastauksille. Kun tiedoston Tilastoja.java käynnistää nyt, ohjelma tulostaa. 
+  </p>
+
+<pre class="sample-output">Ohutlevyseppien mediaaniansio: 0
+Työtehtäviä, joiden mediaaniansio on alle 1900 euroa: 0
+Työtehtäviä, joiden mediaaniansio on yli 7000 euroa: 0
+Työtehtävä, jonka mediaaniansio on tasan 3300 euroa kuussa: ???
+</pre>
+
+  <p>
+    Selvitä SQLite-ohjelman avulla edellisiin tietoihin oikeat vastaukset ja muokkaa ohjelmaa niin, että että ohjelma tulostaa edellä toivotut lukumäärät (ja työtehtävän) oikein. Muokkaa tulostuksissa vain kaksoispistettä seuraavaa tulostusta.
+  </p>
+
+  <p>
+    Tehtävässä on testit vain palvelimella. Testit odottavat, että tulostukset ovat täsmällisiä. 
+  </p>
+
+
+  <p>
+    <em>
+      Tehtäväpohjassa on myös tiedosto <em>palkkatilastot_varalla.db</em> siltä varalta, että muokkaat vahingossa käsiteltävää tietokantatiedostoa.
+    </em>
+  </p>
+
+
+    </div>
+  </div>
+</div>
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part2.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>

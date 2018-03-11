@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tietokantojen perusteet - kevät 2018 | Osa 7</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="../stylesheets/styles-e93ecb96.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/xcode.min.css">
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.css" />
+
+    <link rel="stylesheet" href="//2017-ohjelmointi.github.io/cdn/code-states-visualizer.css" />
+
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-47575342-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-wrapper">
+        <div class="browser-support-warning" id="browser-support-warning" style="display: none;">
+  Kaikki tämän materiaalin osat eivät välttämättä tuo nykyistä selaintasi. Voisitko harkita vaihtamista <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome</a> tai <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> selaimeen?
+  <span class="browser-support-warning__close">Selvä!</span>
+</div>
+
+
+        <nav class="navbar navbar-light bg-white">
+  <a class="navbar-brand" href="http://mooc.fi" alt="MOOC" target="_blank">
+    <span class="icon-mooc"></span>
+  </a>
+
+  <ul class="nav navbar-nav hidden-md-down">
+      <li class="nav-item ">
+        <a href="../" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=index.html&gt;')">Johdanto</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part1/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part1.html&gt;')">Osa 1</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part2/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part2.html&gt;')">Osa 2</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part3/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part3.html&gt;')">Osa 3</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part4/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part4.html&gt;')">Osa 4</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part5/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part5.html&gt;')">Osa 5</a>
+      </li>
+      <li class="nav-item ">
+        <a href="../part6/" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part6.html&gt;')">Osa 6</a>
+      </li>
+      <li class="nav-item active">
+        <a href="./" class="nav-link" onclick="ga('send', 'event', 'navigation_topic_link', 'click', '#&lt;Middleman::Sitemap::Resource path=part7.html&gt;')">Osa 7</a>
+      </li>
+  </ul>
+
+  <div class="float-xs-right navbar__buttons">
+    <div class="dropdown" id="mobile-nav-dropdown">
+      <button class="btn btn-secondary dropdown-toggle navbar__mobile-nav-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="dropdown-menu">
+      </div>
+    </div>
+
+    <a href="https://riot.im/app/#/room/#_ircnet_#tikape:irc.snt.utwente.nl" target="_blank" rel="noopener" class="btn btn-secondary">
+      <span class="hidden-md-down">Chat</span>
+      <i class="fa fa-commenting-o hidden-lg-up"></i>
+    </a>
+
+    <button class="btn btn-secondary" id="table-of-contents-toggle">
+      <span class="hidden-md-down">Sisällysluettelo</span>
+      <i class="fa fa-ellipsis-h hidden-lg-up"></i>
+    </button>
+
+    <button class="btn btn-primary" id="tmc-login-toggle">Kirjaudu sisään</button>
+  </div>
+</nav>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container material" id="material">
+            <div class="exercise-list">
+  <div class="exercise-list__header">
+    Tehtävät
+  </div>
+
+  <div class="exercise-list__content" id="exercise-list"></div>
+
+</div>
+
+
+          
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Seitsemännen osan oppimistavoitteet
+  </div>
+
+  <div class="hint__body">
+    
+
+  <p>
+    Tietää joitakin kirjastoja yksinkertaisten SQL-kyselyiden automatisointiin ja osaa käyttää yhteenvetokyselyjä osana web-sovellusta. Tuntee pinnallisesti muutamia NoSQL- ja NewSQL-tietokantoja. 
+  </p>
+
+
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    Yhteenvetokyselyt osana tietokantaa käyttäviä sovelluksia
+
+</h1>
+
+<p>
+  Yhteenvetokyselyiden käyttäminen osana tietokantaa hyödyntäviä sovelluksia ei juurikaan poikkea muiden tietokantakyselyiden käytöstä. Tässä tutustut yhteenvetokyselyiden käyttöön ohjelmallisesti. 
+</p>
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">MusicApplication</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa tulee mukana sovellus kurssin aikana tutuksi tulleen Chinook-tietokannan albumien, artistien ja kappaleiden läpikäyntiin. Tehtävänäsi on lisätä sovellukseen toiminnallisuus, joka listaa artistit sekä artistien kappaleiden lukumäärän. Listauksessa näkyvien artistien nimiä klikkaamalla tulee päästä artistin tietoihin käsiksi.
+  </p>
+  
+  <p>
+    Tehtäväpohjassa on valmiina luokka <code>ArtistData</code> sekä html-tiedosto <code>stats-artists.html</code>, jotka auttanevat toiminnallisuuden rakentamisessa. Toiminnallisuuteen tulee päästä käsiksi tekemällä GET-tyyppinen pyyntö sovelluksen polkuun <code>/stats/artists</code>.
+  </p>
+
+  <p>
+    Listauksen tulee näyttää lopulta (kutakuinkin) seuraavalta.
+  </p>
+
+  <strong>
+    Artists
+  </strong>
+  
+  <table>
+    <thead>
+      <tr>
+	<th>Artist</th>
+	<th>Albums</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+	<td>AC/DC</td>
+	<td>2</td>
+      </tr>
+      <tr>
+	<td>Accept</td>
+	<td>2</td>
+      </tr>
+      <tr>
+	<td>Aerosmith</td>
+	<td>1</td>
+      </tr>
+      <tr>
+	<td colspan="2">...</td>
+      </tr>
+    </tbody>
+    
+  </table> 
+  
+
+    </div>
+  </div>
+</div>
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">MusicApplication, osa 2</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Tehtäväpohjassa tulee edellisessä osassa käytetty Chinook-tietokantaa hyödyntävä sovellus. Tässä tehtävänäsi on lisätä sovellukseen toiminnallisuus, joka listaa asiakkaiden nimet, asiakkaiden tekemien tilausten lukumäärän sekä asiakkaiden tekemien tilausten yhteissumman.
+  </p>
+  
+  <p>
+    Listauksen tulee näyttää lopulta (kutakuinkin) seuraavalta. Tehtäväpohjassa on tiedosto <code>stats-invoices.html</code>, joka auttaa näkymän oikeassa muotoilussa. Listaukseen tulee päästä käsiksi kun käyttäjä tekee GET-tyyppisen pyynnön osoitteeseen <code>/stats/invoices</code>.
+  </p>
+
+  <strong>Customer</strong>
+
+  <table>
+
+    <thead>
+
+      <tr>
+        <th>
+          Customer
+        </th>
+        <th>
+          Total invoices
+        </th>
+        <th>
+          Sum
+        </th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr>
+        <td>Luís Gonçalves</td>
+        <td>7</td>
+        <td>39.62</td>
+      </tr>
+
+      <tr>
+        <td>Leonie Köhler</td>
+        <td>7</td>
+        <td>37.620000000000005</td>
+      </tr>
+
+      <tr>
+        <td>François Tremblay</td>
+        <td>7</td>
+        <td>39.62</td>
+      </tr>
+
+      <tr>
+        <td>Bjørn Hansen</td>
+        <td>7</td>
+        <td>39.62</td>
+      </tr>
+
+      <tr>
+	<td colspan="3">...</td>
+      </tr>
+
+    </tbody>
+
+  </table>
+    
+
+    </div>
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    Valmiit Dao-kirjastot
+
+</h1>
+
+<p>
+  Nykyään löytyy huomattava määrä valmiita kirjastoja, jotka tarjoavat Dao-toiminnallisuuksia valmiina siten, että käyttäjän ei tarvitse kirjoittaa yksinkertaisimpia SQL-kyselyitä itse.
+</p>
+
+
+
+<p>
+  Eräs tällainen kirjasto on <a href="http://ormlite.com/" target="_blank">ORMLite</a>, joka abstrahoi ja toteuttaa osan tietokantakyselyistä ohjelmoijan puolesta. ORMLite-kirjaston saa projektiin lisäämällä siihen liittyvän riippuvuuden Mavenin <code>pom.xml</code>-tiedostoon.
+</p>
+
+<pre class="sh_xml code-highlight"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.j256.ormlite&lt;/groupId&gt;
+    &lt;artifactId&gt;ormlite-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;5.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>
+  ORMLiteä käytettäessä tietokantatauluja kuvaaville luokille lisätään annotaatiot <code>@DatabaseTable(tableName = "<em>taulun nimi</em>")</code>, jonka lisäksi oliomuuttujille lisätään <code>@DatabaseField</code>-annotaatiot, joissa määritellään sarakkeen nimi, johon oliomuuttuja liittyy. Jos oliomuuttuja on taulun pääavain, lisätään sille erillinen määrittely (id=true) annotaatioon @DatabaseField: <code>@DatabaseField(id = true, columnName = "<em>sarakkeen nimi</em>")</code>.
+</p>
+
+
+<h2 class="material-heading">
+    Tiedon hakeminen yhdestä taulusta
+
+</h2>
+
+<p>
+  Käytännössä ORMLite osaa luoda olioita tietokannasta haettavista riveistä annotaatioiden perusteella. Jokaisessa tietokantataulua kuvaavassa luokassa tulee olla myös tyhjä konstruktori.
+</p>
+
+<p>
+  Esimerkiksi luokka <code>Pyora</code> ORMLite-annotaatioilla olisi seuraavanlainen (tässä pyörään liittyviä varauksia ei ole otettu huomioon):
+</p>
+
+<pre class="sh_java code-highlight"><code>import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "Pyora")
+public class Pyora {
+
+    @DatabaseField(id = true, columnName = "rekisterinumero")
+    private String rekisterinumero;
+    @DatabaseField(columnName = "merkki")
+    private String merkki;
+
+    // jokaisella tallennettavalla oliolle tulee olla parametriton konstruktori
+    public Pyora() {
+    }
+
+    public Pyora(String rekisterinumero, String merkki) {
+        this.rekisterinumero = rekisterinumero;
+        this.merkki = merkki;
+    }
+
+// getterit ja setterit
+}
+</code></pre>
+
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>ORMLite ja annotaatio @DatabaseField
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Jos tietokannassa olevan sarakkeen nimi on sama kuin oliomuuttujan nimi, voidaan annotaatiosta <code>@DatabaseField</code> jättää <code>columnName</code>-määrittely pois. Tietokantataulun sarakkeet, jotka ovat muotoa <code>sarakkeen_nimi</code> tulee olla määriteltynä <em>camelCase</em>-muodossa oliomuuttujina. Sarake <code>sarakkeen_nimi</code> olisi siis oliomuuttujana muotoa <code>sarakkeenNimi</code>.
+  </p>
+
+
+  </div>
+</div>
+
+<p>
+  Nyt kaikkien pyörien hakeminen tietokannasta onnistuu seuraavasti. Käytössä on useampia ORMLiten tarjoamia luokkia ja rajapintoja kuten <code>ConnectionSource</code>, <code>JdbcConnectionSource</code>, <code>DaoManager</code> ja <code>Dao</code>. ORMLiteä käyttäessä emme kirjoita erikseen ohjelmakoodia (suoraviivaisten) kyselyiden tulosten muuttamiseksi olioiksi.
+</p>
+
+<pre class="sh_java code-highlight"><code>ConnectionSource connectionSource
+        = new JdbcConnectionSource("jdbc:sqlite:vuokraamo.db");
+
+Dao&lt;Pyora, String&gt; pyoraDao
+        = DaoManager.createDao(connectionSource, Pyora.class);
+
+List&lt;Pyora&gt; pyorat = pyoraDao.queryForAll();
+for (Pyora pyora : pyorat) {
+    System.out.println(pyora.getMerkki() + " " + pyora.getRekisterinumero());
+}
+</code></pre>
+
+<p>
+  Käytännössä ORMLite lukee luokkaan määritellyt annotaatiot, ja tekee niiden perusteella käytettävät tietokantakyselyt, joita ohjelmoija käyttää ORMLiten toteuttaman Dao-rajapinnan kautta.
+</p>
+
+
+<h2 class="material-heading">
+    Viitteiden käsittely
+
+</h2>
+
+<p>
+  Lisätään seuraavaksi toiminnallisuus pyörien hakemiseen Varaus-luokan kautta.
+</p>
+
+<p>
+  Osoitteessa <a href="http://ormlite.com/javadoc/ormlite-core/doc-files/ormlite_2.html" target="_blank">http://ormlite.com/javadoc/ormlite-core/doc-files/ormlite_2.html</a> oleva ORMLiten "How to Use"-dokumentaatio sisältää neuvoja ORMLiten käyttöön.
+</p>
+
+<p>
+  Viitteiden hakemisessa tarvittavien annotaatioiden määrittely tapahtuu kuten Pyora-luokalle. Viittausta pyörään määriteltäessä annotaatiolle <code>@DatabaseField</code> tulee kertoa, että sarake viittaa toiseen tauluun, ja että viitatusta taulusta tulee hakea oliolle arvo.
+</p>
+
+<p>
+  Tämä tapahtuu lisäämällä annotaatioon parametrit <code>foreign = true</code> ja <code>foreignAutoRefresh = true</code>. Tämän lisäksi, myös viitattuun tauluun tulee lisätä annotaatiot.
+</p>
+
+<pre class="sh_java code-highlight"><code>@DatabaseTable(tableName = "Varaus")
+public class Varaus {
+
+    @DatabaseField(id = true)
+    private Integer varaustunnus;
+    @DatabaseField(columnName = "pyora", canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    private Pyora pyora;
+    private Varaaja varaaja;
+    @DatabaseField(columnName = "varaus_alkaa")
+    private Timestamp varausAlkaa;
+    @DatabaseField(columnName = "varaus_loppuu")
+    private Timestamp varausLoppuu;
+
+    public Varaus() {
+    }
+
+// konstruktorit, getterit, setterit
+}
+</code></pre>
+
+<p>
+  Ylläolevassa esimerkissä Varaus-luokka on määritelty siten, että se liittyy tietokantatauluun Varaus. Sillä on lisäksi kenttä pyora, joka viittaa tauluun, johon Pyora-luokka liittyy. Luokalle Varaaja ei ole määritelty toiminnallisuutta.
+</p>
+
+<p>
+  Varauksiin liittyvien pyörien tulostaminen onnistuu nyt seuraavasti:
+</p>
+
+<pre class="sh_java code-highlight"><code>ConnectionSource connectionSource
+        = new JdbcConnectionSource("jdbc:sqlite:vuokraamo.db");
+
+Dao&lt;Varaus, String&gt; varausDao
+        = DaoManager.createDao(connectionSource, Varaus.class);
+
+List&lt;Varaus&gt; varaukset = varausDao.queryForAll();
+for (Varaus varaus : varaukset) {
+    System.out.println(varaus.getPyora().getRekisterinumero() + ", alkaa " + varaus.getVarausAlkaa());
+}
+</code></pre>
+
+<div class="hint">
+  <div class="hint__header">
+    <i class="fa fa-info-circle hint__icon"></i>Java Persistence API ja Hibernate
+  </div>
+
+  <div class="hint__body">
+    
+  <p>
+    Vastaavanlaista toiminnallisuutta tarjoavia kirjastoja on huomattava määrä. Esimerkiksi Ruby on Railsille löytyy <a href="http://guides.rubyonrails.org/active_record_basics.html" target="_blank">ActiveRecord</a> ja NodeJS:lle löytyy <a href="http://docs.sequelizejs.com/" target="_blank">Sequelize</a>. Java-maailmassa vastaavia kirjastoja on niin monia, että niille on ehditty määrittelemään standardikin, mikä (saattaa) helpottaa kirjastojen käyttöä ja vaihtamista.
+  </p>
+
+  <p>
+    Javalle määritellyn standardin nimi on <a href="https://en.wikipedia.org/wiki/Java_Persistence_API" target="_blank">Java Persistence API</a>, ja se määrittelee notaation luokkien annotoinnille ja kyselyiden kirjoittamiselle.
+  </p>
+
+  <p>
+    Edellisissä esimerkeissä käyttämämme ORMLite-kirjasto tarjoaa vain pienen määrän toiminnallisuutta, mutta samalla oleelliset osat on toteutettu melko hyvin. Jos toiminnallisuutta kaipaa enemmän, voi käyttöön valita esimerkiksi <a href="http://hibernate.org/" target="_blank">Hibernaten</a>, joka on ehkäpä eniten käytetty vastaavaa toiminnallisuutta tarjoava Java-kirjasto.
+  </p>
+
+
+  </div>
+</div>
+
+
+<h1 class="material-heading">
+    Jotain muuta kuin relaatiomallia noudattavat tietokannat
+
+</h1>
+
+<p>
+  Relaatiomalli ja SQL ovat hyvin ilmaisuvoimainen kombinaatio ja relaatiotietokannoilla pystytään ainakin teoriassa hoitamaan lähes kaikki mahdolliset tiedonhallintatarpeet. Relaatiotietokannat dominoivatkin yhä tietokantaskeneä. 2000-luvulla alkoi kuitenkin nousta esiin uudentyyppisiä tietokantaratkaisuja, joita kuvaamaan lanseerattiin vuonna 2009 termi <em>NoSQL</em>.
+</p>
+
+
+<h2 class="material-heading">
+    Syitä uusien tietokantaratkaisujen syntyyn
+
+</h2>
+
+<p>
+  Motivaatiota NoSQL-tietokantojen syntyyn oli muutamia. Ehkä tärkeimpänä tekijänä olivat massiivisen skaalan internetpalveluiden, esim. Amazonin ja Googlen käsittelemät tietomäärät, jotka edellyttävät tiedon hajautettua tallentamista ja käsittelyä. Relaatiomallia oli mahdotonta saada skaalautumaan palveluiden tarpeeseen ja yhtiöt kehittivät omia, aivan uudenlaisia tietokantaratkaisuja. Yhteistä näille oli se, että ne <em>skaalautuivat</em> hyvin, eli niiden suorituskyky oli mahdollista pitää riittävällä tasolla liittämällä tietokantaan uusia "koneita" kuormituksen kasvaessa, ja myös se, että toiminnallisuudeltaan ratkaisut olivat paljon rajoittuneempia kuin relaatiotietokannat.
+</p>
+
+<p>
+  Useimmat uudet tietokantaratkaisut tarjoavat paljon suppeamman kyselykielen kuin SQL ja ne eivät tue ACID-ominaisuuksia takaavia transaktioita. Hyvin tavanomaista uusissa tietokannoissa on se, että ne eivät yritäkään tarjota samanlaista ajantasaisuutta kuin relaatiotietokannat, eli sen sijaan, että kaikki kannan käyttäjät näkisivät tietokannan tilan koko ajan samanlaisena (ACID:in C eli consistency), on käytössä <em>eventual consistency</em> -malli, jossa periaatteena on, että jokainen tietokantaan tehty muutos näkyy kaikille käyttäjille ennemmin tai myöhemmin, mutta ei välttämättä heti. Käytännössä jonkun aikaa tilanne voi olla se, että tietokannan eri käyttäjät näkevät tietokannan tilan hieman erilaisena. Jos ajatellaan monia internetpalveluita täydellinen konsistenssi ei ole kaikkien operaatioiden suhteen välttämätöntä. Ei esim. haittaa vaikka yksittäisen käyttäjän Facebook-päivitykset eivät ilmesty kaikille käyttäjille aivan samalla hetkellä.
+</p>
+
+<p>
+  Toisena vahvana motivaationa uusien tietokantamallien kehittymiselle oli tarve joustavammille tavoille tallettaa erimuotoista dataa. Relaatiomalli nojaa vahvasti siihen että kannan skeema, eli taulut ja taulujen sarakkeet on ennalta määritelty. Jos syntyy usein tarve tallettaa uudenlaista dataa, esim. tauluihin tulee viikoittain uusia sarakkeita, tai jopa uudenlaisia tauluja, on relaatiomalli kankeahko. Toisaalta myös tarve tallettaa jokainen "asia" omaan tauluunsa tekee relaatiomallista kankean ja kyselyllisestikin raskaan tiettyihin käyttötarkoituksiin. Lääkkeenä näihin ongelmiin on syntynyt tietokantaratkaisuja, joissa datan skeema on huomattavasti löyhemmin määritelty kuin relaatiomallissa. Monissa uusissa tietokantatyypeissä data on tietokannan kannalta jopa täysin skeematonta, eli "tauluihin" voi tallettaa vapaamuotoista dataa, ja vastuu tiedon muodon oikeellisuudesta on siirretty täysin tietokannan käyttäjäjälle.
+</p>
+
+
+<h2 class="material-heading">
+    Erityyppiset NoSQL-tietokannat
+
+</h2>
+
+<p>
+  Kaikki relaatiotietokannat ovat enemmän tai vähemmän samanlaisia ja tarjoavat standardoidun tavan eli SQL:n tietojen kyselyyn, ylläpitoon sekä tietokantaskeemojen muokkaukseen. NoSQL-tietokantojen kohdalla tilanne on täysin erilainen, ne ovat tiedon organisaatiotavoiltaan hyvinkin erilaisia ja mitään SQL:ää vastaavaa standardoitua kyselykieltä ei ole, kaikilla NoSQL-tietokannoilla on oma tapansa kyselyjen muodostamiseen.
+</p>
+
+<p>
+  NoSQL-tietokannat voidaan jakaa tiedon organisointitapansa perusteella neljään eri luokkaan:
+</p>
+
+<ul>
+  <li>avain-arvotietokantoihin (engl. key value databases),</li>
+  <li>dokumenttitietokantoihin (engl. document databases),</li>
+  <li>saraketietokantoihin (engl. columnar databases) ja</li>
+  <li>verkkotietokantoihin (engl. graph databases)</li>
+</ul>
+
+<p>
+  Tarkastellaan nyt erilaisia NoSQL-tietokantoja hieman tarkemmin.
+</p>
+
+
+<h3 class="material-heading">
+    Avain-arvotietokannat, esim. Redis
+
+</h3>
+
+<p>
+  Avain-arvotietokannat tarjoavat erittäin rajoitetun tietomallin. Kantaan talletetaan <em>arvoja</em> sekä arvon yksilöiviä <em>avaimia</em>. Tietokannan suhteen talletettavilla arvoilla ei ole (yleensä) mitään skeemaa eli rakennetta. Sovellusten on tulkittava kantaan talletettavat arvot haluamallaan tavalla esim. tietyn tyyppisenä oliona. Koska tietokanta on täysin skeematon, eivät avain-arvotietokannat tue viitteitä kantaan talletettujen arvojen välillä, eli mitään relaatiotietokantojen liitosta vastaavaa käsitettä ei avain-arvotietokannoilla ole.
+</p>
+
+<p>
+  Avain-arvotietokantojen tarjoamat kyselymahdollisuudet ovat erittäin rajoittuneet, yleensä on ainoastaan mahdollista hakea kannasta tiettyä avainta vastaava arvo.
+</p>
+
+<p>
+  Tarkastellaan nyt <a href="http://redis.io/">Redisiä</a> joka on eräs suosituimmista avain-arvotietokannoista.
+</p>
+
+<p>
+  Redisin perusoperaatiot ovat <code>set</code>, <code>get</code> ja <code>del</code> joiden avulla käsitellään merkkijonomuotoisena talletettavia arvoja.
+</p>
+
+<p>
+  Seuraavassa esimerkissä käynnistetään Redis-konsoli, asetetaan arvo avaimille <em>arto, aino</em> ja <em>olli</em>. Haetaan kannasta muutamaa avainta vastaavia tietoja ja tuhotaan avaimeen <em>arto</em> liittyvä arvo.
+</p>
+
+<pre class="sample-output">melkki$ redis-cli
+127.0.0.1:6379> set arto "olen arto 29 vuotta, yliopisto-opettaja"
+OK
+127.0.0.1:6379> set aino "olen aino 21 vuotta, pajaohjaaja"
+OK
+127.0.0.1:6379> set olli "olen olli 19 vuotta, fuksi"
+OK
+127.0.0.1:6379> get pekka
+(nil)
+127.0.0.1:6379> get arto
+"olen arto 29 vuotta, yliopisto-opettaja"
+127.0.0.1:6379> del arto
+127.0.0.1:6379> get arto
+(nil)
+127.0.0.1:6379> get aino
+"olen aino 21 vuotta, pajaohjaaja"
+127.0.0.1:6379>
+</pre>
+
+<p>
+  Redis on siis erittäin yksinkertainen ja toimii oikeastaan hyvin samaan tapaan kuin Javan <code>HashMap</code> sillä erotuksella, että Redisiin ei voi helposti tallentaa normaaleja oliota, ja että Redisiin tallennetut arvot säilyvät vaikka ohjelma uudelleenkäynnistettäisiin.
+</p>
+
+<p>
+  Redis tajoaa tuen myös arvoille jotka ovat lukuja, joukkoja tai hashejä eli itsessään avain-arvo-pareja.
+</p>
+
+<p>
+  Mitä järkeä avain-arvotietokannoissa on? Ne vaikuttavat ominaisuuksiltaan erittäin rajoittuneilta ja relaatiotietokannoilla pystyy tekemään varmasti kaikki ne asiat, joihin avain-arvotietokannat pystyvät. Rajoituksistaan johtuen avain-arvotietokannat ovat kuitenkin suorituskyvyltään ja skaalautuvuudeltaan huomattavasti parempia kuin relaatiotietokanta, ja niiden avulla pystytään kuitenkin ratkaisemaan monia sovellusten käyttötarpeita.
+</p>
+
+<p>
+  Viime aikoina on kuitenkin ollut nousussa trendi, jonka nimitys englanniksi on <a href="http://martinfowler.com/bliki/PolyglotPersistence.html">polyglot persistance</a>, joka tarkoittaa suurinpiirtein sitä, että sovelluksessa on useita erityyppisiä tietokantoja ja kuhunkin käyttötarkoitukseen käytetään tarkoituksenmukaisinta ratkaisua.
+</p>
+
+<p>
+  Eräs hyvin yleinen käyttötarkoitus avain-arvotietokannoille on raskaiden operaatioiden tulosten väliaikainen talletus (engl. caching) mahdollisia uusia saman operaatioiden suorituksia varten.
+</p>
+
+<p>
+  Tarkastellaan tästä estimerkkinä internetistä <a href="http://openweathermap.org/api">Open Weather API:sta</a> eri kaupunkien säätietoja hakevaa ohjelmaa. Ohjelma toiminta näyttää seuraavalta:
+</p>
+
+<pre class="sample-output">kaupunki: helsinki
+few clouds, temperature 15.770000000000039 celcius
+kaupunki: turku
+Sky is Clear, temperature 16.0 celcius
+kaupunki: vladivostok
+scattered clouds, temperature 11.360000000000014 celcius
+kaupunki:
+</pre>
+
+<p>
+  Jokaisen kaupungin kohdalla ohjelma hakee kaupungin säätiedot internetistä. Tiedon haku verkosta on kuitenkin hidas ja resurssien kulutuksen suhteen "kallis" operaatio (asialla voisi olla merkitystä jos ohjelmallamme olisi satoja tai tuhansia yhtäaikaisia käyttäjiä). Koska säätiedot pysyvät suunnilleen samana useiden minuuttien ajan, ohjelmaa voi optimoida siten, että kun käydään kerran hakemassa jonkun kaupungin säätiedot, talletetaan tieto joksikin aikaa Redisiin. Jos kaupungin säätä kysytään pian uudelleen, saadaan vastaus nopeasti ilman kallista internetoperaatiota. Noudatetaan siis näytettävien säätietojen suhteen eventual consistency -mallia.
+</p>
+
+<p>
+  Seuraavassa sääpalvelun toteuttavan luokan <stron>WeatherService</strong> toteutus, joka hyödyntää <a href="https://github.com/xetorthio/jedis">Jedis</a>-kirjastoa Redis-operaatioiden tekemiseen:
+</p>
+
+<pre class="sh_java code-highlight"><code>import redis.clients.jedis.Jedis;
+
+public class WeatherService {
+    private Jedis jedis;
+
+    public WeatherService() {
+        // luodaan yhteys paikallisen koneen Redisiin
+        jedis = new Jedis("localhost");
+    }
+
+    public void weatherOf(String city) throws Exception {
+        // kutsutaan metodia, joka hakee tiedot joko
+        // Redisistä tai internetistä
+        JsonElement weatherData = getDataFor(city);
+
+        // haetaan vastauksen sisältä oikeat osat
+        double temperature = getTemperatureFrom(weatherData);
+        String desc = getDescriptionFrom(weatherData);
+
+        System.out.println(desc + ", temperature "+temperature+ " celcius");
+    }
+
+    // metodi joka hakee tiedot joko Redisistä tai internetistä
+    private JsonElement getDataFor(String city) throws Exception {
+        // etsitään kaupungin city säätietoja Redisistä
+        String weatherInfo = jedis.get(city);
+
+        // jos ei löytyny
+        if (weatherInfo==null) {
+            // haetaan tiedot internetistä
+            weatherInfo = readFromUrl("http://api.openweathermap.org/data/2.5/weather?q="+city);
+
+            // ja talletetaan ne Redisiin
+            jedis.set(city, weatherInfo);
+            // määritellään tallennusajaksi 10 minuuttia eli 600 sekuntia
+            jedis.expire(city, 600);
+        }
+
+        // palautetaan tuote oikein muotoiltuna
+        return new JsonParser().parse(weatherInfo);
+    }
+
+    // apumetodeja...
+}
+</code></pre>
+
+<p>
+  Palvelua käytetään seuraavasti:
+</p>
+
+<pre class="sh_java code-highlight"><code>WeatherService weather = new WeatherService();
+weather.weatherFor("Helsinki");
+</code></pre>
+
+<p>
+  Kun haemme ensimmäistä kertaa esim. Helsingin tietoja, etsitään niitä (metodissa <code>getDataFor</code>) ensin rediksestä:
+</p>
+
+<pre class="sh_java code-highlight"><code>// nyt city = "Helsinki"
+String weatherInfo = jedis.get(city);
+</code></pre>
+
+<p>
+  tiedot eivät löydy, joten metodi palauttaa <code>null</code>. Tämän takia mennään if-haaraan, jossa tiedot haetaan apumetodin avulla internetistä. Haetut tiedot talletetaan ensin Redisiin:
+</p>
+
+<pre class="sh_java code-highlight"><code>// nyt city="Helsinki" ja weatherInfo Helsingin sään 'raakadata'
+jedis.set(city, weatherInfo);
+</code></pre>
+
+<p>
+  talletetulle datalle asetetaan myös elinaika sekunteina:
+</p>
+
+<pre class="sh_java code-highlight"><code>jedis.expire(city, 600);
+</code></pre>
+
+<p>
+  tämän jälkeet data palautetaan kutsujalle.
+</p>
+
+<p>
+  Jos Helsingin säätietoja haetaan 600 sekunnin sisällä uudelleen, löytyvät tiedot suoraan Redisistä. 600 sekunnin kuluttua hakuoperaatio <code>jedis.get('Helsinki')</code> palauttaa jälleen <code>null</code> ja tuore säätilanne haetaan internetistä.
+</p>
+
+<p>
+  Ohjelman koodi kokonaisuudessan löytyy
+  <a href="https://github.com/tietokantojen-perusteet/WeatherApp">GitHubista</a>
+</p>
+
+<p>
+  <a href="http://db-engines.com/en/ranking/key-value+store">Lista</a> suosituimmista avain-arvotietokannoista.
+</p>
+
+
+<h3 class="material-heading">
+    Dokumenttitietokannat, esim. MongoDB
+
+</h3>
+
+<p>
+  Dokumenttitietokantojen voi ajatella sijoittuvan jonnekin relaatiotietokantojen ja avain-arvotietokantojen puolen välin tienoille. Dokumenttikannat perustuvat avain-arvotietokantojen tapaan arvojen tallettamiseen avaimen perusteella. Arvot tai <em>dokumentit</em> kuten niitä dokumenttikantojen kontekstissa nimitetään voivat kuitenkin olla itsessään hyvin monimutkaisia oliota, jotka sisältävät kenttiä, joiden arvona voi olla joko normaaleja arvoja kuten lukuja ja merkkijonoja tai muita olioita. Toisin kuin avain-arvotietokannoissa, dokumenttikannat "näkevät" tietokantaan talletettujen dokumenttien sisään, ja mahdollistavat talletettujen dokumenttien sisällön suhteen tehdyt kyselyt.
+</p>
+
+<p>
+  Käytetään seuraavassa esimerkkinä ylivoimaisesti suosituimman dokumenttitietokannan <a href="https://www.mongodb.org/">MongoDB:n</a> merkintöjä.
+</p>
+
+<p>
+  Dokumenttikannoissa käytetään tiedon loogisena esitysmuotona yleensä <a href="https://fi.wikipedia.org/wiki/JSON">JSON</a>:ia. Seuraavassa kurssia </em>Ohjelmoinnin perusteet</em> esittävä JSON-dokumentti:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>{
+  "id": ObjectId("10"),
+  "nimi": "Ohjelmoinnin perusteet",
+  "laajuus": 5,
+  "luennot": [ "Arto Vihavainen", "Matti Luukkainen" ]
+}
+</code></pre>
+
+<p>
+  JSON-dokumentti koostuu avain-arvo-pareista. Avainta vastaava arvo merkitään kaksoispisteellä erotettuna avaimen yhteyteen.
+</p>
+
+<p>
+  Kurssi-dokumentissa on siis neljä avain-arvo-paria. Voidaankin ajatella että kurssilla on neljä kenttää. Näistä kentistä erikoisasemassa on MongoDB:n dokumentille automaattisesti generoima avainkenttä <code>id</code> jonka arvo on tyypiltään <code>ObjectId</code>. Poikkeavaa relaatiotietokantoihin nähden on se, että kentän arvona voi olla taulukko.
+</p>
+
+<p>
+  Seuraavassa on opiskelijaa kuvaava dokumentti:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>{
+  "id" : ObjectId("59"),
+  "nimi" : "Pekka Mikkola",
+  "opiskelijanumero" : 14112345,
+  "osoite" : {
+                "katu" : "Tehtaankatu 10 B 1",
+                "postinumero" : "00120",
+                "postitoimipaikka" : "Helsinki"
+             }
+}
+</code></pre>
+
+<p>
+  Nyt kentän osoite arvona on <em>olio</em>, jolla on itsellään omat kenttänsä.
+</p>
+
+<p>
+  Dokumenttitietokannassa dokumentit on lajiteltu <em>kokoelmiin</em> (engl. collection). Kokoelman merkitys on suunnilleen sama kuin taulun relaatiotietokannassa. Yhdessä kokoelmassa olevien dokumenttien ei kuitenkaa tarvitse olla kentiltään samanlaisia. Kenttiä voi olla vaihteleva määrä ja saman nimiset kentät voivat sisältää eri dokumenteilla eri tyyppisen arvon. Kokoelmille ei määritellä dokumenttikannoissa minkäänlaista skeemaa, eli on täysin sovellusten vastuulla, että kantaan talletetaan järkevää dataa, ja että kannasta luettava data tutkitaan oikein.
+</p>
+
+<p>
+  Kuten edellä opiskelijan kohdalla näimme, on dokumenttikannoissa mahdollista sisällyttää olioita toistensa sisään. Tilanne olisi myös voitu mallintaa "relaatiomallin tapaan" siten, että osoitteita varten olisi oma kokoelmansa, ja yksittäinen osoite mallinnettaisiin omana dokumenttina:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>{
+  "id" : ObjectId("123"),
+  "katu" : "Tehtaankatu 10 B 1",
+  "postinumero" : "00120",
+  "postitoimipaikka" : "Helsinki"
+}
+</code></pre>
+
+<p>
+  Opiskelijadokumentti sisältäisi nyt ainoastaan viitteen osoitedokumenttiin:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>{
+  "id" : ObjectId("59"),
+  "nimi" : "Pekka Mikkola",
+  "opiskelijanumero" : 14112345,
+  "osoite" : ObjectId("123")
+  }
+</code></pre>
+
+<p>
+  Toisin kuin relaatiotietokantojen tapauksessa, dokumenttikannat <em>eivät tarjoa</em> tietokannan tasolla tapahtuvia <em>liitosoperaatiota</em>, ja edellisen esimerkin tapauksessa sovelluksen olisi itse huolehdittava siitä, että opiskelijaa haettaessa haetaan myös opiskelijan osoite tietokannasta.
+</p>
+
+<p>
+  Vaikka operaatio ei olekaan dokumenttikannan tasolla tuettu, on olemassa monia kirjastoja (esim. Javalle <a href="https://mongodb.github.io/morphia/">Morphia</a>), jotka toteuttavat ohjelmallisen liitosoperaation siten, että sovellusohjelman ei tarvitse siitä huolehtia.
+</p>
+
+<p>
+  Relaatiotietokannoissa kannan skeeman muodostaminen on sikäli helppoa, että normalisoituun ratkaisuun pyrittäessä useimmissa tilanteissa on olemassa noin yksi "järkevä" ratkaisu, joka toimii lähes yhtä hyvin riippumatta siitä miten kantaa käytetään.
+</p>
+
+<p>
+  Dokumenttikantojen suhteen tilanne on toinen. Tarkastellaan esimerkiksi Kursseja ja Opiskelijoiden kurssisuorituksia. Relaatiotietokannassa tilanne olisi suoraviivainen, <em>Suoritus</em> olisi <em>Kurssin</em> ja <em>Opiskelijan</em> liitostaulu.
+</p>
+
+<p>
+  Eräs mahdollisuus olisi tehdä täsmälleen sama ratkaisu dokumenttikannassa.
+</p>
+
+<p>
+  Kokoelma Opiskelija:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": ObjectId("10"),
+    "nimi" : "Lea Kutvonen",
+    "opiskelijanumero" : 13457678
+  },
+  {
+    "id": ObjectId("11"),
+    "nimi" : "Pekka Mikkola",
+    "opiskelijanumero" : 14012345
+  }
+]
+</code></pre>
+
+<p>
+  Kokoelma kurssi:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": ObjectId("34"),
+    "nimi" : "Ohjelmoinnin perusteet",
+    "laajuus" : 5
+  },
+  {
+    "id": ObjectId("35"),
+    "nimi" : "Tietokone työvälineenä",
+    "laajuus" : 1
+  }
+]
+</code></pre>
+
+<p>
+  Suoritus olisi nyt "liitostaulumainen" kokoelma:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": 55
+    "kurssi_id" : ObjectId("34"),
+    "opiskelija_id" : ObjectId("10"),
+    "arvosana" : 4
+  },
+  {
+    "id": 56
+    "kurssi_id" : ObjectId("35"),
+    "opiskelija_id" : ObjectId("10"),
+    "arvosana" : 5
+  },
+  {
+    "id": 57
+    "kurssi_id" : ObjectId("35"),
+    "opiskelija_id" : ObjectId("11"),
+    "arvosana" : 2
+  }
+]
+</code></pre>
+
+<p>
+  Vaihtoehtoja on kuitenkin myös muita. Käyttötapauksista riippuen saattaisi olla edullista tallettaa tieto suorituksista ("liitosdokumentin" id) myös kurssin ja opiskelijan yhteyteen:
+</p>
+
+<p>
+  Kokoelma Opiskelija:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": ObjectId("10")
+    "nimi" : "Lea Kutvonen",
+    "opiskelijanumero" : 13457678,
+    "suoritukset" : [ ObjectId("55"), ObjectId("56") ]
+  },
+  {
+    "id": ObjectId("11")
+    "nimi" : "Pekka Mikkola",
+    "opiskelijanumero" : 14012345,
+    "suoritukset" : [ ObjectId("57") ]
+  }
+]
+</code></pre>
+
+<p>
+  Kokoelma kurssi:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": ObjectId("34")
+    "nimi" : "Ohjelmoinnin perusteet",
+    "laajuus" : 5,
+    "suorittajat" : [ObjectId("10")]
+  },
+  {
+    "id": ObjectId("35")
+    "nimi" : "Tietokone työvälineenä",
+    "laajuus" : 1,
+    "suorittajat" : [ObjectId("10"), ObjectId("11")]
+  }
+]
+</code></pre>
+
+<p>
+  Jossain tapauksessa paras ratkaisu olisi luopua liitoksena toimivista dokumenteista eli kokoelmasta suoritukset ja tallettaa suoritukset kokonaisuudessaan opiskelija-dokumentteihin:
+</p>
+
+<pre class="sh_javascript code-highlight"><code>[
+  {
+    "id": ObjectId("10")
+    "nimi" : "Lea Kutvonen",
+    "opiskelijanumero" : 13457678,
+    "suoritukset" : [
+      {
+        "id": 55
+        "kurssi_id" : ObjectId("34"),
+        "arvosana" : 4
+      },
+      {
+        "id": 56
+        "kurssi_id" : ObjectId("35"),
+        "arvosana" : 5
+      }
+    ]
+  },
+  {
+    "id": ObjectId("11")
+    "nimi" : "Pekka Mikkola",
+    "opiskelijanumero" : 14012345,
+    "suoritukset" : [
+      {
+        "id": 57
+        "kurssi_id" : ObjectId("35"),
+        "arvosana" : 2
+      }
+    ]
+  }
+]
+</code></pre>
+
+<p>
+  Tämä ratkaisu vaikeuttaisi kurssin suorittajien selvittämistä, joten joissain käyttötapauksissa saattaisi olla edullista sisällyttää suoritukset <em>molempiin</em> opiskelijoihin ja kurssiin.
+</p>
+
+<p>
+  Yhtä "oikeaa" vastausta miten sovelluksen data kannattaa mallintaa dokumenttikannan kokoelmiksi ja dokumenteiksi ei ole olemassa. Parhaaseen tapaan vaikuttaa suuresti se minkälainen käyttöprofiili rakennettavalla sovelluksella on: datamalli kannattaa valita siten, että se tekee yleisimpien operaatioiden suorituksen nopeaksi ja helpoksi.
+</p>
+
+<p>
+  Kuten jo totesimme, dokumenttikannat eivät tue liitosoperaatioita, ja kyselyt kohdistuvat aina vain yhteen kokoelmaan. Dokumenttikannoilla ei ole mitään standardoitua kyselykieltä, jokaisen kannan kyselykieli on täysin omanlaisensa. Esim. MongoDB:n kyselykieli ei muistuta kovinkaan läheisesti SQLää.
+</p>
+
+<p>
+  Dokumenttikannat eivät myöskään tue useamman kokoelman yhtäaikaista muuttamista transaktionaalisesti. Kaikki yhteen kokoelmaan suoritettavat tapahtumat tehdään kuitenkin aina transaktionaalisesti.
+</p>
+
+<p>
+  Lisää MongoDB:stä ja sen käytöstä eri ohjelmointikielistä käsin löydät esim. osoitteesta <a href="https://docs.mongodb.org/manual/">https://docs.mongodb.org/manual/</a>
+</p>
+<p>
+  <a href="http://db-engines.com/en/ranking/document+store">Lista suosituimmista</a> dokumenttitietokannoista.
+</p>
+
+
+<h3 class="material-heading">
+    Saraketietokannat
+
+</h3>
+
+<p>
+  Relaatiomalli sopii suhteellisen hyvin tilanteisiin, joissa tietoa käsitellään lyhyin, pääasiassa taulun yksittäisiin riveihin kohdistuvin operaatioin (englanniksi tälläisestä tiedonkäsittelystä käytetään nimitystä <em>online transaction processing, OLTP</em>). Näin tapahtuu esimerkiksi pankin asiakastietokannassa kun asiakkaat tekevät saldokyselyjä, nostavat rahaa tai tekevät tilisiirtoja.
+</p>
+
+<p>
+  Tietokantojen käyttö on aivan erilaista silloin kun tavoitteena on luoda raportteja tai analysoida dataa eri tavoin, esim. selvittää pankin asiakkaiden keskimääräinen saldo tietyllä aikavälillä. Tällöin kyselyt kohdistuvat lähes koko tauluun, mutta usein vain pieneen osaan taulun sarakkeissa (englanniksi tälläisestä tiedonkäsittelystä käytetään nimitystä <em>online analytical processing, OLAP</em>).
+</p>
+
+<p>
+  Analyysitietokannoissa tilanne on usein se, että tieto ei ole normalisoidussa muodossa, yksittäiset taulut saattavat sisältää satojakin sarakkeita, mutta toisaalta läheskään kaikilla sarakkeilla ei ole kannassa arvoja. Näissä tilanteissa relaatiotietokantojen suorituskyky saattaa olla huono, ja <em>saraketietokannat</em> (engl. columnar databases) voivat tarjota huomattavasti paremman vaihtoehdon.
+</p>
+
+<p>
+  Tarkastellaan tilannetta esimerkin kautta. Oletetaan, että analyysiin käytettyyn tietokantaan on talletettu firman työntekijöitä:
+</p>
+
+<pre>
+EmpId Lastname  Firstname Sex Salary  YearsEmployed
+10    Smith     Joe       M   40000   1
+12    Jones     Mary      F   50000   6
+11    Johnson   Cathy     F   44000   3
+22    Jones     Bob       M   55000   9
+</pre>
+
+<p>
+  Relaatiotietokannat tallettavat tiedon levylle <em>riveittäin</em>, eli taulu tallentuisi levylle seuraavasti:
+</p>
+
+<pre>
+10;Smith;Joe;M;40000;1;12;Jones;Mary;F;50000;6;11;Johnson;Cathy;F;44000;3;...
+</pre>
+
+<p>Jos nyt haluttaisiin selvittää yrityksessä vähintään 5 vuotta työskennelleiden keskipalkka, tehtäisiin kysely
+</p>
+
+<pre class="sh_sql code-highlight"><code>SELECT AVG(Salary)
+  FROM Employees
+  WHERE YearsEmployed &gt; 4
+</code></pre>
+
+<p>
+  Tässä olisi relaatiotietokannan tapauksessa luettava taulun <em>koko data</em> levyltä siitä huolimatta, että kysely ei tarvitse kuin pientä osaa taulun datasta. Jos taulussa olisi satoja sarakkeita (mikä on varsin tyypillistä analytiikkatietokannoissa), olisi kyselyn tekeminen erittäin hidasta johtuen juuri tarpeettoman raskaasta, kaiken datan hakevasta levyoperaatiosta.
+</p>
+
+<p>
+  Saraketietokannoissa tiedot talletetaan sarakkeittain, karkeasti ottaen jokainen sarake tai usein yhdessä käytettyjen sarakkeiden ryhmä omaan tiedostoonsa. Edellinen tietokanta siis talletettaisiin kutakuinkin seuraavasti
+</p>
+
+<pre>
+EmpId: 10;12;11;22
+
+Lastname:Smith;Jones;Johnson;Jones
+
+Firstname:Joe;Mary;Cathy;Bob
+
+Sex:M;F;F;M
+
+Salary:40000;50000;44000;55000
+
+YearsEmployed:1;6;3;9
+</pre>
+
+<p>
+  Tehtäessä sama kysely, riittäisi että levyltä luettaisiin ainoastaan kyselyn kannalta tarpeellisten sarakkeiden <em>Salary</em> ja <em>YearsEmployed</em> tieto. Jos sarakkeita olisi suuri määrä, ero riveittäin talletettuun tietokantaan olisi suorituskyvyn suhteen huomattava.
+</p>
+
+<p>
+  Vanhemmman sukupolven saraketietokannoissa data on organisoitu relaatiotietokantojen tapaan tauluihin ja dataa hallitaan SQL:llä. Vanhemman polven saraketietokantoja ei välttämättä edes luokitella NoSQL-kannoiksi. Uudemman polven saraketietokannat taas noudattavat enemmän yhden tai muutaman ison tai "leveän" taulun skeematonta mallia. Tauluissa on sarakkeita erittäin suuri määrä, mutta läheskään kaikilla sarakkeilla ei ole arvoa. Näiden esikuvana on Googlen vuodesta 2004 asti kehittämä <a href="https://en.wikipedia.org/wiki/BigTable">BigTable</a>. Uuden polven ratkaisut mahdollistavat massiivisten datamäärien rinnakkaiskäsittelyn.
+</p>
+
+<p>
+  <a href="http://db-engines.com/en/ranking/wide+column+store">Suosituimmat</a> uuden sukupolven saraketietokannat.
+</p>
+
+
+<h3 class="material-heading">
+    Verkkotietokannat
+
+</h3>
+
+<p>
+  Relaatiotietokannat ja esittelemämme NoSQL-kantatyypit keskittyvät <em>dataentiteettien</em> esittämiseen. Relaatiotietokannat esittävät entiteetit taulujen riveinä, esim. Henkilö-taulussa jokainen ihminen esitettään omana rivinään. Yhteydet ja suhteet eri entiteettien välillä esitetään epäsuorasti vierasavaimien ja liitostaulujen avulla. Itse yhteys, esim. <em>missä henkilö Arto on töissä</em> saadaan selville vasta kyselyn aikana tapahtuvan liitosoperaation avulla.
+</p>
+
+<p>
+  Joissain tilanteissa entiteettien suhteiden selvittäminen relaatiotietokannassa saattaa olla erittäin hankalaa. Oletetaan, että meillä on Henkilöitä kuvaava taulu:
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Henkilo (
+  id integer not null PRIMARY KEY,
+  nimi string not null
+)
+</code></pre>
+
+<p>
+  sekä taulu, joka liittää vanhemmat ja lapset toisiinsa:
+</p>
+
+<pre class="sh_sql code-highlight"><code>CREATE TABLE Vanhemmuus (
+  id integer not null PRIMARY KEY,
+  lapsi_id integer,
+  vanhempi_id integer,
+  FOREIGN KEY (lapsi_id) references Henkilo(id),
+  FOREIGN KEY (vanhempi_id) references Henkilo(id)
+)
+</code></pre>
+
+<p>
+  Jos nyt haluaisimme selvittää henkilön "Arto" kaikki sukulaiset, huomaamme, että kyselyn tekeminen SQL:llä olisi erittäin hankalaa.
+</p>
+
+<p>
+  Tilanne mutkistuisi entisestään jos haluaisimme kuvata myös muunlaisia suhteita, esim. henkilöiden työsuhteita firmoihin, jäsenyyksiä yhdistyksiin, ystävyyttä, omistussuhteita erilaisiin asioihin sekä asioista tykkäämisiä ja vihaamisia. Yksi vaikeuttava tekijä olisi se, että kaikki erilaiset suhteet pitäisi mallintaa omina liitostauluinaan. Jos ohjelmassa käytettävät suhdetyypit lisääntyisivät, tulisi tietokantaskeemaan lisätä koko ajan uusia erityyppisiä liitostauluja. Myös kyselyt muuttuisivat koko ajan hankallimmaksi ja vaatisivat yhä monimutkaisempia, raskaita liitosoperaatioita. Esim. seuraavien asioiden selvittäminen olisi SQL:llä melko työlästä:
+</p>
+
+<ul>
+  <li>Arton kaikkien esivanhempien työpaikat</li>
+  <li>Kirjat joista Arton esivanhemmat pitivät</li>
+  <li>Arton ystävistä ja ystävien ystävistä, ja näiden ystävistä jne kaikki ne, jotka ovat opiskelleet samassa paikassa kun Arto</li>
+</ul>
+
+<p>
+  Ratkaisun tämänkaltaisiin tilanteisiin tuovat <em>verkkotietokannat</em>, jotka mallintavat eksplisiittisesti sekä entiteetit eli esim. henkilöt ja niiden ominaisuudet että entiteettien väliset suhteet kuten sukulaisuuden henkilöiden välillä. Kuten nimestä voi päätellä, on verkkotietokannan pohjalla olevana tietorakenteena verkko (engl. <em>graph</em>), joka koostuu entiteettejä kuvaavista <em>solmuista</em> (engl. <em>node</em>) ja niiden välisiä suhteita kuvaavista <em>kaarista</em> (engl. <em>edge</em>). Sekä solmuilla, että kaarilla voi olla attribuutteja. Verkko, joka kuvaa yllä olevan esimerkin mallintamista verkkotietokannan solmuiksi ja kaariksi:
+</p>
+
+<figure>
+  <img src="../img/viikko7/verkkokanta-54ebef10.png" alt="Verkkotietokanta">
+</figure>
+
+<p>
+  Verkkotietokannat tarjoavat kyselykielen, jonka avulla on helppo "navigoida" verkossa. Toisin kuin relaatiotietokannoissa, jotka edellyttävät yhteyden muodostamiseen laskennallisesti kallista join-operaatiota, yhteyksien navigointi verkkotietokannassa on nopeaa. Verkkotietokannoille ei ole olemassa yhtä vakiintunutta kyselykieltä. On kuitenkin tiettyjä kyselykieliä, kuten tämän hetken suosituimman verkkotietokannan <a href="http://neo4j.com">Neo4J:n</a> käyttämä
+  <a href="http://neo4j.com/developer/cypher-query-language/">Cypher</a>, joita jotkut muutkin verkkotietokannat tukevat.
+</p>
+
+<p>
+  Seuraavassa muutama esimerkki ylläolevaan verkkotietokantaan kohdistetuista Cypherillä tehdyistä kyselyistä. Haetaan ensin Arton vanhemmat
+</p>
+
+<pre>
+MATCH ({ name:"Arto" }) -[:CHILD_OF]-> (parent)
+RETURN parent
+</pre>
+
+<p>
+  MATCH-määre hakee ensin solmun, jonka nimenä on <em>Arto</em> ja sen jälkeen seurataan kaarta <em>:CHILD_OF</em> pitkin solmun vanhempiin, jotka kysely palauttaa. Kysely siis palauttaa ne solmut <em>parent</em> joille pätee ehto: solmuun johtaa kaari </em>CHILD_OF</em> sellaisesta solmusta johon liittyy attribuutti <em>nimi</em>, jonka arvo on <em>Arto</em>.
+</p>
+
+<p>
+  Kirjat joista Arton esivanhemmat pitävät:
+</p>
+
+<pre>
+MATCH ({ name:"Arto" }) -[:CHILD_OF*1..]-> (relative) -[:LIKES]-> (book:Book)
+RETURN book
+</pre>
+
+<p>
+  Nyt kysely palauttaa sellaiset solmut <em>book</em> joille pätee:
+</p>
+
+<ul>
+  <li> solmun tyyppi on Book</li>
+  <li>
+    solmuun on <em>:LIKES-tyyppinen</em> kaari jostain solmusta johon päästään Artosta yhtä tai useampaa <em>:CHILD_OF</em> kaarta pitkin kulkemalla
+  </li>  
+</ul>
+
+<p>
+  Arton ystävistä ja ystävien ystävistä, ja näiden ystävistä jne kaikki ne, jotka ovat opiskelleet samassa paikassa kun Arto:
+</p>
+
+<pre>
+MATCH (arto: { name:"Arto" }) -[:FRIENDS_WITH*1..]-> (friend) -[:STUDIED_IN]-> (school)
+WHERE arto -[:STUDIED_IN]-> (school)
+RETURN friend
+</pre>
+
+<p>
+  Vielä yksi esimerkki. Miten löytäisimme lyhimmän ystävien ketjun,</em> joka yhdistää Arton ja Barack Obaman?
+</p>
+
+<pre>
+MATCH (arto: { name:"Arto" }) (barack:{ name:"Barack Obama" })
+p = shortestPath( (arto) -[:FRIEND*1..]-> (barack) )
+
+RETURN p
+</pre>
+
+<p>
+  Eli ensin etsitään solmut joiden nimenä on Arto ja Barack, ja sen jälkeen Neo4J:n valmis funktio <em>shortestPath</em> etsii lyhimmän polun solmujen välillä. Tämä kysely olisi todennäköisesti mahdoton tehdä SQL:llä tai ainakin äärimmäisen vaikea muotoilla ja todella hidas suorittaa. Verkkotietokannat sopivatkin erittäin hyvin muutamiin sellasiiin käyttöskenaarioihin, joissa muut tietokantatyypit ovat lähes käyttökelvottomia. Verkkotietokantojen käyttö onkin yleistynyt esim. sosiaalisen median sovelluksissa ja suosittelujärjestelmissä.
+</p>
+
+<p>
+  <a href="http://db-engines.com/en/ranking/graph+dbms">Suosituimmat</a> verkkotietokannat.
+</p>
+
+
+<h2 class="material-heading">
+    NOSQL ja NewSQL
+
+</h2>
+
+<p>
+  NoSQL-tietokannat löivät läpi suuren kohun saattamina ja erityisesti startupeissa oli muodikasta ottaa käyttöön helpommin suurille käyttäjämäärille skaalautuvia NoSQL-kantoja kuten MongoDB. Pikkuhiljaa kohu on laantunut, ja enenevissä määrin ollaan menossa jo aiemmin mainittuun <a href="http://martinfowler.com/bliki/PolyglotPersistence.html">polyglot persistancen</a> nimellä kulkevaan suuntaan, eli valitaan oikea työkalu kuhunkin käyttötarkoitukseen, ja erittäin tyypillistä onkin että jo hieman suuremmissa sovelluksissa on käytössä dokumentti-, avain-arvo- ja relaatiotietokanta.
+</p>
+
+<p>
+  Uusimpana kehityssuuntana on ollut myös se, että vanhat relaatiotietokannat ovat ottaneet vaikutteita muista tietokantatyypeistä. Esim. tämän hetken suosituin Open Source -relaatiotietokanta PostgeSQL sisältää paljon <a href="http://www.postgresql.org/docs/9.4/static/datatype-json.html">dokumenttitietokantoja vastaavaa toiminnallisuutta</a>. Kehitystä on tapahtunut myös toiseen suuntaan, jotkut dokumenttitietokannat ovat mahdollistaneet <a href="https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/">SQL:n käytön kyselykielenä.</a>
+</p>
+
+<p>
+  Kahtiajaon hieman liudennuttua termin NoSQL sijaan onkin alettu puhua <em>Not Only SQL</em> -tietokannoista, ja termi on muokkautunut muotoon <em>NOSQL</em>. Päätään nostaa esille myös vielä melko epämääräisesti määritelty termi <em><a href="http://www.dbta.com/Columns/DBA-Corner/What-Is-a-NewSQL-Database-System-104489.aspx">NewSQL</a></em>. Wikipedian mukaan NewSQL:llä tarkoittaa seuraavaa:
+</p>
+
+<blockquote>
+
+  <p>
+    NewSQL is a class of modern relational database management systems that seek to provide the same scalable performance of NoSQL systems for online transaction processing (OLTP) read-write workloads while still maintaining the ACID guarantees of a traditional database system.
+  </p>
+
+  <p>
+    Although NewSQL systems vary greatly in their internal architectures, the two distinguishing features common amongst them is that they all support the relational data model and use SQL as their primary interface.
+  </p>
+  
+</blockquote>
+
+<p>
+  Eräs melko paljon huomiota saanut NewSQL-tietokanta on vuonna 2015 Applen ostama FoundationDB, joka sisäiseltä organisoinniltaan on avain-arvotietokanta ja tarjoaa perinteistä relaatiotietokantaa skaalautuvamman ratkaisun, mutta tarjoaa kyselykieleksi (myös) SQL:n ja ACID-ominaisuudet takaavat transaktiot eli käyttäytyy sovellusohjelmien kannalta kuten normaali relaatiotietokanta.
+</p>
+
+
+
+
+<div class="exercise">
+  <div class="exercise__header">
+    <a data-toggle="collapse" class="exercise__toggle">
+      <i class="fa fa-pencil exercise__icon"></i>
+      <h1 class="exercise__heading">Minifoorumi</h1>
+
+      <i class="fa fa-caret-down exercise__arrow"></i>
+    </a>
+  </div>
+
+  <div class="collapse">
+    <div class="exercise__body">
+      
+  <p>
+    Viimeinen tehtävä käsittelee koko kurssin aihepiiriä ja on laajempi, kertaava tehtävä.
+  </p>
+
+  <p>
+    Tehtävässä tulee luoda pieni foorumi, missä on viestiketjuja. Jokaisella viestiketjulla on aloitusviesti sekä aloitusviestin jälkeen lähetetyt viestit. Kun käyttäjä menee foorumille, näkee hän listauksessa viestiketjujen aloitusviestit sekä viestiketjun koon.
+  </p>
+
+  <pre>  
+  <strong>Viestiketju</strong>                      <strong>Viestejä</strong>
+  Java on jees!                    8	
+  Python on jeesimpi!              6	
+  LISP on parempi kuin...          2		
+  Ohjelmointikielet on turhia..    1	
+  ...
+
+  Lisää viestiketju:
+
+  [käyttäjä voisi aloittaa uuden viestiketjun] 
+  </pre>
+
+  <p>
+    Viestiketjut on järjestetty viimeiseksi aktiivisena olleen viestiketjun mukaan. Listauksessa ylimpänä on siis aina se viestiketju, minkä viimeisin viesti on tuorein. Sivulla tulee näyttää korkeintaan 100 uusinta viestiketjua.
+  </p>
+
+  <p>
+    Yksittäiseen viestiketjuun taas käsiksi valitsemalla viestiketjun listalta. Esimerkiksi ylläolevalta listalta voisi valita keskustelun "Java on jees!", jolloin viestiketjun sisältämät viestit näytetään uudella sivulla:
+  </p>
+
+  <pre>
+  <strong>Viestiketju: Java on jees</strong>
+
+  Mun mielestä Java on just hyvä kieli. t. Arto
+  No eipäs, Ruby on parempi. t. Matti
+  Ada on selkeästi parempi kuin kumpikin noista. t. Ada
+  ...
+
+  Lisää viesti: 
+
+  [käyttäjä voisi kirjoittaa viestin..]
+  </pre>
+
+  <p>
+    Tehtävän tekeminen kannattaa aloittaa yksittäisen viestiketjun toteuttamisesta, eli siitä, että käyttäjä voi lisätä järjestelmään viestejä. Tämän jälkeen viestit voi kytkeä johonkin viestiketjuun, jonka jälkeen viestiketjuille lluodaan listaus sovelluksen "etusivulle". Tämän jälkeen kannattaa hahmotella viestien lukumäärän laskemista etusivua varten sekä viestien järjestämistä.
+  </p>
+
+  <p>
+    Huom! Käytä tehtävässä tietokannanhallintajärjestelmänä SQLiteä ja toteuta sovelluksen tarvitsema tietokanta projektin kansion "db" sisältämään "forum.db"-tiedostoon.
+  </p>
+  
+
+    </div>
+  </div>
+</div>
+
+
+
+<h1 class="material-heading">
+    Koeasiaa
+
+</h1>
+
+
+<p>
+  Kurssikokeen aikataulu löytyy <a href="../">kurssin etusivulta</a>.
+</p>
+
+<p>
+  <strong>Kokeeseen saa ottaa mukaan "lunttilapun"</strong>. Lunttilappu on kaksipuolinen, A4-kokoinen, itse käsin täytetty paperi. 
+</p>
+
+<p>
+  Aiemmissa tietokantojen perusteiden kurssikokeissa ovat esiintyneet ainakin kurssilla esiintyneiden käsitteiden (ml. harjoitukset) selitystehtävät, erilaiset käsiteanalyysi- ja tietokantataulujen suunnitteluun liittyvät tehtävät, sekä sql-tehtävät. Myös tietokannan ohjelmalliseen käyttöön liittyviä kysymyksiä on esiintynyt, mutta kokeessa ei tarvitse osata esim. Javan tai HTML:n syntaksia, eikä kokeessa myöskään tentata esimerkiksi Dao-suunnittelumallin yksityiskohdista (yleisiä kysymyksiä näistä saattaa toki olla).
+</p>
+
+<p>
+  Alla on eräs vanha kurssikoe, jota voi käyttää osana tenttiin kertausta. Alla oleva kurssikoe ei luonnollisesti sisällä kaikkea kokeessa kysyttävää.. 
+</p>
+
+<h2 class="material-heading">
+    Vanha koe
+
+</h2>
+
+
+
+<h3 class="material-heading">
+    Tehtävä 1
+
+</h3>
+
+<p>
+  Kaverisi aikoo osallistua tietokantojen perusteet-kurssin seuraavaan kokeeseen. Hänellä on kuitenkin vielä vaikeuksia muutamaan kurssiin liittyvän termin kanssa. Kerro kaverillesi mitä kukin alla oleva termi tarkoittaa.
+</p>
+
+<ul>
+  <li>xml</li>
+  <li>normalisointi</li>
+  <li>tietokannanhallintajärjestelmä</li>
+  <li>tietokanta</li>
+  <li>tietokantataulun avain</li>
+  <li>viiteavain</li>
+</ul>
+
+
+<h3 class="material-heading">
+    Tehtävä 2
+
+</h3>
+
+<p>
+  Puhelinmyyntiyrityksen "Luuri ja Pojat" toimitusjohtaja Matti Luuri kertoo seuraavaa:
+</p>
+
+<p>
+  Puhelinmyyntiyhtiö "Luuri ja Pojat" tarjoaa päivälehdille palvelua, jossa yhtiön puhelinmyyjät myyvät lehtiä kotitalouksiin. Palvelun hinnoittelu päivälehdille on joko provisioperustaista tai resurssiperustaista. Provisioperustaisessa hinnoittelussa päivälehti maksaa jokaisesta tilauksesta ennalta määritellyn summan, kun taas resurssiperustaisessa hinnoittelussa taas maksetaan soitteluun käytetystä työajasta. Palvelut myydään päivälehdille kampanjoina, joissa myyntiä varten sovitaan aina kattosumma.
+</p>
+
+<p>
+  Suurin osa "Luuri ja Pojat"-yrityksen työntekijöistä on osa-aikaisia työntekijöitä vaihtelevalla taustalla. Palkkaus on lähes poikkeuksetta provisioperustaista. Työntekijöiden vaihtuvuus on hyvin suurta, joten hyvistä "myyvät vaikka jääkaappeja eskimoille" ja ei niin hyvistä "käytä resurssiperustaiseen myyntiin" työntekijöistä on hyvin vaikeaa pitää kirjaa.
+</p>
+
+<p>
+  Asiakaskunta eli kohdeyleisö, jonne "Luuri ja Pojat"-yrityksen työntekijät soittelevat, haalitaan Fonectan ja Eniron puhelinluetteloista. Tulikokeena uusille työntekijöille on kahden puhelinluetteloaukeaman läpisoittaminen, asiakaspalautteen kuuntelu ja toiminta siten, että ei-ostaviin asiakkaisiin käytetään mahdollisimman vähän aikaa. Jokaisen uuden työntekijän tulisi pystyä solmimaan vähintään muutama tilaus ensimmäisenä päivänä.
+</p>
+
+<p>
+  "Luuri ja Pojat"-yritys tarvitsee järjestelmän, joka mahdollistaa paremman kirjanpidon työntekijöiden tekemistä myynneistä. Jokaisesta myyntitapahtumasta tulee tulla selville ostava asiakas ja kampanja johon myynti liittyi. Järjestelmän tulee mahdollistaa myöhemmin erilaiset yhteenvetokyselyt, esimerkiksi "mitkä ovat suosituimpia päivälehtiä?", "Mitkä työntekijät saavat vähiten myyntitapahtumia aikaan?", "Mihin aikaan mitkäkin lehdet myyvät parhaiten?", "Mihin kaupunkeihin myydään minkälaisia lehtiä", ja "Millä kampanjoilla on vielä rahaa jäljellä?".
+</p>
+
+<p>
+  Tee ylläolevasta kuvauksesta tietosisältöanalyysi, eli etsi järjestelmään liittyvät käsitteet. Luo käsitteiden pohjalta UML-luokkakaavio. Yhteyksien ja osallistumisrajoitteiden merkintä on oleellista, attribuuteista tarvitsee merkitä vain tärkeimmät.
+</p>
+
+<h3 class="material-heading">
+    Tehtävä 3
+
+</h3>
+
+<p>
+  Ohjelmistojen mallintamiseen ja suunnitteluun erikoistunut yritys "Softa ja Mallit" on luonut eräälle kiinteistöjen hallintaan erikoistuneelle yritykselle seuraavanlaisen UML-luokkakaavion. Koska yrityksen "Softa ja Mallit" erikoisosaaminen on mallinnuspuolella, sinun tehtävänäsi on suunnitella järjestelmää tukeva tietokanta. Muuta alla oleva luokkakaavio tietokantakaavioksi. Voit käyttää joko harjoituksissa tutuksi tullutta kaaviotyyppiä tai tehtävän 4 merkintätapaa. Merkitse kaikki attribuutit, avaimet ja viiteavaimet.
+</p>
+
+
+<figure>
+  <img src="../img/kiinteistot-kaavio-89a503f9.png" alt="[Talo|osoite,postinumero,postitoimipaikka]
+[Huoneisto|numero]
+[Vikailmoitus|aika,vikakuvaus,ilmoittaja]
+[Huoltotapahtuma|aika,toimenpidekuvaus]
+[Huoltomies|nimi]
+[Talo]1-sisältaa-1..*[Huoneisto]
+[Huoneisto]1-*[Vikailmoitus]
+[Huoltotapahtuma]*-1[Huoneisto]
+[Huoltotapahtuma]*-1..*[Vikailmoitus]
+[Huoltomies]1-*[Huoltotapahtuma]"/>
+</figure>
+
+
+
+<h3 class="material-heading">
+    Tehtävä 4
+
+</h3>
+
+<p>
+  Juhlien organisointiin erikoistunut saksalainen yritys "Schöne Feste und Feuerkumpeln mit ganz gut Platzorganizierung" on rakentanut tietokantaekspertti Prof. Dr. auf der Relationin avulla plaseerauksissa eli vieraiden pöytiin asettelussa auttavan järjestelmän prototyypin. Järjestelmä mahdollistaa vieraan kirjautumisen ja itselle sopivan pöydän valitsemisen. Järjestelmän tietokanta on seuraavanlainen:
+</p>
+
+<pre>
+Poyta(id, nimi, tilavuus)
+Plaseeraus(vieras_id -&gt; Vieras, poyta_id -&gt; Poyta)
+Vieras(id, nimi, kayttajatunnus, salasana)
+</pre>
+
+<p>
+  Prof. Dr. auf der Relation on vihjannut saksalaiselle yritykselle että olet tuleva tietokantaekspertti ja he haluavat antaa sinulle näyttöpaikan. Luo seuraavat SQL-kyselyt. Osassa kyselyissä on annettu esimerkki siitä, miltä tulostaulun tulisi näyttää.
+</p>
+
+<ul>
+
+  <li>
+    Listaa pöydät ja niiden tilavuudet
+  </li>
+  
+  <li>
+    Listaa vieraiden nimet aakkosjärjestyksessä
+  </li>
+  
+  <li>
+    Listaa vieraat joita ei ole vielä asetettu mihinkään pöytään
+  </li>
+  
+  <li>
+    Listaa vieraat jotka on asetettu johonkin pöytään. Listauksessa tulee olla pöydän nimi jokaisen vieraan nimen vieressä. Esimerkkitulostus:
+
+    <pre>
+VIERAS    POYTA
+arto      punainen
+matti     keltainen
+leena     punainen
+    </pre>
+  </li>
+  
+  <li>
+    Listaa vieraiden määrä pöytää kohti. Esimerkkitulostus:
+
+    <pre>
+POYTA      VIERAITA
+punainen   6
+keltainen  4
+vihreä     5
+    </pre>
+
+  </li>
+  <li>
+    Listaa kaikki pöydät joihin mahtuu vielä vieraita
+  </li>
+</ul>
+
+<p>
+  Bonus: Voiko sama vieras olla plaseerattu useampaan pöytään? Miksi tai miksi ei?
+</p>
+
+
+        </div>
+      </div>
+
+      <div class="footer-wrapper">
+        <footer class="footer">
+  <div>
+    Tämä materiaali on lisensoitu Creative Commons BY-NC-SA-lisenssillä
+    <a href="https://github.com/materiaalit/ohjelmointi-k18" class="footer__github-link" target="_blank">
+      <i class="fa fa-github"></i>
+    </a>
+  </div>
+  <div class="improvement">
+    <a href="https://github.com/materiaalit/tikape-kesa18/issues/new"  target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ilmoita virhe
+  </button>
+</a>
+<a href="https://github.com/materiaalit/tikape-kesa18/edit/master/source/part7.html.erb" target="_blank" rel="noopener">
+  <button class='btn btn-primary'>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+ Muokkaa sivua
+  </button>
+</a>
+
+  </div>
+</footer>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="tmc-login-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="tmc-login-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Kirjaudu TMC-käyttäjällesi</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            Puuttuuko sinulta TMC-käyttäjätunnus? <a href="https://tmc.mooc.fi/user/new" class="alert-link" target="_blank">Rekisteröidy</a>
+          </div>
+
+          <div class="alert alert-danger" id="tmc-login-error" style="display: none;"></div>
+
+          <div class="form-group">
+            <label>Käyttäjätunnus</label>
+            <input type="text" id="tmc-login-username" class="form-control" placeholder="Käyttäjätunnus"/>
+          </div>
+
+          <div class="form-group">
+            <label>Salasana</label>
+            <input type="password" id="tmc-login-password" class="form-control" placeholder="Salasana"/>
+          </div>
+
+          <div class="form-group">
+            <label>Kurssi</label>
+
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="tmcLoginCourse" value="hy-tikape-kesa18">
+                Tietokantojen perusteet, kevät 2018
+              </label>
+            </div>
+
+            <small class="form-text text-muted">
+              Kurssin valinnalla on pieniä vaikutuksia materiaalin tiettyihin osiin.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" data-dismiss="modal">Sulje</a>
+          <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="table-of-contents-layer" id="table-of-contents-layer">
+</div>
+
+<div class="table-of-contents" id="table-of-contents">
+  <h1 class="table-of-contents__heading">
+    Sisällysluettelo
+  </h1>
+
+  <div class="table-of-contents__content">
+    <ul id="table-of-contents-list"></ul>
+  </div>
+</div>
+
+
+    <script>
+  window._QUIZNATOR_ENABLED = true;
+</script>
+
+<script src="https://quiznator.herokuapp.com/javascripts/plugin-loader.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+	    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	    crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+      window.SD_SHOW_SURVEY = ['part6', 'part7'].indexOf(window.location.pathname.replace(/\//g,'')) >= 0;
+    </script>
+
+    <script src="../javascripts/scripts-e9ee74b7.js"></script>
+
+    <script src="https://use.fontawesome.com/ed2f73836b.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.1/cookieconsent.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js'></script>
+
+    <script>window.cookieconsent.initialise({"palette":{"popup":{"background":"#000"},"button":{"background":"#f1d600"}}});</script>
+
+  </body>
+</html>
