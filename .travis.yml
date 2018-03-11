@@ -16,7 +16,7 @@ before_script:
 - git config --global user.name "hnbot"
 - git config --global user.email "nygrenh+hnbot@gmail.com"
 - export COMMIT_MESSAGE=Update:\ $(git log -1 --pretty=%s)
-- git clone -b gh-pages --single-branch https://github.com/materiaalit/tikape-k18.git
+- git clone -b gh-pages --single-branch https://github.com/materiaalit/tikape-kesa18.git
   build
 script:
 - bundle exec middleman build
@@ -25,8 +25,8 @@ after_success:
 - git checkout HEAD README.md .github
 - git add --all
 - git commit -m "$COMMIT_MESSAGE"
-- git push "https://hnbot:$GITHUB_API_KEY@github.com/materiaalit/tikape-k18.git" gh-pages:gh-pages
-  2>&1 | sed "s/$GITHUB_API_KEY/<confidential>/g"
+- git push "https://hnbot:$GITHUB_API_KEY@github.com/materiaalit/tikape-kesa18.git"
+  gh-pages:gh-pages 2>&1 | sed "s/$GITHUB_API_KEY/<confidential>/g"
 env:
   global:
-    secure: enUlVHlZKuMYZzvQnBKvJrRghHHNCIExWrX9YVxmGqWDhfdzo1IQwc2aiAssOWUsb3XrfTU5DTbKBNCp2MBENfZzr4ddyzIN+mNKFFcWu3c0MZcABzOZvIJHp0OgctF974tzz9aFW8e4PUsi5bfTICG3F/w21NQe/1fdaF76Px3opwynPAApy+9xYe1EtiwT6zBFnC5nVT4Rjr1Me3OcYXlX97ObRJFKZCvkHqI2O9SrW//fPMZQBDMJl0+NTsJQJERanOLJinQ2i/hEqvEO8MI7HaTUtJdHm9smMPzmJypbYbWmQHk57Jg9YH24Om29UcyPBqhRTKmWNzaARLOlknGsCxdWlgUlceSD0ikLyJK9EXGIUkRyIOe4aa4jijV26kNEnFw+2Bl4UrAyVx2GQW30q4OX3LfGpqrkfEtiJXlb+MYBE9imlrUmjy1VzCN0lsqoaXP3hjvSZr3iAgsuInZi3Khfu7LDPXJq/XbFwGniRBIBYzPFwLz+1W08X7/jstCT3bTip8SlzNIDNI3UkpMRp65qOY68tE2rLs/ezo66RVB7ESJa/E/d1YKolFtVyGr/MMb9CzcVffTSSRK4ToGhyCxi4lK0ZdBuZ4zAk341lkR8F/A4NdrB25phLclnPWGr+pHbPGvUo+kMFz6++tPiL95yMg5wBEh2g33K5Ew=
+    secure: iBf7LRt2cXQno4+7n/TEfk9+sh9Asxs1HayUHzUnofNyoMiE3yzTs4Dqa845J/qKLA7iWN/lsP4B1gfXmJjZ8TxdAGRz9//jSyEwhEr7VG70aPtMoWfxqPnLAhrLjA9jfP+k08Po+tdbB1aWHrwx+Eywbc/+FDvcWZkVIB4WdBWJA7GbTewNVc2JUmT90NNkPvmAm74l/qBteVataPx4Noca4BLCEuAtjoT3CbzQYCXbnp1L6J1LPM5jw7uUOReTA5k59cxU1zzVnWQgHM6aI1DvBZl2rE0JOoS6BcAnGYJmABjiP0cW7i9PfRug4KY4sY8jSVZs/ZOlcvtc+ku+R0/fFL9RZ76EqfpKzYDHWn1jYkIsTAIEpfh6zA37WbBWn67wQd0i9Qb62VrQMPtWwc3kOIAHGUjWrXaTVaByIGFZWBFO+qkAVKT2OEFoVdDeWu809G2bsIZGFAZSNSnejwr/EeGlgBXJbRlJMj+6QmY/KTUZkxJEXnbr4s/QCEkZRkkJ1sWxKZRGA8hOr8bDDXFGMbunp52QiViaCvni1Unm3j0gXyGH7OvXZJticadxZqloWQmtLFBR2LAMEkxtXbQjvMZvu62XIzHQ6SQT+lkBuJMbDdEP695ZCEibtc+XsLcUQ0/52svjAaFdwx4HdZ5zK0TrLiygm9JuVfvChKI=

@@ -11,7 +11,7 @@
   <p>
     Osaa hakea useammasta tietokantataulusta tietoa JOIN-kyselyiden avulla. Osaa luoda ohjelman, joka kommunikoi tietokannanhallintajärjestelmän kanssa valmiin rajapinnan kautta. Osaa luoda ohjelman, joka hyödyntää useamman tietokantataulun sisältävää tietokantaa ja tuntee data access object (DAO) -suunnittelumallin. Osaa esittää tietoa JSON-kielellä. Osaa luoda web-sovelluksen, joka näyttää käyttäjälle tietokannasta haettua tietoa JSON-muodossa.
   </p>
-  
+
 <% end %>
 
 
@@ -108,7 +108,7 @@ SELECT * FROM Asiakas, Tilaus WHERE Asiakas.id = Tilaus.asiakas_id
 <p>
   Jotta tietokantakysely tulostaa oleelliset rivit, on jokainen kyselyyn lisättävä taulu kytkettävä toisiinsa. Eräs hyödyllinen tapa taulujen yhdistämiseen tarvittujen kyselyjen hahmottamiseen on tietokantakaavion katsominen. Jos tavoitteena olisi esimerkiksi etsiä kaikki raaka-aineet, joita Leevi-niminen asiakas on saattanut syödä, ensimmäinen askel on etsiä polku taulusta <code>Asiakas</code> tauluun <code>RaakaAine</code>.
 </p>
-  
+
 <p>
   Aloitamme taulusta <code>Asiakas</code> ja etsimme polkua tauluun <code>RaakaAine</code>. Jotta pääsemme taulusta Asiakas tauluun RaakaAine, tulee meidän vierailla tauluissa <code>TilausAnnos</code>, <code>Annos</code> ja <code>AnnosRaakaAine</code>.
 </p>
@@ -136,7 +136,7 @@ SELECT Asiakas.nimi AS asiakas
     <% end %>
   </li>
 
-  
+
   <li>
     Yhdistämme edelliseen kyselyyn taulun TilausAnnos.
 
@@ -148,8 +148,8 @@ SELECT Asiakas.nimi AS asiakas
         AND TilausAnnos.tilaus_id = Tilaus.id;
     <% end %>
   </li>
-  
-  
+
+
   <li>
     Yhdistämme edelliseen kyselyyn taulun Annos.
 
@@ -176,7 +176,7 @@ SELECT Asiakas.nimi AS asiakas
         AND AnnosRaakaAine.annos_id = Annos.id;
     <% end %>
   </li>
-  
+
 
   <li>
     Yhdistämme edelliseen kyselyyn taulun RaakaAine.
@@ -212,15 +212,15 @@ SELECT Asiakas.nimi AS asiakas, RaakaAine.nimi AS raaka_aine
 </ol>
 
 <p>
-  Huomaa, että jokaista askelta voi ja kannattaa testata tietokannanhallintajärjestelmän tarjoamassa konsolissa. 
+  Huomaa, että jokaista askelta voi ja kannattaa testata tietokannanhallintajärjestelmän tarjoamassa konsolissa.
 </p>
 
 <% partial 'partials/hint', locals: { name: 'DISTINCT valitsee vain uniikit rivit' } do %>
-  
+
   <p>
     Entä jos haluaisimme tietää vain ne henkilöt, joiden annoksessa on ollut paprikaa raaka-aineena? Tämä onnistuu edellistä kyselyä muokkaamalla näppärästi.
   </p>
-  
+
   <% partial 'partials/sql_highlight' do %>
   SELECT Asiakas.nimi AS asiakas
       FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
@@ -240,7 +240,7 @@ SELECT Asiakas.nimi AS asiakas, RaakaAine.nimi AS raaka_aine
     Jos tulostukseen haluaa vain uniikit rivit, tulee kyselyyn lisätä komento <code>DISTINCT</code>. Kun SELECT-lauseessa on komento DISTINCT, tulostuksen rivit ovat uniikkeja.
   </p>
 
-  
+
   <% partial 'partials/sql_highlight' do %>
     SELECT DISTINCT Asiakas.nimi AS asiakas
         FROM Asiakas, Tilaus, TilausAnnos, Annos, AnnosRaakaAine, RaakaAine
@@ -253,8 +253,8 @@ SELECT Asiakas.nimi AS asiakas, RaakaAine.nimi AS raaka_aine
   <% end %>
 
 <% end %>
-  
-  
+
+
 
 
 <% partial 'partials/material_sub_heading' do %>
@@ -358,11 +358,11 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
 
 
 <% partial 'partials/hint', locals: { name: 'Visuaalinen opas JOIN-kyselyihin' } do %>
-  
+
   <p>
     C.L. Moffatt on kirjoittanut hyvän yhteenvedon erilaisista JOIN-tyypeistä. Tutustu yhteenvetoon osoitteessa <a href="http://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins" target="_blank">http://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins</a>.
   </p>
-  
+
   <figure>
     <img src="/img/viikko3/moffatt-visual_joins.png"/>
     <p>&nbsp;</p>
@@ -382,8 +382,8 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
   <pre>
   sqlite&gt; .tables
   Album          	Employee       	InvoiceLine    	PlaylistTrack
-  Artist         	Genre          	MediaType      Track        
-  Customer       	Invoice        	Playlist     
+  Artist         	Genre          	MediaType      Track
+  Customer       	Invoice        	Playlist
   </pre>
 
   <p>
@@ -413,7 +413,7 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
   <p>
     Kun olet saanut kyselyt toimimaan, kopioi kyselyt tehtäväpohjassa olevan luokan Kyselyja metodeihin kysely1, kysely2 ja kysely3. Tehtävässä olevat testit ovat vain TMC-palvelimella.
   </p>
-  
+
 <% end %>
 
 
@@ -432,7 +432,7 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
 
 
 <% partial 'partials/hint', locals: { name: 'JDBC-ajurin noutaminen' } do %>
-  
+
   <p>
     JDBC-ajurit ovat käytännössä Java-kielellä kirjoitettuja ohjelmia, joita tietokannanhallintajärjestelmän toteuttajat tarjoavat ohjelmoijien käyttöön. Kurssin toisessa osassa ajurit on lisätty valmiiksi tehtäväpohjien <code>lib</code>-kansioon, jonka lisäksi niiden käyttö on valmiiksi määritelty tehtäväpohjissa.
   </p>
@@ -440,13 +440,13 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
   <p>
     Myöhemmissä osissa tutustumme kirjastojen käyttöönottoon ja hakemiseen <a href="https://maven.apache.org/" target="_blank" norel">Maven</a>-apuvälineen avulla.
   </p>
-  
+
 <% end %>
 
 
 
 <% partial 'partials/material_sub_heading' do %>
-  Ohjelmallinen tietokantakysely kokonaisuudessaan 
+  Ohjelmallinen tietokantakysely kokonaisuudessaan
 <% end %>
 
 
@@ -545,7 +545,7 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
 
 
 <% partial 'partials/material_sub_heading' do %>
-  Ohjelman rakentaminen osissa 
+  Ohjelman rakentaminen osissa
 <% end %>
 
 <p>
@@ -642,7 +642,7 @@ SELECT Asiakas.nimi AS asiakas, Tilaus.aika AS tilausaika
 <% end %>
 
 <p>
-  Osoitteessa <a href="https://materiaalit.github.io/tikape-k18/dbs/vuokraamo.db">vuokraamo.db</a> löytyy kuvitteellisen moottoripyörävuokraamon tietokanta. Lataa se edellä tehdyn projektin juureen ja kokeile kyselyn tekemistä kyseiseen tietokantaan.
+  Osoitteessa <a href="https://materiaalit.github.io/tikape-kesa18/dbs/vuokraamo.db">vuokraamo.db</a> löytyy kuvitteellisen moottoripyörävuokraamon tietokanta. Lataa se edellä tehdyn projektin juureen ja kokeile kyselyn tekemistä kyseiseen tietokantaan.
 </p>
 
 <p>
@@ -680,17 +680,17 @@ Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
       <% end %>
     </p>
   </li>
-  
+
   <li>
     <p>Kysely luodaan antamalla yhteydelle merkkijono, jossa on kysely. Yhteys palauttaa <em>PreparedStatement</em>-olion, jota käytetään kyselyn suorittamiseen ja tulosten pyytämiseen. Metodi <em>executeQuery</em> suorittaa SQL-kyselyn ja palauttaa tulokset sisältävän <em>ResultSet</em>-olion.
-      
+
       <% partial 'partials/code_highlight' do %>
 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Pyora");
 ResultSet resultSet = statement.executeQuery();
       <% end %>
     </p>
   </li>
-  
+
   <li>
     <p>Tämän jälkeen ResultSet-oliossa olevat tulokset käydään läpi. Metodia next() kutsumalla siirrytään kyselyn palauttamissa tulosriveissä eteenpäin. Kultakin riviltä voi kysyä sarakeotsikon perusteella solun arvoa. Esimerkiksi kutsu getString("rekisterinumero") palauttaa kyseisellä rivillä olevan sarakkeen "rekisterinumero" arvon String-tyyppisenä.
 
@@ -704,10 +704,10 @@ while(resultSet.next()) {
       <% end %>
     </p>
   </li>
-  
+
   <li>
     <p>Kun kyselyn vastauksena saadut rivit on käyty läpi, eikä niitä enää tarvita, vapautetaan niihin liittyvät resurssit.
-      
+
       <% partial 'partials/code_highlight' do %>
 stmt.close();
 rs.close();
@@ -737,7 +737,7 @@ connection.close();
 </p>
 
 <% partial 'partials/code_highlight' do %>
-  PreparedStatement statement = 
+  PreparedStatement statement =
       connection.prepareStatement("SELECT * FROM Pyora WHERE merkki = ?");
   statement.setString(1, "Royal Enfield");
 
@@ -749,7 +749,7 @@ connection.close();
 </p>
 
 <% partial 'partials/code_highlight' do %>
-  PreparedStatement statement = 
+  PreparedStatement statement =
       connection.prepareStatement("SELECT * FROM Henkilo WHERE syntymavuosi  = ?");
   statement.setInt(1, 1952);
 
@@ -768,7 +768,7 @@ connection.close();
 
   // ...
 
-  PreparedStatement statement = 
+  PreparedStatement statement =
       connection.prepareStatement("SELECT * FROM Henkilo WHERE syntymavuosi  = ?");
   statement.setInt(1, vuosi);
 
@@ -798,7 +798,7 @@ connection.close();
 <% partial 'partials/code_highlight' do %>
   Connection connection = DriverManager.getConnection("jdbc:sqlite:vuokraamo.db");
 
-  PreparedStatement stmt = 
+  PreparedStatement stmt =
       connection.prepareStatement("INSERT INTO Pyora (rekisterinumero, merkki) VALUES (?, ?)");
   stmt.setString(1, "RIP-34");
   stmt.setString(2, "Jopo");
@@ -896,12 +896,12 @@ connection.close();
   ResultSet rs = stmt.executeQuery();
 
   List&lt;Asiakas&gt; asiakkaat = new ArrayList&lt;&gt;();
-  
+
   while (rs.next()) {
       Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
           rs.getString("puhelinnumero"), rs.getString("katuosoite"),
           rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
-  
+
       asiakkaat.add(a);
   }
 
@@ -914,7 +914,7 @@ connection.close();
 <% end %>
 
 <p>
-  Myös uuden Asiakas-olion tallentaminen tietokantatauluun onnistuu. 
+  Myös uuden Asiakas-olion tallentaminen tietokantatauluun onnistuu.
 </p>
 
 <% partial 'partials/code_highlight' do %>
@@ -947,7 +947,7 @@ connection.close();
   Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
       rs.getString("puhelinnumero"), rs.getString("katuosoite"),
       rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
-  
+
   stmt.close();
   rs.close();
 
@@ -960,29 +960,29 @@ connection.close();
 <% end %>
 
 <p>
-  Tähän astisissa simerkeissä tietokantakyselytoiminnallisuus ja muu toiminnallisuudesta on ollut samassa luokassa, mikä johtaa helposti sekavaan koodiin. 
+  Tähän astisissa simerkeissä tietokantakyselytoiminnallisuus ja muu toiminnallisuudesta on ollut samassa luokassa, mikä johtaa helposti sekavaan koodiin.
 </p>
 
 <p>
-  Tietokantasovelluksia toteuttaessa on hyvin tyypillistä abstrahoida konkreettinen tiedon hakemis- ja tallennustoiminnallisuus siten, että ohjelmoijan ei tarvitse nähdä sitä jatkuvasti. 
+  Tietokantasovelluksia toteuttaessa on hyvin tyypillistä abstrahoida konkreettinen tiedon hakemis- ja tallennustoiminnallisuus siten, että ohjelmoijan ei tarvitse nähdä sitä jatkuvasti.
 </p>
 
 <% partial 'partials/hint', locals: { name: 'Data Access Object (DAO)' } do %>
 
   <p>
-    Wikipedia: 
+    Wikipedia:
     <em>
       In computer software, a data access object (DAO) is an object that provides an abstract interface to some type of database or other persistence mechanism. By mapping application calls to the persistence layer, DAO provide some specific data operations without exposing details of the database. This isolation supports the Single responsibility principle. It separates what data accesses the application needs, in terms of domain-specific objects and data types (the public interface of the DAO), from how these needs can be satisfied with a specific DBMS, database schema, etc. (the implementation of the DAO).
     </em>
   </p>
-  
+
   <p>
     <em>
       Although this design pattern is equally applicable to the following: (1- most programming languages; 2- most types of software with persistence needs; and 3- most types of databases) it is traditionally associated with Java EE applications and with relational databases (accessed via the JDBC API because of its origin in Sun Microsystems' best practice guidelines "Core J2EE Patterns" for that platform).
     </em>
   </p>
 <% end %>
-  
+
 <p>
   Hahmotellaan hakemiseen ja poistamiseen liittyvää rajapintaa, joka tarjoaa metodit <code>findOne</code>, <code>findAll</code>, <code>saveOrUpdate</code> ja <code>delete</code>, eli toiminnallisuudet hakemiseen, tallentamiseen ja poistamiseen. Tehdään rajapinnasta <em>geneerinen</em>, eli toteuttava luokka määrittelee palautettavien olioiden tyypin sekä avaimen.
 </p>
@@ -1026,7 +1026,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
         // ei toteutettu
         return null;
     }
-  
+
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
@@ -1060,7 +1060,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
 <% end %>
 
 <p>
-  Jatketaan luokan <code>AsiakasDao</code> toteuttamista. Lisätään luokkaan tietokannan käyttö tietokanta-abstraktion avulla sekä asiakkaan poistaminen avaimen perusteella 
+  Jatketaan luokan <code>AsiakasDao</code> toteuttamista. Lisätään luokkaan tietokannan käyttö tietokanta-abstraktion avulla sekä asiakkaan poistaminen avaimen perusteella
 </p>
 
 <% partial 'partials/code_highlight' do %>
@@ -1092,7 +1092,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
         // ei toteutettu
         return null;
     }
-  
+
     @Override
     public void delete(Integer key) throws SQLException {
         Connection conn = database.getConnection();
@@ -1106,7 +1106,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
     }
 }
 <% end %>
-  
+
 <p>
   Vastaavasti yksittäisen asiakkaan noutaminen onnistuisi findOne-metodilla.
 </p>
@@ -1138,7 +1138,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
         Asiakas a = new Asiakas(rs.getInt("id"), rs.getString("nimi"),
             rs.getString("puhelinnumero"), rs.getString("katuosoite"),
             rs.getInt("postinumero"), rs.getString("postitoimipaikka"));
-  
+
         stmt.close();
         rs.close();
 
@@ -1158,7 +1158,7 @@ public class AsiakasDao implements Dao&lt;Asiakas, Integer&gt; {
         // ei toteutettu
         return null;
     }
-  
+
     @Override
     public void delete(Integer key) throws SQLException {
         Collection conn = database.getConnection();
@@ -1294,7 +1294,7 @@ TilausDao tilaukset = new TilausDao(database, asiakkaat);
 Tilaus t = tilaukset.findOne(4);
 System.out.println("Tilauksen teki: " + t.getAsiakas().getNimi());
 <% end %>
-  
+
 
 
 <% partial 'partials/hint', locals: { name: 'Mitä tietokannasta pitäisi noutaa?' } do %>
@@ -1302,7 +1302,7 @@ System.out.println("Tilauksen teki: " + t.getAsiakas().getNimi());
   <p>
     Kun jatkamme edellistä esimerkkiä, pitäisikö annosta haettaessa hakea aina siihen liittyvä ravintola? Entä pitääkö tilausta haettaessa oikeasti hakea myös tilaukseen liittyvä asiakas?
   </p>
-  
+
   <p>
     Hyvä kysymys. Kun tietokantataulujen välisten yhteyksien perusteella tehdään uusia kyselyitä tietokantaan, olemassa on oleellisesti kaksi vaihtoehtoa sekä niiden seuraukset: (1) haetaan liikaa tietoa, jolloin hakemisoperaatioon menee turhaan aikaa, tai (2) haetaan liian vähän tietoa, jolloin tieto tulee hakea myöhemmin.
   </p>
@@ -1462,7 +1462,7 @@ System.out.println("Tilauksen teki: " + t.getAsiakas().getNimi());
   public class Main {
 
       public static void main(String[] args) throws Exception {
- 
+
       }
   }
 <% end %>
@@ -1638,7 +1638,7 @@ System.out.println("Tilauksen teki: " + t.getAsiakas().getNimi());
 
 
 <% partial 'partials/hint', locals: { name: 'NetBeans ja palvelimen sammuttaminen' } do %>
-  
+
   <p>
     Palvelimen sammuttaminen tapahtuu NetBeansissa punaista neliötä klikkaamalla. Joissakin käyttöjärjestelmissä (mac) tämä ei kuitenkaan toimi oikein, jolloin palvelin tulee sammuttaa komentoriviltä.
   </p>
@@ -1668,7 +1668,7 @@ COMMAND  PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 java    9916 kayttaja   51u  IPv6 0x65802ef6be5c6f29      0t0  TCP *:tram (LISTEN)
 > kill -9 9916
   </pre>
-  
+
 <% end %>
 
 
@@ -1755,7 +1755,7 @@ System.out.println(gson.toJson(gson));
 
 
 <p>
-  Yhdistämällä Sparkin, tietokannan, daon sekä Gson-kirjaston, saamme käyttöömme kevyen web-palvelun, joka tarjoaa JSON-muotoista dataa. 
+  Yhdistämällä Sparkin, tietokannan, daon sekä Gson-kirjaston, saamme käyttöömme kevyen web-palvelun, joka tarjoaa JSON-muotoista dataa.
 </p>
 
 <% partial 'partials/code_highlight' do %>
@@ -1817,7 +1817,7 @@ System.out.println(gson.toJson(gson));
   <pre>
 curl -d '{"tehtava":"test", "tehty":"true"}' -H "Content-Type: application/json" -X POST http://localhost:4567
   </pre>
-  
+
 <% end %>
 
 
