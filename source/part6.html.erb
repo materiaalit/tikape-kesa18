@@ -752,7 +752,7 @@ selectid order from detail
 <% end %>
 
 <p>
-  Tietokannanhallintajärjestelmä vaihtaa läpikäytävien taulujen järjestystyä. Nyt kysely käy ensin läpi koko Asiakas-taulun, ja etsii tämän jälkeen Tilaus-taulusta tietoa automaattisesti luodun indeksin perusteella.
+  Tietokannanhallintajärjestelmä vaihtaa läpikäytävien taulujen järjestystä. Nyt kysely käy ensin läpi koko Asiakas-taulun, ja etsii tämän jälkeen Tilaus-taulusta tietoa automaattisesti luodun indeksin perusteella.
 </p>
 
 <% partial 'partials/material_sub_heading' do %>
@@ -899,6 +899,102 @@ selectid order from detail
 <p>
   Jos asiakkaiden tietohin liittyvistä tietokantakyselyistä 99% on hakuoperaatioita, on merkittävässä osassa tapauksia tieto valmiiksi sovelluksen käytössä, jolloin tietokantaan ei tarvitse ottaa yhteyttä. Toisaalta, jos sovellus on sellainen, että merkittävä osa käsittelystä sisältää myös tietokannassa olevan tiedon muokkausoperaatioita, ei edellä kuvatusta välimuistista ole juurikaan hyötyä.
 </p>
+
+
+<% partial 'partials/material_sub_heading' do %>
+  Tietokannan denormalisointi
+<% end %>
+
+<p>
+  Tietokannan normalisointi johtaa tyypillisesti tilanteeseen, missä tietokannassa on useita tietokantatauluja, joista jokainen kuvaa jotain selkeää käsitettä. Tietokantataulujen väliset yhteydet tunnistetaan pää- ja viiteavainten avulla, ja taulujen attribuutit ovat selkeitä. Tietokannasta puuttuu toisteinen tieto.
+</p>
+
+<p>
+  Yleisesti ottaen yllä kuvattu tilanne on hyvä, mutta absoluuttinen hyvyys liittyy paljolti myös käyttötarkoitukseen. Esimerkiksi raportointiin tarkoitettujen järjestelmien ei kannata todennäköisesti -- jos raportin luonti on hidas operaatio -- luoda samoja raportteja yhä uudelleen ja uudelleen, vaan voi olla mielekästä luoda erillinen tietokantataulu (tai muutama), jotka sisältävät raporteille oleelliset tiedot valmiiksi laskettuna.
+</p>
+
+<p>
+  Myös tietokannan (tai tietokantataulun) käyttötarkoitus vaikuttaa normalisoinnin tarpeeseen. Esimerkiksi sivukäyntien kirjaamiseen tarkoitettu logitusjärjestelmä toimii tehokkaammin jos sivukäyntien tallentamiseen tarkoitetut osat järjestelmästä on denormalisoitu. Tarkastellaan tätä seuraavan esimerkin kautta.
+</p>
+
+<p>
+  Alla on annettuna kaksi tietokantaa, toinen on normalisoitu ja toinen denormalisoitu. Kumpaakin käytetään järjestelmässä kävijöiden tekemien tapahtumien kirjaamiseen.
+</p>
+
+<p>
+  Alla olevassa versiossa käyttäjä ja sivu on eriytetty omaksi käsitteekseen, johon tapahtuma-taulu viittaa. Kun tapahtumaa luodaan, tulee tapahtuman lisäämisen yhteydessä hakea käyttäjän tunnus taulusta Kayttaja sekä osoitetta vastaavan sivun tunnus taulusta Sivu.
+</p>
+
+
+<ul>
+  <li>
+    Kayttaja ((pk) id, kayttajatunnus)
+  </li>
+  <li>
+    Sivu ((pk) id, osoite)
+  </li>
+  <li>
+    Tapahtuma ((pk) id, (fk) kayttaja_id -&gt; Kayttaja, (fk) sivu_id -&gt; Sivu, aika, operaatio, ip, laite)
+  </li>
+</ul>
+
+<p>
+  Toinen vaihtoehto on tallentaa käyttäjätunnus ja sivun osoite sellaisenaan.
+</p>
+
+<ul>
+  <li>
+    Tapahtuma ((pk) id, kayttajatunnus, osoite, aika, operaatio, ip, laite)
+  </li>
+</ul>
+
+
+
+
+<% partial 'partials/exercise', locals: { name: 'Operaatioiden tehokkuuden tarkastelu' } do %>
+
+  <p>
+    Luo SQLiten avulla tehtäväpohjan kansioon <code>db</code> kaksi yllä kuvattua tietokantaa. Ensimmäisen nimeksi tulee 'tapahtumat-normalisoitu.db' ja toisen nimeksi 'tapahtumat-denormalisoitu.db'. Tee tämän jälkeen ohjelma, joka testaa tiedon lisäämisen nopeutta edellä mainittuihin tietokantatauluihin. Luokan <code>OperaatioidenTehokkuus</code> <code>main</code>-metodin kutsun tulee lisätä 100 tapahtumaa kumpaankin tietokantaan.
+  </p>
+
+  <p>
+    Ota seuraava CREATE TABLE-lause lähtökohdaksi.
+  </p>
+
+  <pre>
+    CREATE TABLE Tapahtuma (
+        id integer PRIMARY KEY, 
+        kayttajatunnus varchar(255), 
+        osoite varchar(255), 
+        aika integer, 
+        operaatio varchar(255), 
+        ip varchar(255), 
+        laite varchar(255)
+    );
+  </pre>
+
+  <p>
+    Voit olettaa, että järjestelmä saa jokaisen tapahtuman yhteydessä tietoonsa käyttäjätunnuksen, osoitteen, ajan, tehdyn operaation, ip-osoitteen sekä käyttäjän käyttämän laitteen. Tehtäväpohjassa on valmis toiminnallisuus satunnaisen tiedon luomiseen sekä paikat lisäyskyselyiden tekemiseen.
+  </p>
+
+  <p>
+    Kun tietoa lisätään normalisoituun tietokantaan, tapahtuman lisäämisen yhteydessä tulee hakea käyttäjätaulusta tieto käyttäjästä (ja tallentaa käyttäjä tauluun jos kyseistä käyttäjää ei vielä ole), jonka lisäksi sivutaulusta tulee hakea tieto sivusta osoitteen perusteella (sekä lisätä sivu jos sitä ei vielä ole).
+  </p>
+
+  <p>
+    Kun tietoa lisätään denormalisoituun tietokantaan, riittää tiedon tallentaminen tietokantatauluun.
+  </p>
+
+<% end %>
+
+
+<% partial 'partials/hint', locals: { name: 'Normalisoida vai eikö normalisoida?' } do %>
+
+  <p>
+    Lue CodingHorror.com-blogista kirjoitus <a href="http://blog.codinghorror.com/maybe-normalizing-isnt-normal/" target="_blank">Maybe Normalizing Isn't Normal</a>.
+  </p>
+
+<% end %>
 
 
 
