@@ -951,43 +951,6 @@ selectid order from detail
 
 
 
-<% partial 'partials/exercise', locals: { name: 'Operaatioiden tehokkuuden tarkastelu' } do %>
-
-  <p>
-    Luo SQLiten avulla tehtäväpohjan kansioon <code>db</code> kaksi yllä kuvattua tietokantaa. Ensimmäisen nimeksi tulee 'tapahtumat-normalisoitu.db' ja toisen nimeksi 'tapahtumat-denormalisoitu.db'. Tee tämän jälkeen ohjelma, joka testaa tiedon lisäämisen nopeutta edellä mainittuihin tietokantatauluihin. Luokan <code>OperaatioidenTehokkuus</code> <code>main</code>-metodin kutsun tulee lisätä 100 tapahtumaa kumpaankin tietokantaan.
-  </p>
-
-  <p>
-    Ota seuraava CREATE TABLE-lause lähtökohdaksi.
-  </p>
-
-  <pre>
-    CREATE TABLE Tapahtuma (
-        id integer PRIMARY KEY, 
-        kayttajatunnus varchar(255), 
-        osoite varchar(255), 
-        aika integer, 
-        operaatio varchar(255), 
-        ip varchar(255), 
-        laite varchar(255)
-    );
-  </pre>
-
-  <p>
-    Voit olettaa, että järjestelmä saa jokaisen tapahtuman yhteydessä tietoonsa käyttäjätunnuksen, osoitteen, ajan, tehdyn operaation, ip-osoitteen sekä käyttäjän käyttämän laitteen. Tehtäväpohjassa on valmis toiminnallisuus satunnaisen tiedon luomiseen sekä paikat lisäyskyselyiden tekemiseen.
-  </p>
-
-  <p>
-    Kun tietoa lisätään normalisoituun tietokantaan, tapahtuman lisäämisen yhteydessä tulee hakea käyttäjätaulusta tieto käyttäjästä (ja tallentaa käyttäjä tauluun jos kyseistä käyttäjää ei vielä ole), jonka lisäksi sivutaulusta tulee hakea tieto sivusta osoitteen perusteella (sekä lisätä sivu jos sitä ei vielä ole).
-  </p>
-
-  <p>
-    Kun tietoa lisätään denormalisoituun tietokantaan, riittää tiedon tallentaminen tietokantatauluun.
-  </p>
-
-<% end %>
-
-
 <% partial 'partials/hint', locals: { name: 'Normalisoida vai eikö normalisoida?' } do %>
 
   <p>

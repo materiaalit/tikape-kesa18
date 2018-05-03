@@ -943,7 +943,7 @@ CREATE TABLE
 
 
 <% partial 'partials/material_heading' do %>
-  Tietokannan normalisointi ja denormalisointi
+  Tietokannan normalisointi
 <% end %>
 
 <p>
@@ -1767,6 +1767,10 @@ CREATE TABLE
 
 
 <% partial 'partials/exercise', locals: { name: 'Sanitettitarkastus' } do %>
+
+  <p>
+    Tämä tehtävä on tmc:ssä viikon tehtävä kolme.
+  </p>
 
   <p>
     Tehtäväpohjassa on tehtävien hallintaan tarkoitettu sovellus. Sovelluksessa on kuitenkin harmittava ominaisuus: kun käyttäjälle lisätään tehtävä, kyseistä tehtävää ei enää näytetä sivulla, missä tehtäviä voi lisätä käyttäjille. Mikään ei kuitenkaan estä ilkeämielistä käyttäjää leikkimästä selainta ja tekemästä pyyntöjä palvelimelle.
