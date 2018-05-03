@@ -1066,57 +1066,6 @@ public class CachedAsiakasDao extends AsiakasDao implements Dao&lt;Asiakas, Inte
 
 
 
-<div class="exercise">
-  <div class="exercise__header">
-    <a data-toggle="collapse" class="exercise__toggle">
-      <i class="fa fa-pencil exercise__icon"></i>
-      <h1 class="exercise__heading">Operaatioiden tehokkuuden tarkastelu</h1>
-
-      <i class="fa fa-caret-down exercise__arrow"></i>
-    </a>
-  </div>
-
-  <div class="collapse">
-    <div class="exercise__body">
-      
-  <p>
-    Luo SQLiten avulla tehtäväpohjan kansioon <code>db</code> kaksi yllä kuvattua tietokantaa. Ensimmäisen nimeksi tulee 'tapahtumat-normalisoitu.db' ja toisen nimeksi 'tapahtumat-denormalisoitu.db'. Tee tämän jälkeen ohjelma, joka testaa tiedon lisäämisen nopeutta edellä mainittuihin tietokantatauluihin. Luokan <code>OperaatioidenTehokkuus</code> <code>main</code>-metodin kutsun tulee lisätä 100 tapahtumaa kumpaankin tietokantaan.
-  </p>
-
-  <p>
-    Ota seuraava CREATE TABLE-lause lähtökohdaksi.
-  </p>
-
-  <pre>
-    CREATE TABLE Tapahtuma (
-        id integer PRIMARY KEY, 
-        kayttajatunnus varchar(255), 
-        osoite varchar(255), 
-        aika integer, 
-        operaatio varchar(255), 
-        ip varchar(255), 
-        laite varchar(255)
-    );
-  </pre>
-
-  <p>
-    Voit olettaa, että järjestelmä saa jokaisen tapahtuman yhteydessä tietoonsa käyttäjätunnuksen, osoitteen, ajan, tehdyn operaation, ip-osoitteen sekä käyttäjän käyttämän laitteen. Tehtäväpohjassa on valmis toiminnallisuus satunnaisen tiedon luomiseen sekä paikat lisäyskyselyiden tekemiseen.
-  </p>
-
-  <p>
-    Kun tietoa lisätään normalisoituun tietokantaan, tapahtuman lisäämisen yhteydessä tulee hakea käyttäjätaulusta tieto käyttäjästä (ja tallentaa käyttäjä tauluun jos kyseistä käyttäjää ei vielä ole), jonka lisäksi sivutaulusta tulee hakea tieto sivusta osoitteen perusteella (sekä lisätä sivu jos sitä ei vielä ole).
-  </p>
-
-  <p>
-    Kun tietoa lisätään denormalisoituun tietokantaan, riittää tiedon tallentaminen tietokantatauluun.
-  </p>
-
-
-    </div>
-  </div>
-</div>
-
-
 <div class="hint">
   <div class="hint__header">
     <i class="fa fa-info-circle hint__icon"></i>Normalisoida vai eikö normalisoida?
