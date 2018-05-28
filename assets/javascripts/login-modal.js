@@ -33,17 +33,26 @@ class LoginModal {
     initQuiznator();
     // initStudentDashboard();
 
-    this.initPheromones();
-    this.initLogger();
-      
+    const researchAgreement = localStorage.getItem('research-agreement') || window['research-agreement'] || ""
+    const agreed = researchAgreement.indexOf('j71pjik42i') !== -1
+    window['research-agreement-agreed'] = agreed
+
     this.getUserGroup();
+
+    if (!agreed) {
+      return;
+    }
+
+    this.initPheromones();
+
+    this.initLogger();
   }
 
   getUserGroup() {
     if(document.getElementById("osoite1") == null) {
       return;
     }
-	
+
     const user = client.getUser();
 
     fetch(`https://ab-studio.testmycode.io/api/v0/ab_studies/affirmation_k18_tikape/group?oauth_token=${user.accessToken}`).then(function(response) {
@@ -108,6 +117,7 @@ class LoginModal {
       client.unauthenticate();
 
       try {
+        localStorage.removeItem('research-agreement')
         // window.StudentDashboard.destroy();
         window.Quiznator.removeUser();
       } catch(e) {}

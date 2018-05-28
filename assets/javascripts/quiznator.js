@@ -37,6 +37,11 @@ function init() {
     accessToken: user.accessToken
   });
 
+  window.Quiznator.refreshAgreement({
+    userId: user.username,
+    quizId: '5a5b5d0ea67e62000427b3ec'
+  });
+
   initSnapshotListeners();
 }
 
